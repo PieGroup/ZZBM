@@ -12,32 +12,32 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     cache: false
-    prefix: classpath:/templates/
+    prefix: classpath:H:/html/html/
 #    prefix: classpath:file:${web.upload.path}
     suffix: .html
   #链接配置
-  redis:
-    host: 127.0.0.1
-    password:
-    port: 6379
-    jedis:
-      pool:
-        #连接池最大活动连接
-        max-active: 30
-        #最大空闲链接
-        max-idle: 10
-        #超过时间
-        max-wait: 10ms
-        #连接池最小空闲连接
-        min-idle: 3
-  cache:
-    cache-names: redis-cache
-    redis:
-      cache-null-values: true #是否可以储存空值
-      time-to-live: 300s
-      use-key-prefix: true
-  jmx:
-    enabled: false
+#  redis:
+#    host: 127.0.0.1
+#    password:
+#    port: 6379
+#    jedis:
+#      pool:
+#        #连接池最大活动连接
+#        max-active: 30
+#        #最大空闲链接
+#        max-idle: 10
+#        #超过时间
+#        max-wait: 10ms
+#        #连接池最小空闲连接
+#        min-idle: 3
+#  cache:
+#    cache-names: redis-cache
+#    redis:
+#      cache-null-values: true #是否可以储存空值
+#      time-to-live: 300s
+#      use-key-prefix: true
+#  jmx:
+#    enabled: false
 
 
 #日志配置
@@ -48,9 +48,9 @@ spring:
 #静态资源文件
 web:
   upload:
-    path: H:/html/
-#  resources:
-#    static-locations: classpath:/static/,file:${web.upload.path}
+    path: H:/html/html/
+  resources:
+    static-locations: classpath:/static/,file:${web.upload.path}
 
 #微信支付定义的参数
 wechat:
