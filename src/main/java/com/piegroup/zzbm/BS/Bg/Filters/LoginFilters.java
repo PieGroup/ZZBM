@@ -16,7 +16,7 @@ public class LoginFilters implements Filter {
 
     static {
         includeUrls = new String[]{"/login","register","/test"};
-        NoFilterUrls.add("/login");
+        NoFilterUrls.add("/extra-login-light.html");
         NoFilterUrls.add("register");
         NoFilterUrls.add("/test");
         NoFilterUrls.add("/api");
