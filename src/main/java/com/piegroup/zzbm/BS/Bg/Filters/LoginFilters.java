@@ -19,6 +19,7 @@ public class LoginFilters implements Filter {
         NoFilterUrls.add("/login");
         NoFilterUrls.add("register");
         NoFilterUrls.add("/test");
+        NoFilterUrls.add("/api");
     }
 
     //标示符：表示当前用户未登录(可根据自己项目需要改为json样式)
@@ -58,7 +59,7 @@ public class LoginFilters implements Filter {
                     response.getWriter().write(this.NO_LOGIN);
                 }else{
                     //重定向到登录页(需要在static文件夹下建立此html文件)
-                    response.sendRedirect(request.getContextPath()+"/login");
+                    response.sendRedirect(request.getContextPath()+"/extra-login-light.html");
                 }
                 return;
             }

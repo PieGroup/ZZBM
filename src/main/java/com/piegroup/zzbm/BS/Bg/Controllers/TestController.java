@@ -31,7 +31,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("test/")
-@CacheConfig(cacheNames = "productInfo")
+//@CacheConfig(cacheNames = "productInfo")
 @Slf4j
 @CrossOrigin
 public class TestController {
@@ -49,7 +49,7 @@ public class TestController {
      */
     @RequestMapping("test1")
     @ResponseBody
-    @Cacheable(key = "'redis_'+1",unless = "#result.getCode() != '200'")
+//    @Cacheable(key = "'redis_'+1",unless = "#result.getCode() != '200'")
     public DataVO<List<OrderEntity>> OrderList() throws Exception{
        //UserId 用户人Id / pageNum 第几页 默认第一页 /pageSize 需要多长的数据默认一条
         DataPageSubc dataPageSubc = orderService.OrderListSvImpl("林昊",1,5);
@@ -131,7 +131,7 @@ public class TestController {
 
     @RequestMapping("login")
     public String login() throws Exception{
-        return "login";
+        return "extra-login-light.html";
     }
     @RequestMapping("index")
     public String login2()throws Exception{

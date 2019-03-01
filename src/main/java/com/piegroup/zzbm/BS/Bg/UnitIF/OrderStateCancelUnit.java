@@ -1,3 +1,4 @@
+/*
 package com.piegroup.zzbm.BS.Bg.UnitIF;
 
 import com.piegroup.zzbm.Annotation.OrderState;
@@ -12,12 +13,14 @@ import com.piegroup.zzbm.Utils.SpringUtil;
 @OrderState(ORDER_STATE = OrderStatusEnum.ORDERSTATE_CANCEL )
 public class OrderStateCancelUnit extends OrderAS {
 
-    /**
+    */
+/**
      * 取消订单
      * @param orderId
      * @param orderEnum
      * @return
-     */
+     *//*
+
     private RedisLockService redisLockService = SpringUtil.getBean(RedisLockService.class);
 
 
@@ -39,3 +42,4 @@ public class OrderStateCancelUnit extends OrderAS {
         return true;
     }
 }
+*/
