@@ -6,9 +6,9 @@ spring:
   messages:
     encoding: UTF-8
   datasource:
-    url: jdbc:mysql://localhost:3306/hyj?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=UTC
-    username: root
-    password: root
+    url: jdbc:mysql://139.159.162.156:3306/zz?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=UTC
+    username: my
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     cache: false
