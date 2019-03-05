@@ -3,9 +3,9 @@ package com.piegroup.zzbm.BS.Bg.UnitIF;
 
 import com.piegroup.zzbm.Annotation.Message;
 import com.piegroup.zzbm.BS.Bg.Abstracts.MessageAS;
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 
-@Message(MESSAGE_ENUM = MessageStyleEnum.RESETPASSWORD_SMSCODENOTICE)
+@Message(MESSAGE_ENUM = MessageEnum.Reset_Password_Sms_Code_Message)
 public class SMSCodeRestPasswordUnit extends MessageAS {
 
     public boolean SmsCodeMessage(String phone) {

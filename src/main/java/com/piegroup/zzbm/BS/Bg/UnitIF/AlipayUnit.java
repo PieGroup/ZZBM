@@ -8,7 +8,7 @@ import com.piegroup.zzbm.Enums.PayStyleEnum;
 /**
  * 支付宝app支付
  */
-@PayStyle(PAY_ENUM = PayStyleEnum.PAYSTYLE_ALIPAY_APP)
+@PayStyle(PAY_ENUM = PayStyleEnum.ALIPay_App_PayStyle)
 public class AlipayUnit extends PayAS {
 
     //支付宝支付

@@ -5,7 +5,7 @@ import com.piegroup.zzbm.BS.Bg.Factories.MessagesFactory;
 import com.piegroup.zzbm.BS.Bg.Factories.OrderStatusFactory;
 import com.piegroup.zzbm.BS.Bg.Factories.PayStyleFactory;
 import com.piegroup.zzbm.BS.Bg.Interfaces.FactoryIF;
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
 
@@ -28,8 +28,8 @@ public abstract class FactoryAS implements FactoryIF {
         return payStyleFactory.CreatePayStyleIF(payStyleEnum);
     }
 
-    public MessageAS CreateMessageIF(MessageStyleEnum messageStyleEnum){
+    public MessageAS CreateMessageIF(MessageEnum messageEnum){
         messagesFactory = new MessagesFactory();
-        return messagesFactory.CreateMessageIF(messageStyleEnum);
+        return messagesFactory.CreateMessageIF(messageEnum);
     }
 }

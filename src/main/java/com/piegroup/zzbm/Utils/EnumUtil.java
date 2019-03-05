@@ -22,7 +22,7 @@ public class EnumUtil {
 
         }catch (Exception e){
             log.error("枚举转换出现问题");
-            throw new Exceptions(ExceptionEnum.TRANSFORM_ENUM_ERROR);
+            throw new Exceptions(ExceptionEnum.Transform_Enum_Exception);
         }
         return null;
     }

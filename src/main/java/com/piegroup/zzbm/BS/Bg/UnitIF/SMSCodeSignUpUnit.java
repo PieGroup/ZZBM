@@ -3,11 +3,11 @@ package com.piegroup.zzbm.BS.Bg.UnitIF;
 
 import com.piegroup.zzbm.Annotation.Message;
 import com.piegroup.zzbm.BS.Bg.Abstracts.MessageAS;
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 
 
 //短信验证码通知
-@Message(MESSAGE_ENUM = MessageStyleEnum.SIGNUP_SMSCODENOTICE)        // 注册验证码
+@Message(MESSAGE_ENUM = MessageEnum.Sign_Up_Sms_Code_Message)        // 注册验证码
 public class SMSCodeSignUpUnit extends MessageAS {
 
 

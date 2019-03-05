@@ -12,7 +12,7 @@ public class ResultUtil {
     //成功返回
     public static DataVO success(Object object) {
 
-        return R_save(object, ExceptionEnum.SUCCESS);
+        return R_save(object, ExceptionEnum.Success);
     }
 
 //    失败返回

@@ -5,7 +5,7 @@ import com.piegroup.zzbm.BS.Bg.Abstracts.OrderAS;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
 
 //订单成功
-@OrderState(ORDER_STATE = OrderStatusEnum.ORDERSTATE_SUCCESS)
+@OrderState(ORDER_STATE = OrderStatusEnum.Success_OrderState)
 public class OrderStateSuccessUnit extends OrderAS {
 
     /**

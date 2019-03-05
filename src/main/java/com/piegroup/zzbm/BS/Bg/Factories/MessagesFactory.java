@@ -2,7 +2,7 @@ package com.piegroup.zzbm.BS.Bg.Factories;
 
 import com.piegroup.zzbm.Annotation.Message;
 import com.piegroup.zzbm.BS.Bg.Abstracts.MessageAS;
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 import com.piegroup.zzbm.Utils.EnjoyUtil;
 import com.piegroup.zzbm.Utils.UnitIFListUtil;
 
@@ -18,16 +18,16 @@ public class MessagesFactory extends MessageAS {
     private ClassLoader classLoader = getClass().getClassLoader();
 
     private static List<Class<? extends MessageAS>> MessageList;//策略列表
-    public MessageAS CreateMessageIF(MessageStyleEnum messageStyleEnum) {
+    public MessageAS CreateMessageIF(MessageEnum messageEnum) {
         //在策略组里面查找合适的策略
         for (Class<? extends MessageAS> clazz : MessageList) {
             Message messages = handleAnnotation(clazz);//获得该策略的注解
             //判断OrderState的状态，生成相对应的Unit
             if (messages != null) {
-                if (messages.MESSAGE_ENUM().getCode() == messageStyleEnum.getCode()) {
+                if (messages.MESSAGE_ENUM().getCode() == messageEnum.getCode()) {
                     //使用享元模式(享元工具类)，生成一个对象
                     try {
-                        return (MessageAS) EnjoyUtil.getObject(messageStyleEnum.getCode(), clazz.newInstance());
+                        return (MessageAS) EnjoyUtil.getObject(messageEnum.getCode(), clazz.newInstance());
                     } catch (Exception e) {
                         throw new RuntimeException("策略获取失败。");
                     }

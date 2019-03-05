@@ -5,10 +5,10 @@ package com.piegroup.zzbm.BS.Bg.Interfaces;
 
 
 import com.piegroup.zzbm.BS.Bg.Abstracts.MessageAS;
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 
 public interface MessageIF {
 
-    public MessageAS SendMsg(MessageStyleEnum messageStyleEnum);
+    public MessageAS SendMsg(MessageEnum messageEnum);
 
 }

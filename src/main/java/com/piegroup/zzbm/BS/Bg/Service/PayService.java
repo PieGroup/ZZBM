@@ -26,7 +26,7 @@ public class PayService extends PayAS {
         if (b){
             System.out.println("购买成功！");
             //调用service中的修改订单状态
-            orderService.ModifyOrderStateSv(OrderId, OrderStatusEnum.ORDERSTATE_SUCCESS);
+            orderService.ModifyOrderStateSv(OrderId, OrderStatusEnum.Success_OrderState);
         }else{
             System.out.println("购买失败！");
             return false;

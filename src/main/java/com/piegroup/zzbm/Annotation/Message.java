@@ -2,7 +2,7 @@ package com.piegroup.zzbm.Annotation;
 
 
 
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 
 import java.lang.annotation.*;
 
@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public  @interface Message {
-    MessageStyleEnum MESSAGE_ENUM() default MessageStyleEnum.SMSNOTICE;
+    MessageEnum MESSAGE_ENUM() default MessageEnum.Sms_Message;
 
 }
 

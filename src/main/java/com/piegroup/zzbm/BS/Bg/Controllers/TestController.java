@@ -4,7 +4,7 @@ import com.piegroup.zzbm.BS.Bg.Service.Impl.OrderServiceImpl;
 import com.piegroup.zzbm.BS.Bg.Service.MessageService;
 import com.piegroup.zzbm.BS.Bg.Service.PayService;
 import com.piegroup.zzbm.Entity.OrderMasterEntity;
-import com.piegroup.zzbm.Enums.MessageStyleEnum;
+import com.piegroup.zzbm.Enums.MessageEnum;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
 import com.piegroup.zzbm.Utils.CookiesUtil;
@@ -65,7 +65,7 @@ public class TestController {
         //orderId 订单Id  / orderEnum 订单枚举
 
 
-        return "修改订单状态："+orderService.ModifyOrderStateSv("123456", OrderStatusEnum.ORDERSTATE_CANCEL);
+        return "修改订单状态："+orderService.ModifyOrderStateSv("123456", OrderStatusEnum.Cancel_OrderState);
     }
 
     /**
@@ -75,7 +75,7 @@ public class TestController {
     @RequestMapping("test3")
     @ResponseBody
     public String MessageSmsCode(){
-        return "验证码发送："+messageService.SendSMSCodeNoticeSv(MessageStyleEnum.SIGNUP_SMSCODENOTICE);
+        return "验证码发送："+messageService.SendSMSCodeNoticeSv(MessageEnum.Sign_Up_Sms_Code_Message);
     }
 
     /**
@@ -88,7 +88,7 @@ public class TestController {
         //OrderId 订单id / Amount 金额 单位为分 / payEnum 支付方式枚举
 
 
-        return "支付："+payService.PayGoodsSv("123456", PayStyleEnum.PAYSTYLE_WCPAY_H5);
+        return "支付："+payService.PayGoodsSv("123456", PayStyleEnum.ALIPay_App_PayStyle);
     }
 
     @RequestMapping("test5")

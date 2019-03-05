@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 //微信公众号支付
 @Component
-@PayStyle(PAY_ENUM = PayStyleEnum.PAYSTYLE_WCPAY_H5)
+@PayStyle(PAY_ENUM = PayStyleEnum.WCPay_H5_PayStyle)
 @Slf4j
 public class WCPayUnit extends PayAS {
 

@@ -27,7 +27,7 @@ public class ExceptionController {
         }
         else {
             logger.info("【系统异常】={}",e);
-            return ResultUtil.error(null,ExceptionEnum.UNKNOW_Exception);
+            return ResultUtil.error(null,ExceptionEnum.Unknown_Exception);
         }
     }
 }
