@@ -2,8 +2,14 @@ package com.piegroup.zzbm.Entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class IssueQuestionsEntity {
+public class IssueQuestionsEntity implements Serializable {
+
+
+    private static final long serialVersionUID = 1638611012968716051L;
+
     private String issue_questions_id; //问题id
     private String issue_questions_userid; //发布问题人id
     private String issue_questions_time; //发布时间

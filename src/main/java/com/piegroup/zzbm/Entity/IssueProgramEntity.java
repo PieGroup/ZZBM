@@ -3,12 +3,17 @@ package com.piegroup.zzbm.Entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @// TODO: 2019/3/1  方案表
  */
 
 @Data
-public class IssueProgramEntity {
+public class IssueProgramEntity implements Serializable {
+
+    private static final long serialVersionUID = 4606837559466956679L;
+
     private String issue_program_id; //方案id
     private String issue_program_userid; //方案发布人id
     private String issue_program_time; //方案发布时间

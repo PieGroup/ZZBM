@@ -3,12 +3,18 @@ package com.piegroup.zzbm.Entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @// TODO: 2019/3/1 需求表
  */
 
 @Data
-public class IssueDemandEntity {
+public class IssueDemandEntity implements Serializable {
+
+
+    private static final long serialVersionUID = -6343914622297816493L;
+
     private String issue_demand_id; //需求id
     private String issue_demand_time; //需求发布时间
     private String issue_demand_title; //需求标签
