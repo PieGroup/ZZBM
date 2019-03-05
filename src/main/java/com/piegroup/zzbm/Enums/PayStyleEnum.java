@@ -6,11 +6,11 @@ import com.piegroup.zzbm.BS.Bg.Interfaces.CodeIF;
 /**
  * 支付方式枚举
  */
-public enum PayStyleEnum implements CodeIF {
+public enum PayStyleEnum  {
 
-    PAYSTYLE_ALIPAY_APP("450","支付宝app"),
-    PAYSTYLE_ALIPAY_PC("451","支付宝pc"),
-    PAYSTYLE_WCPAY_H5("452","微信公众账号支付");
+    ALIPay_App_PayStyle("600000","支付宝app"),
+    ALIPay_PC_PayStyle("600001","支付宝pc"),
+    WCPay_H5_PayStyle("600002","微信公众账号支付");
 
 
     private String code;

@@ -4,10 +4,10 @@ package com.piegroup.zzbm.Enums;
 import com.piegroup.zzbm.BS.Bg.Interfaces.CodeIF;
 
 //支付状态
-public enum  PayStatusEnum implements CodeIF {
+public enum  PayStatusEnum  {
 
-    PAYSTATUS_WAITPAY("460","等待支付"),
-    PAYSTATUS_PAYSUCCESS("461","支付成功");
+    Pay_Wait_PayStatus("500000","等待支付"),
+    Pay_Success_PayStatus("500001","支付成功");
 
     private String code;
     private String message;

@@ -2,12 +2,12 @@ package com.piegroup.zzbm.Enums;
 
 import com.piegroup.zzbm.BS.Bg.Interfaces.CodeIF;
 
-public enum MessageStyleEnum implements CodeIF {
+public enum MessageEnum  {
 
-    SMSNOTICE("480", "短信通知"),
-    SIGNUP_SMSCODENOTICE("481", "注册验证码"),
-    RESETPASSWORD_SMSCODENOTICE("482","重置密码验证码"),
-    PUSHNOTICE("483", "推送通知")//使用个推作为推送通知
+    Sms_Message("200000", "短信通知"),
+    Sign_Up_Sms_Code_Message("200001", "注册验证码"),
+    Reset_Password_Sms_Code_Message("200002","重置密码验证码"),
+    Push_Message("200003", "推送通知")//使用个推作为推送通知
     ;
 
 
@@ -30,7 +30,7 @@ public enum MessageStyleEnum implements CodeIF {
         this.message = message;
     }
 
-    MessageStyleEnum(String code, String message) {
+    MessageEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }

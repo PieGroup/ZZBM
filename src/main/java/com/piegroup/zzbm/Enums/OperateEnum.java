@@ -2,11 +2,11 @@ package com.piegroup.zzbm.Enums;
 
 import com.piegroup.zzbm.BS.Bg.Interfaces.CodeIF;
 
-public enum OperateEnum implements CodeIF {
+public enum OperateEnum  {
 
-    DELETE("11","删除"),
-    UPDATE("12","更新"),
-    INSERT("13","添加");
+    Delete_Operate("300000","删除"),
+    Update_Operate("300001","更新"),
+    Insert_Operate("300002","添加");
 
 
     private String code;
