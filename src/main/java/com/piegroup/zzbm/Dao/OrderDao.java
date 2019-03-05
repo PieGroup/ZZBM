@@ -1,6 +1,6 @@
 package com.piegroup.zzbm.Dao;
 
-import com.piegroup.zzbm.Entity.OrderEntity;
+import com.piegroup.zzbm.Entity.OrderMasterEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -18,8 +18,11 @@ public interface OrderDao {
 
     //分页获取Orders表中的数据
     @Select("SELECT * FROM orders WHERE orders.uid = #{2} LIMIT  #{0},#{1}")
-    public List<OrderEntity> loadPage(@Param("2") String userId, @Param("0") int fromIndex, @Param("1") int pageSize);
+    public List<OrderMasterEntity> loadPage(@Param("2") String userId, @Param("0") int fromIndex, @Param("1") int pageSize);
 
     //获取单个订单
-    OrderEntity findOne(String orderId);
+    OrderMasterEntity findOne(String orderId);
+
+    @Select("select * from issue_status")
+    public int test();
 }

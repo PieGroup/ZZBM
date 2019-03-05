@@ -2,7 +2,7 @@ package com.piegroup.zzbm.BS.Bg.Service.Impl;
 
 import com.piegroup.zzbm.BS.Bg.Service.OrderService;
 import com.piegroup.zzbm.Dao.OrderDao;
-import com.piegroup.zzbm.Entity.OrderEntity;
+import com.piegroup.zzbm.Entity.OrderMasterEntity;
 import com.piegroup.zzbm.Utils.PaginationUtil;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
@@ -19,7 +19,7 @@ public class OrderServiceImpl extends OrderService {
     @Resource
     private OrderDao orderDao;
 
-    public OrderEntity findOne(String orderId){
+    public OrderMasterEntity findOne(String orderId){
         return orderDao.findOne(orderId);
     }
 
@@ -31,7 +31,7 @@ public class OrderServiceImpl extends OrderService {
     //使用父类方法，OrderAS OrderList()
     // 使用读序列化隔离级别，适用于非高并发且需要保证数据一致性的场景
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public DataPageSubc<List<OrderEntity>> OrderListSvImpl(String UserId, int pageNum, int pageSize) {
+    public DataPageSubc<List<OrderMasterEntity>> OrderListSvImpl(String UserId, int pageNum, int pageSize) {
         /*
          * 但是分页还是要体现出来，不是说，查完数据在分页，而是使用，sql语句拿数据
          */
@@ -48,7 +48,7 @@ public class OrderServiceImpl extends OrderService {
         PaginationSubC paginationSubC = PaginationUtil.pagination(pageNum,pageSize,count);
         //System.out.println("分页信息"+r_pagination);
         //模仿 去数据库拿值
-        List<OrderEntity> orderEntities =  orderDao.loadPage(UserId, paginationSubC.getFromIndex(), paginationSubC.getPageSize());
+        List<OrderMasterEntity> orderEntities =  orderDao.loadPage(UserId, paginationSubC.getFromIndex(), paginationSubC.getPageSize());
 
 
         System.out.println(UserId+"订单"+orderEntities);
@@ -56,5 +56,9 @@ public class OrderServiceImpl extends OrderService {
         dataPageSubc.setPaginationSubC(paginationSubC);
         dataPageSubc.setData(orderEntities);
         return dataPageSubc;
+    }
+
+    public int test(){
+        return orderDao.test();
     }
 }

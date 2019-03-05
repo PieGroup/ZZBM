@@ -3,7 +3,7 @@ package com.piegroup.zzbm.BS.Bg.Controllers;
 import com.piegroup.zzbm.BS.Bg.Service.Impl.OrderServiceImpl;
 import com.piegroup.zzbm.BS.Bg.Service.MessageService;
 import com.piegroup.zzbm.BS.Bg.Service.PayService;
-import com.piegroup.zzbm.Entity.OrderEntity;
+import com.piegroup.zzbm.Entity.OrderMasterEntity;
 import com.piegroup.zzbm.Enums.MessageStyleEnum;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
@@ -14,8 +14,6 @@ import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -50,7 +48,7 @@ public class TestController {
     @RequestMapping("test1")
     @ResponseBody
 //    @Cacheable(key = "'redis_'+1",unless = "#result.getCode() != '200'")
-    public DataVO<List<OrderEntity>> OrderList() throws Exception{
+    public DataVO<List<OrderMasterEntity>> OrderList() throws Exception{
        //UserId 用户人Id / pageNum 第几页 默认第一页 /pageSize 需要多长的数据默认一条
         DataPageSubc dataPageSubc = orderService.OrderListSvImpl("林昊",1,5);
        return ResultUtil.success(dataPageSubc);
@@ -136,6 +134,12 @@ public class TestController {
     @RequestMapping("index")
     public String login2()throws Exception{
         return "index";
+    }
+
+    @RequestMapping("test10")
+    @ResponseBody
+    public int test10(){
+        return orderService.test();
     }
 
 }
