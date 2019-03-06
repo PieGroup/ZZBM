@@ -1,4 +1,4 @@
-package com.piegroup.zzbm.BS.App.Controllers;
+package com.piegroup.zzbm.BS.App.Controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,6 +9,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("")
 @CrossOrigin
 @Slf4j
-public class TestAppController {
-
+public class IssueProgramController {
 }
