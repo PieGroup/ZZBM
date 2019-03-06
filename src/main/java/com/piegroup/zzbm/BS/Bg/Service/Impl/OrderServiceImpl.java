@@ -1,7 +1,7 @@
 package com.piegroup.zzbm.BS.Bg.Service.Impl;
 
 import com.piegroup.zzbm.BS.Bg.Service.OrderService;
-import com.piegroup.zzbm.Dao.OrderDao;
+import com.piegroup.zzbm.Dao.OrderMasterDao;
 import com.piegroup.zzbm.Entity.OrderMasterEntity;
 import com.piegroup.zzbm.Utils.PaginationUtil;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
@@ -17,10 +17,10 @@ import java.util.List;
 public class OrderServiceImpl extends OrderService {
 
     @Resource
-    private OrderDao orderDao;
+    private OrderMasterDao orderMasterDao;
 
     public OrderMasterEntity findOne(String orderId){
-        return orderDao.findOne(orderId);
+        return orderMasterDao.findOne(orderId);
     }
 
     /**
@@ -38,7 +38,7 @@ public class OrderServiceImpl extends OrderService {
         DataPageSubc dataPageSubc = new DataPageSubc();
 
         //count 是指获取Order表的数据条数，主要是获取count 值，才声明上面的 orderEntities
-        int count = orderDao.OrderSize();
+        int count = orderMasterDao.OrderSize();
         /**
          * @pageNum 第几页，最小1，
          * @pageSize 去几条，默认最小值为 1
@@ -48,7 +48,7 @@ public class OrderServiceImpl extends OrderService {
         PaginationSubC paginationSubC = PaginationUtil.pagination(pageNum,pageSize,count);
         //System.out.println("分页信息"+r_pagination);
         //模仿 去数据库拿值
-        List<OrderMasterEntity> orderEntities =  orderDao.loadPage(UserId, paginationSubC.getFromIndex(), paginationSubC.getPageSize());
+        List<OrderMasterEntity> orderEntities =  orderMasterDao.loadPage(UserId, paginationSubC.getFromIndex(), paginationSubC.getPageSize());
 
 
         System.out.println(UserId+"订单"+orderEntities);
@@ -59,6 +59,6 @@ public class OrderServiceImpl extends OrderService {
     }
 
     public int test(){
-        return orderDao.test();
+        return orderMasterDao.test();
     }
 }

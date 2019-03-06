@@ -2,9 +2,8 @@ package com.piegroup.zzbm.BS.Bg.Service;
 
 
 import com.piegroup.zzbm.BS.Bg.Abstracts.OrderAS;
-import com.piegroup.zzbm.Dao.OrderDao;
+import com.piegroup.zzbm.Dao.OrderMasterDao;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,7 @@ public class OrderService extends OrderAS {
      * @return 返回是否修改成功
      */
     @Resource
-    private OrderDao orderDao;
+    private OrderMasterDao orderMasterDao;
 
     //使用父类中的方法，所以不能重写，不然会出现死循环 使用父类方法  ModifyOrderStates()
 //    @Cacheable(key = "'redis_' + #id", cacheNames = "redis-cache")

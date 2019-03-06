@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Mapper
-public interface OrderDao {
+public interface OrderMasterDao {
 
 
     //查找orders表中有多少条记录
