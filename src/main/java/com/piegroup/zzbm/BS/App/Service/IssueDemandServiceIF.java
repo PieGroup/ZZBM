@@ -1,7 +1,8 @@
 package com.piegroup.zzbm.BS.App.Service;
 
 import com.piegroup.zzbm.VO.DataVO;
+import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 
 public interface IssueDemandServiceIF {
-    DataVO list(int pageSize, int pageNum);
+    DataPageSubc list(int pageSize, int pageNum);
 }

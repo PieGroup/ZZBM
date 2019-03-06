@@ -30,7 +30,8 @@ public class IssueDemandController {
      */
     @RequestMapping("/list")
     @ResponseBody
-    public DataVO IssueDemand(@Param("pageSize") int pageSize,@Param("pageNum") int pageNum){
+    public DataVO IssueDemand(@Param("pageSize") int pageSize,@Param("pageNum") int pageNum) throws Exception{
+        //throw Exception 直接抛出
         return ResultUtil.success(issueDemandService.list(pageSize,pageNum));
     }
 
