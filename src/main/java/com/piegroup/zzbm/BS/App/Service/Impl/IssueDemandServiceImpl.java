@@ -37,7 +37,7 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
         PaginationSubC paginationSubC = PaginationUtil.pagination(pageNum,pageSize,count);
 
         //返回List<issue_demand> 对象   getFromIndex查询开始，getPageSize查询一共条数
-        List<IssueDemandEntity>issueDemandEntities = issueDemandDao.list(paginationSubC.getFromIndex(), paginationSubC.getPageSize());
+        List<IssueDemandEntity> issueDemandEntities = issueDemandDao.list(paginationSubC.getFromIndex(), paginationSubC.getPageSize());
         //将数据和分页信息保存起来
         dataPageSubc.setData(issueDemandEntities);
         dataPageSubc.setPaginationSubC(paginationSubC);
