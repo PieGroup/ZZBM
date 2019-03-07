@@ -20,6 +20,7 @@ public class LoginFilters implements Filter {
         NoFilterUrls.add("register");
         NoFilterUrls.add("/test");
         NoFilterUrls.add("/api");
+        NoFilterUrls.add("/");
     }
 
     //标示符：表示当前用户未登录(可根据自己项目需要改为json样式)
