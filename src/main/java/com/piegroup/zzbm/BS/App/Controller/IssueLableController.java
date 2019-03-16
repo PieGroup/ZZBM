@@ -15,36 +15,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-
 @Controller
 @RequestMapping("/Lable")
 @CrossOrigin
 @Slf4j
 public class IssueLableController {
-
     @Autowired
     IssueLableServiceImpl issueLableService;
 
     @RequestMapping("/allLable")
     @ResponseBody
-    public DataVO all(){
-
+    public DataVO all() throws Exception{
         return ResultUtil.success(issueLableService.allLable());
 
     }
 
     @RequestMapping("/subLable")
     @ResponseBody
-    public DataVO sub(@RequestParam(value="pId",required = true,defaultValue = "10000")int pId){
+    public DataVO sub(@RequestParam(value="pId",required = true,defaultValue = "10000")int pId) throws Exception{
 
         return ResultUtil.success(issueLableService.subLable(pId));
 
     }
 
-
     @RequestMapping("/parentLable")
     @ResponseBody
-    public DataVO parent(){
+    public DataVO parent() throws Exception{
         return ResultUtil.success(issueLableService.allParentLable());
     }
 
