@@ -21,6 +21,8 @@ import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 获取和删除token的请求地址，在Restful设计中其实就对应着登录和退出登录的资源映射
@@ -43,7 +45,7 @@ public class TokenController {
     public DataVO login(@RequestParam String phone, @RequestParam String password,HttpServletResponse response) {
         Assert.notNull(phone, "username can not be empty");
         Assert.notNull(password, "password can not be empty");
-
+        Map map = new HashMap();
         DataPageSubc dataPageSubc = new DataPageSubc();
 
         log.info("打印用户：手机"+phone+"密码："+password);
@@ -62,7 +64,9 @@ public class TokenController {
         TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
 
         response.setHeader(TokenConfig.TOKEN,tokenDTO.getToken());
-        dataPageSubc.setData(userEntity);
+        map.put("user",userEntity);
+        map.put("token",tokenDTO.getToken());
+        dataPageSubc.setData(map);
         return  ResultUtil.success(dataPageSubc);
     }
 
