@@ -4,7 +4,7 @@ import com.piegroup.zzbm.BS.App.Service.Impl.IssueProgramServiceImpl;
 import com.piegroup.zzbm.Entity.IssueProgramEntity;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.ResultUtil;
-import com.piegroup.zzbm.Utils.TimeUtil;
+import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class IssueProgramController {
     @ResponseBody
     public DataVO addProgram(String userid,String title,String content,int anonymous,String reward,int statusid,String annexid) throws Exception{
         IssueProgramEntity i=new IssueProgramEntity();
-        String id= TimeUtil.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
         i.setIssue_program_id(id);
         i.setIssue_program_userid(userid);
         i.setIssue_program_title(title);

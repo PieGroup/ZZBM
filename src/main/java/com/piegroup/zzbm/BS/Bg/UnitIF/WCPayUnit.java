@@ -3,7 +3,7 @@ package com.piegroup.zzbm.BS.Bg.UnitIF;
 import com.lly835.bestpay.service.impl.BestPayServiceImpl;
 import com.piegroup.zzbm.Annotation.PayStyle;
 import com.piegroup.zzbm.BS.Bg.Abstracts.PayAS;
-import com.piegroup.zzbm.BS.Bg.DTO.OrderDTO;
+import com.piegroup.zzbm.DTO.OrderDTO;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

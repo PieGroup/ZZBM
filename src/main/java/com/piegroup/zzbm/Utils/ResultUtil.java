@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.Utils;
 
+import com.piegroup.zzbm.BS.Bg.Exceptions.Exceptions;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
@@ -10,9 +11,14 @@ import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 public class ResultUtil {
 
     //成功返回
-    public static DataVO success(Object object) {
+    public static DataVO success(Object object)  {
+        try {
+            return R_save(object, ExceptionEnum.Success);
+        }catch (Exception e){
+            //抛出数据存储出现问题
+            throw new Exceptions(ExceptionEnum.Black_Data_Exception);
+        }
 
-        return R_save(object, ExceptionEnum.Success);
     }
 
 //    失败返回

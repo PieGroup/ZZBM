@@ -7,7 +7,7 @@ import java.util.Date;
  * @// TODO: 2019/3/5 时间类
  */
 
-public class TimeUtil {
+public class TimeUtil2 {
 
     /**
      *
@@ -53,6 +53,16 @@ public class TimeUtil {
     public static String TimestampNow() {
         long time = System.currentTimeMillis();
         return String.valueOf(time / 1000);
+    }
+
+    /**
+     * @// TODO: 2019/3/16 判断时间
+     */
+    public static boolean check(String Timestamp, int updateTime){
+
+        return Integer.parseInt(TimestampNow()) > Integer.parseInt(Timestamp)+updateTime ? true : false;
+
+
     }
 
 }

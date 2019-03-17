@@ -1,7 +1,7 @@
 package com.piegroup.zzbm.BS.Bg.Service;
 
 import com.piegroup.zzbm.BS.Bg.Abstracts.PayAS;
-import com.piegroup.zzbm.BS.Bg.DTO.OrderDTO;
+import com.piegroup.zzbm.DTO.OrderDTO;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
 import org.springframework.beans.factory.annotation.Autowired;

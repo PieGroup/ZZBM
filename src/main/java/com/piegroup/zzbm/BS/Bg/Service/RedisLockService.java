@@ -1,4 +1,3 @@
-/*
 package com.piegroup.zzbm.BS.Bg.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,12 +6,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-*/
-/**
+/*
+*
  * redis 处理开锁、解锁
- * Created by Administrator on 2019/01/11 0011.
- *//*
+ * Created by Administrator on 2019/01/11 0011.*/
+
 
 @Component
 @Slf4j
@@ -22,11 +20,10 @@ public class RedisLockService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    */
 /**
      * 加锁
-     * @return
-     *//*
+     * @return*/
+
 
     public boolean lock(String key , String value) {
         if(stringRedisTemplate.opsForValue().setIfAbsent(key , value)) {
@@ -46,10 +43,9 @@ public class RedisLockService {
         return false;
     }
 
-    */
 /**
-     * 解锁
-     *//*
+     * 解锁*/
+
 
     public void unlock(String key , String value) {
         //安全解锁
@@ -63,4 +59,3 @@ public class RedisLockService {
         }
     }
 }
-*/

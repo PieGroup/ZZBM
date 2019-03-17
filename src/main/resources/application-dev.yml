@@ -16,28 +16,28 @@ spring:
 #    prefix: classpath:file:${web.upload.path}
     suffix: .html
   #链接配置
-#  redis:
-#    host: 127.0.0.1
-#    password:
-#    port: 6379
-#    jedis:
-#      pool:
-#        #连接池最大活动连接
-#        max-active: 30
-#        #最大空闲链接
-#        max-idle: 10
-#        #超过时间
-#        max-wait: 10ms
-#        #连接池最小空闲连接
-#        min-idle: 3
-#  cache:
-#    cache-names: redis-cache
-#    redis:
-#      cache-null-values: true #是否可以储存空值
-#      time-to-live: 300s
-#      use-key-prefix: true
-#  jmx:
-#    enabled: false
+  redis:
+    host: 47.94.81.127
+    password:
+    port: 6379
+    jedis:
+      pool:
+        #连接池最大活动连接
+        max-active: 30
+        #最大空闲链接
+        max-idle: 10
+        #超过时间
+        max-wait: 10ms
+        #连接池最小空闲连接
+        min-idle: 3
+  cache:
+    cache-names: redis-cache
+    redis:
+      cache-null-values: true #是否可以储存空值
+      time-to-live: 300s
+      use-key-prefix: true
+  jmx:
+    enabled: false
 
 
 #日志配置
@@ -62,6 +62,14 @@ wechat:
   mchKey: 06C56A89949D617xxxxxxxxxxx
   keyPath: /var/weixin_cert/h5.p12
   notify_url: http://gzcstec.com/sell/pay/notify
+
+
+#  token 设置
+token:
+# 重新登录时间 时
+  out_Time: 25200
+#  token 过期时间 秒
+  update_Time: 600
 
 
 

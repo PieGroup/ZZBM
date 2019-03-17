@@ -14,7 +14,11 @@ public enum ExceptionEnum  {
     Success("0","成功！"),
     Lock_False_Exception("100003","加锁失败！"),
     Transform_Enum_Exception("100004","枚举转换出现问题！"),
-    Pay_Error_Exception("100005","支付失败")
+    Pay_Error_Exception("100005","支付失败"),
+    Login_Out_Time_Exception("100006","登录过时"),
+    Login_Password_Error_Exception("100007","登录密码错误"),
+    No_Register_Exception("100008","没有注册"),
+    Black_Data_Exception("100009","返回数据出现问题")
     ;
 
     private String code;

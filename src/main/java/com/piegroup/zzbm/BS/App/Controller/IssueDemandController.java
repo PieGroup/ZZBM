@@ -4,7 +4,7 @@ import com.piegroup.zzbm.BS.App.Service.Impl.IssueDemandServiceImpl;
 import com.piegroup.zzbm.Entity.IssueDemandEntity;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.ResultUtil;
-import com.piegroup.zzbm.Utils.TimeUtil;
+import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class IssueDemandController {
     @ResponseBody
     public DataVO addConsult(String title,String content,int status,int anonymous,String userid,String annexid) throws Exception{
         IssueDemandEntity i=new IssueDemandEntity();
-        String id= TimeUtil.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
 
         i.setIssue_demand_id(id);
         i.setIssue_demand_title(title);

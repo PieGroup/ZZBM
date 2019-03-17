@@ -1,8 +1,7 @@
 package com.piegroup.zzbm.BS.App.Controller;
 
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
-import com.piegroup.zzbm.Utils.TimeUtil;
-import javafx.application.Application;
+import com.piegroup.zzbm.Utils.TimeUtil2;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ public class TestAppController {
     @RequestMapping("")
     @ResponseBody
     public String login(@Param("user")String user, @Param("password")String pwd, HttpServletRequest request){
-        String token= TimeUtil.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        String token= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
         request.getSession().getServletContext().setAttribute("user",token);
 
         return token+"--for user"+user;

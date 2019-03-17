@@ -1,4 +1,4 @@
-package com.piegroup.zzbm.BS.Bg.DTO;
+package com.piegroup.zzbm.DTO;
 
 
 import lombok.Data;

@@ -4,7 +4,7 @@ import com.piegroup.zzbm.BS.App.Service.Impl.IssueConsultServiceImpl;
 import com.piegroup.zzbm.Entity.IssueConsultEntity;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.ResultUtil;
-import com.piegroup.zzbm.Utils.TimeUtil;
+import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +58,7 @@ public class IssueConsultController {
                              @RequestParam(value = "checkpoint",required = false,defaultValue = "100")String checkpoint) throws Exception
     {
         IssueConsultEntity i=new IssueConsultEntity();
-        String id= TimeUtil.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
         i.setIssue_consult_id(id);
         i.setIssue_consult_userid(userid);
         i.setIssue_consult_buserid(buserid);

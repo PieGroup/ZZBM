@@ -2,7 +2,7 @@ package com.piegroup.zzbm.BS.Bg.UnitIF;
 
 import com.piegroup.zzbm.Annotation.PayStyle;
 import com.piegroup.zzbm.BS.Bg.Abstracts.PayAS;
-import com.piegroup.zzbm.BS.Bg.DTO.OrderDTO;
+import com.piegroup.zzbm.DTO.OrderDTO;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
 
 /**
