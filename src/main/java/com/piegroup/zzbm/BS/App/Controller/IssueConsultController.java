@@ -72,7 +72,6 @@ public class IssueConsultController {
         i.setIssue_consult_annexid(annexid);
         i.setIssue_consult_paid(checkpoint);
         DataPageSubc datas = issueConsultService.Insert(i);
-
         return ResultUtil.success(datas);
     }
 

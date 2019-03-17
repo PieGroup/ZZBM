@@ -4,7 +4,7 @@ import com.piegroup.zzbm.Entity.IssueConsultEntity;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 
 public interface IssueConsultServiceIF {
-    DataPageSubc list(int pageSize, int pageNum);
+    DataPageSubc list(int pageSize, int pageNum) throws Exception;
     DataPageSubc Insert(IssueConsultEntity i);
 
     DataPageSubc change(int status, String id);

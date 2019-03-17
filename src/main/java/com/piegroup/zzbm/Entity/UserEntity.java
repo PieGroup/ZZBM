@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 public class UserEntity  implements Serializable {
 
-	private static final long serialVersionUID =  4993653180656144194L;
+	private static final long serialVersionUID =  6414314270484693589L;
 
 	 // 用户id
 	private String user_Id;
@@ -27,7 +27,6 @@ public class UserEntity  implements Serializable {
 	private String user_Phone;
 
 	 // 密码
-
 	private String user_Password;
 
 	 // 性别
@@ -38,6 +37,8 @@ public class UserEntity  implements Serializable {
 
 	 // 身份证照片
 	private String user_Id_Card_Url;
+
+	private String user_Head_Url;
 
 	 // qq验证id
 	private String user_Qqid;
@@ -56,6 +57,8 @@ public class UserEntity  implements Serializable {
 
 	 // 平台货币
 	private String user_Money;
+
+	private String user_Introduction;
 
 	 // 信用
 	private String user_Credit;
