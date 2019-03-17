@@ -18,7 +18,9 @@ public enum ExceptionEnum  {
     Login_Out_Time_Exception("100006","登录过时"),
     Login_Password_Error_Exception("100007","登录密码错误"),
     No_Register_Exception("100008","没有注册"),
-    Black_Data_Exception("100009","返回数据出现问题")
+    Black_Data_Exception("100009","返回数据出现问题"),
+    Sms_Code_Expire_Exception("100010","验证码过期"),
+    Sms_Code_Error_Exception("100011","验证码过期")
     ;
 
     private String code;

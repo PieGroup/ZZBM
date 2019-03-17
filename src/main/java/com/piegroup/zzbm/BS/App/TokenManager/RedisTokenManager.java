@@ -1,5 +1,5 @@
 package com.piegroup.zzbm.BS.App.TokenManager;
-import com.piegroup.zzbm.Configs.TokenConfig;
+import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.DTO.TokenDTO;
 import com.piegroup.zzbm.Entity.TokenEntity;
 import com.piegroup.zzbm.Utils.TimeUtil2;
@@ -51,7 +51,7 @@ public class RedisTokenManager implements TokenManager {
 
         deleteToken(userId);
         //存储到redis并设置过期时间
-        objectRedisTemplate.boundValueOps(userId).set(tokenEntity, TokenConfig.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        objectRedisTemplate.boundValueOps(userId).set(tokenEntity, Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
 
 
         return tokenDTO;
@@ -86,7 +86,7 @@ public class RedisTokenManager implements TokenManager {
         tokenEntity.setCreate_Time(TimeUtil2.TimestampNow());
         //如果验证成功，说明此用户进行了一次有效操作，延长token的过期时间
         deleteToken(tokenDTO.getUserId());
-        objectRedisTemplate.boundValueOps(tokenDTO.getUserId()).set(tokenEntity,TokenConfig.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        objectRedisTemplate.boundValueOps(tokenDTO.getUserId()).set(tokenEntity,Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
         return true;
     }
 

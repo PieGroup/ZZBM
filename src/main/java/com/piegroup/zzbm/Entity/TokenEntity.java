@@ -1,4 +1,5 @@
 package com.piegroup.zzbm.Entity;
+import com.piegroup.zzbm.Configs.Constants;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class TokenEntity implements Serializable {
 	private String create_Time;
 
 	 // 更新时间
-	private int update_Time = 30;
+	private int update_Time = Constants.UPDATE_TIME_TOKEN;
 
 
 

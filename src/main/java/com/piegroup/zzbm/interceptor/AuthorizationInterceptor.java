@@ -3,7 +3,7 @@ package com.piegroup.zzbm.interceptor;
 import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.TokenManager.TokenManager;
-import com.piegroup.zzbm.Configs.TokenConfig;
+import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.DTO.TokenDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,7 +47,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         }
 
         //从header中得到token
-        String token = request.getHeader(TokenConfig.TOKEN);
+        String token = request.getHeader(Constants.TOKEN);
         //验证token,获得密钥
         TokenDTO tokenDTO1 = manager.getToken(token);
         if (tokenDTO1 != null ) {
@@ -59,11 +59,11 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 if (tokenDTO.getToken() !=null) {
 
                     if (!tokenDTO.getToken().equals(""))
-                        response.setHeader(TokenConfig.TOKEN, tokenDTO.getToken());
+                        response.setHeader(Constants.TOKEN, tokenDTO.getToken());
                 }
                 if (manager.checkToken(tokenDTO1) || manager.checkToken(manager.getToken(tokenDTO.getToken()))) {
                     //如果token验证成功，将token对应的用户id存在request中，便于之后注入
-                    request.setAttribute(TokenConfig.CURRENT_USER_ID, tokenDTO1.getUserId());
+                    request.setAttribute(Constants.CURRENT_USER_ID, tokenDTO1.getUserId());
                     return true;
                 }
 

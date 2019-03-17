@@ -8,19 +8,29 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.piegroup.zzbm.Configs.Constants;
+import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Enums.SMSNoticeEnum;
 import com.piegroup.zzbm.VO.R_SmsCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
+
+import static com.piegroup.zzbm.Enums.ExceptionEnum.*;
 
 /**
  * 获取验证码
-        * 1、发送验证码成功
-        * 4、验证码获取频繁
-        * 3、发送失败
-        */
+ * 1、发送验证码成功
+ * 4、验证码获取频繁
+ * 3、发送失败
+ */
 
-
+@Component
 public class SMSCodeUtil {
 
     /**
@@ -29,16 +39,24 @@ public class SMSCodeUtil {
      * @param id
      * @return
      */
-    public static Boolean SendCode(String phone, HttpSession session, SMSNoticeEnum id, SMSNoticeEnum accessId, SMSNoticeEnum accessKeySecre, SMSNoticeEnum SignName, SMSNoticeEnum SMSTemplateCode) {
+    private  RedisTemplate SmsRedis;
+
+    @Autowired
+    public SMSCodeUtil(RedisTemplate redisTemplate) {
+        this.SmsRedis = redisTemplate;
+        SmsRedis.setKeySerializer(RedisSerializer.string());
+        SmsRedis.setValueSerializer(RedisSerializer.string());
+    }
+
+
+    //发送消息
+    public  Boolean SendCode(String phone, SMSNoticeEnum id, SMSNoticeEnum accessId, SMSNoticeEnum accessKeySecre, SMSNoticeEnum SignName, SMSNoticeEnum SMSTemplateCode) {
 
 
         SMSNoticeEnum SMSNoticeEnumAccessId = SMSNoticeEnum.AccessId;
         SMSNoticeEnum SMSNoticeEnumAccessKeySecre = SMSNoticeEnum.AccessKeySecre;
         SMSNoticeEnum SMSNoticeEnumSignName = SMSNoticeEnum.SignName;
         SMSNoticeEnum codeEnumSMSTemplateSMSNotice = SMSNoticeEnum.SMSTemplateCode;
-
-
-
 
 
         //设置超时时间-可自行调整
@@ -52,15 +70,13 @@ public class SMSCodeUtil {
         final String accessKeySecret = SMSNoticeEnumAccessKeySecre.getValue();//你的accessKeySecret，参考本文档步骤2
 
 
-
         //获得随机验证码
         String usercode = RandomNumberUtil.createRandom(true, 6);
-        //保存phone code到session中
-        if (SMSCodeUtil.Save(phone, usercode, session) == false) {
-            //4代表获取验证码频繁
-            System.out.println("获取验证码频繁");
-            return false;
-        }
+
+        //保存phone code到Redis中 3分钟
+        saveCode(phone, usercode);
+
+
         //初始化ascClient,暂时不支持多region（请勿修改）
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId,
                 accessKeySecret);
@@ -107,22 +123,15 @@ public class SMSCodeUtil {
     }
 
     //保存验证码
-    public static boolean Save(String phone, String code, HttpSession session) {
+    public  boolean saveCode(String phone, String code) {
 
-        if (session.getAttribute(phone) != null) {
+        if (phone == "" || phone == null || code == "" || code == null)
             return false;
-        }
-        try {
-            R_SmsCode r_smsCode = (R_SmsCode) EnjoyUtil.getObject(phone,new R_SmsCode());
-            r_smsCode.setPhone(phone);
-            r_smsCode.setCode(MD5Util.MD5Encode(code, "utf8"));
 
-            session.setAttribute(phone, r_smsCode);
-        } catch (Exception e) {
+        SmsRedis.boundValueOps(phone).set(code, Constants.CODE_TIME, TimeUnit.SECONDS);
 
-            return false;
-        }
         return true;
+
     }
 
 
@@ -131,32 +140,33 @@ public class SMSCodeUtil {
     /**
      * @param userPhone
      * @param code
-     * @param session
-     * @return "5"验证码过期 ， ”4“系统异常, "1"验证码成功，”2“验证码错误
+     * @return
      */
-    public static String JudgeCode(String userPhone, String code, HttpSession session) {
+    public  ExceptionEnum checkCode(String userPhone, String code) throws Exception {
 
+        if (SmsRedis.keys(userPhone).size() > 0){
 
-        R_SmsCode r_smsCode = (R_SmsCode) session.getAttribute(userPhone);
-        if (r_smsCode == null) {
-            return "5";
-        } else {
-            String mdCode;
-            try {
-                mdCode = MD5Util.MD5Encode(code, "utf8");
-
-            } catch (Exception e) {
-                System.out.println("加密失败");
-                return "4";
+            String smsCode = (String) SmsRedis.boundValueOps(userPhone).get();
+            if (code.equals(smsCode))
+            {
+                deleteCode(userPhone);
+                return Success;
             }
-            if (mdCode.equals(r_smsCode.getCode())) {
-                return "1";
-            } else {
-                //验证码错误
-                return "2";
-            }
-        }
+            return Sms_Code_Error_Exception;
+
+        }else
+            return Sms_Code_Expire_Exception;
+
+
     }
 
+
+    /**
+     * 删除验证码
+     */
+    public  boolean deleteCode(String phone) {
+        SmsRedis.delete(phone);
+        return true;
+    }
 
 }

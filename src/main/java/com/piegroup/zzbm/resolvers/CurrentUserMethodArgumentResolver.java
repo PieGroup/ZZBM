@@ -2,7 +2,7 @@ package com.piegroup.zzbm.resolvers;
 
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
-import com.piegroup.zzbm.Configs.TokenConfig;
+import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.Entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -40,11 +40,11 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         //取出鉴权时存入的登录用户Id
-        String currentUserId = (String) webRequest.getAttribute(TokenConfig.CURRENT_USER_ID, RequestAttributes.SCOPE_REQUEST);
+        String currentUserId = (String) webRequest.getAttribute(Constants.CURRENT_USER_ID, RequestAttributes.SCOPE_REQUEST);
         if (currentUserId != null) {
             //从数据库中查询并返回
             return userService.queryByUserId(currentUserId);
         }
-        throw new MissingServletRequestPartException(TokenConfig.CURRENT_USER_ID);
+        throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
     }
 }

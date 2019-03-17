@@ -4,7 +4,7 @@ import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
 import com.piegroup.zzbm.BS.App.TokenManager.RedisTokenManager;
-import com.piegroup.zzbm.Configs.TokenConfig;
+import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.DTO.TokenDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
@@ -21,11 +21,13 @@ import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 获取和删除token的请求地址，在Restful设计中其实就对应着登录和退出登录的资源映射
+ *
  * @author ScienJus
  * @date 2015/7/30.
  */
@@ -40,20 +42,23 @@ public class TokenController {
     @Autowired
     private RedisTokenManager tokenManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+
+    //通过密码登录
+    @RequestMapping(method = RequestMethod.POST, value = "/LBP")
 //    @ApiOperation(value = "登录")
-    public DataVO login(@RequestParam String phone, @RequestParam String password,HttpServletResponse response) {
+
+    public DataVO loginByPassword(@RequestParam String phone, @RequestParam String password, HttpServletResponse response) {
         Assert.notNull(phone, "username can not be empty");
         Assert.notNull(password, "password can not be empty");
         Map map = new HashMap();
         DataPageSubc dataPageSubc = new DataPageSubc();
 
-        log.info("打印用户：手机"+phone+"密码："+password);
+        log.info("打印用户：手机" + phone + "密码：" + password);
 
         UserEntity userEntity = userService.queryByUserPhone(phone);
-        if (userEntity == null){
+        if (userEntity == null) {
             //去注册
-            return ResultUtil.error(null,ExceptionEnum.No_Register_Exception);
+            return ResultUtil.error(null, ExceptionEnum.No_Register_Exception);
         }
 
         if (!userEntity.getUser_Password().equals(password)) {  //密码错误
@@ -63,11 +68,30 @@ public class TokenController {
         //生成一个token，保存用户登录状态
         TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
 
-        response.setHeader(TokenConfig.TOKEN,tokenDTO.getToken());
-        map.put("user",userEntity);
-        map.put("token",tokenDTO.getToken());
+        response.setHeader(Constants.TOKEN, tokenDTO.getToken());
+        map.put("user", userEntity);
+        map.put("token", tokenDTO.getToken());
         dataPageSubc.setData(map);
-        return  ResultUtil.success(dataPageSubc);
+        return ResultUtil.success(dataPageSubc);
+    }
+
+    //通过验证码登录
+    @RequestMapping(method = RequestMethod.POST, value = "/LBC")
+    @ResponseBody
+    private DataVO loginByCode(@RequestParam String phone, @RequestParam String code, HttpServletResponse response) {
+        Assert.notNull(phone, "phone can not be empty");
+        Assert.notNull(code, "phone can not be empty");
+        log.info("用户手机号：" + phone + "...验证码：" + code);
+
+        UserEntity userEntity = userService.queryByUserPhone(phone);
+
+        if (userEntity == null) {
+            //去注册
+            return ResultUtil.error(null, ExceptionEnum.No_Register_Exception);
+        }
+        return null;
+
+
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
@@ -76,27 +100,28 @@ public class TokenController {
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "authorization", value = "authorization", required = true, dataType = "string", paramType = "header"),
 //    })
-    public DataVO logout(@CurrentUser UserEntity userEntity,HttpServletResponse response) {
+    public DataVO logout(@CurrentUser UserEntity userEntity, HttpServletResponse response) {
         System.out.println("退出登录");
         tokenManager.deleteToken(userEntity.getUser_Id());
-        response.setHeader(TokenConfig.TOKEN,"");
+        response.setHeader(Constants.TOKEN, "");
         return ResultUtil.success();
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/test")
+    @RequestMapping(method = RequestMethod.POST, value = "/test")
 //    @ApiOperation(value = "测试接口")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "authorization", value = "authorization", required = true, dataType = "string", paramType = "header"),
 //    })
     @Authorization
-    public String test (@CurrentUser UserEntity userEntity){
-        System.out.println("controller:"+userEntity.toString());
+    public String test(@CurrentUser UserEntity userEntity) {
+        System.out.println("controller:" + userEntity.toString());
         return "ok";
     }
-    @RequestMapping(method = RequestMethod.GET,value = "/noLogin")
+
+    @RequestMapping(method = RequestMethod.GET, value = "/noLogin")
     @ResponseBody
-    public DataVO noLogin(){
-        return ResultUtil.error(null,ExceptionEnum.No_Login_Exception);
+    public DataVO noLogin() {
+        return ResultUtil.error(null, ExceptionEnum.No_Login_Exception);
     }
 
 }
