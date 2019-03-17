@@ -6,15 +6,16 @@ import java.io.Serializable;
 /**
  * @Description  
  * @Author DDLD 
- * @Date 2019-03-16 
+ * @Date 2019-03-17 
  */
 
 @Data
 public class CommentEntity  implements Serializable {
 
-	private static final long serialVersionUID =  3277437757209407688L;
-
 	private String comment_Id;
+
+	 // 基于哪个话题或需求
+	private String comment_Item_Id;
 
 	 // 谁平论的
 	private String comment_User_Id;

@@ -11,10 +11,7 @@ public interface IssueConsultDao {
     int count();
 
 
-    @Select("select * from issue_consult where issue_consult_issueStatusid=1 limit #{index},#{pageSize}")
-    @Results({
-            @Result(column = "uid",property = "buserid.id"),
-    })
+    @Select("select * from issue_consult where issue_consult_issueStatusid=1 order by issue_consult_time desc limit #{index},#{pageSize}")
     List<IssueConsultEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);
 
     @Insert("insert into issue_consult(" +
