@@ -85,7 +85,7 @@ public class TokenController {
     }
 
     //通过验证码登录
-    @RequestMapping(method = RequestMethod.GET, value = "/LBC")
+    @RequestMapping(method = RequestMethod.POST, value = "/LBC")
     @ResponseBody
     @ApiOperation("验证码登录 || 注册")
     private DataVO LoginSignUpByCode(@ApiParam("手机号") @RequestParam String phone, @ApiParam("验证码") @RequestParam String code, HttpServletResponse response) {
@@ -154,6 +154,7 @@ public class TokenController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/noLogin")
     @ResponseBody
+    @ApiOperation("没有登录")
     public DataVO noLogin() {
         return ResultUtil.error(null, ExceptionEnum.No_Login_Exception);
     }

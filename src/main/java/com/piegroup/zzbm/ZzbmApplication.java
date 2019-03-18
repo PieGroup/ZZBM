@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @SpringBootApplication
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Import;
 /*session共享缓存*/
 //@EnableRedisHttpSession
 @ServletComponentScan
+@EnableSwagger2
 public class ZzbmApplication {
 
     public static void main(String[] args) {
