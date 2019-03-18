@@ -23,7 +23,7 @@ public class IssueCommentServiceImpl {
 
     @Resource
     IssueUserDao issueUserDao;
-    public DataPageSubc list(int pageSize, int pageNum,String item_id)throws  Exception{
+    public DataPageSubc list(int pageSize, int pageNum, String item_id)throws  Exception{
         DataPageSubc d=new DataPageSubc();
         int count=commentDao.count(item_id);
         boolean nextp=(pageSize*pageNum) < count;
@@ -35,8 +35,10 @@ public class IssueCommentServiceImpl {
         for (CommentEntity c:comments) {
             CommentUserVo temtc=new CommentUserVo();
             UserEntity userEntity = issueUserDao.selectUById(c.getComment_Father_Id());
+            UserEntity userEntity1 = issueUserDao.selectUById(c.getComment_User_Id());
             F2C.father2child(c,temtc);
             temtc.setFather_user(userEntity);
+            temtc.setUser(userEntity1);
             cuv.add(temtc);
         }
         d.setData(cuv);

@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class CommentEntity  implements Serializable {
 
+
 	private String comment_Id;
 
 	 // 基于哪个话题或需求
@@ -24,6 +25,9 @@ public class CommentEntity  implements Serializable {
 	private String comment_Father_Id;
 
 	private String comment_Content;
+
+	 // 图片
+	private String comment_Pic;
 
 	 // 1评论2回复
 	private int comment_Type;

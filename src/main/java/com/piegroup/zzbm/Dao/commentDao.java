@@ -19,12 +19,12 @@ public interface commentDao {
             "values(#{comment_Id},#{comment_Item_Id},#{comment_User_Id},#{comment_Father_Id},#{comment_Content},#{comment_Type});")
     int addComment(CommentEntity commentEntity);
 
-    @Update("update comment set comment_status=#{2} where comment_id={1};")
+    @Update("update comment set comment_status=#{2} where comment_id=#{1};")
     int changeCommentStatus(@Param(value = "1")String commentid,@Param(value = "2")int status);
 
-    @Update("update comment set comment_dislike=comment_dislike+1 where comment_id={1};")
+    @Update("update comment set comment_dislike=comment_dislike+1 where comment_id=#{1};")
     int dislike(@Param(value = "1")String commentid);
 
-    @Update("update comment set comment_like=comment_like+1 where comment_id={1};")
+    @Update("update comment set comment_like=comment_like + 1 where comment_id=#{1};")
     int like(@Param(value = "1")String commentid);
 }

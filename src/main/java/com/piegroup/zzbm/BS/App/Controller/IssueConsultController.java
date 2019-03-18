@@ -55,7 +55,7 @@ public class IssueConsultController {
                              @RequestParam(value = "content",required = false,defaultValue = "内容为空")String content,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
                              @RequestParam(value = "annexid",required = false,defaultValue = "00000")String annexid,
-                             @RequestParam(value = "checkpoint",required = false,defaultValue = "100")String checkpoint) throws Exception
+                             @RequestParam(value = "value",required = false,defaultValue = "100")int value) throws Exception
     {
         IssueConsultEntity i=new IssueConsultEntity();
         String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
@@ -70,7 +70,7 @@ public class IssueConsultController {
         i.setIssue_consult_content(content);
         i.setIssue_consult_anonymous(anonymous);
         i.setIssue_consult_annexid(annexid);
-        i.setIssue_consult_paid(checkpoint);
+        i.setIssue_consult_paid(value);
         DataPageSubc datas = issueConsultService.Insert(i);
         return ResultUtil.success(datas);
     }

@@ -7,6 +7,7 @@ import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import javafx.scene.chart.ValueAxis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,35 @@ public class IssueCommentController {
         return ResultUtil.success(dataPageSubc);
     }
 
+    @RequestMapping("/commentList")
+    @ResponseBody
+    public DataVO list(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                       @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                       @RequestParam(value = "itemid",required = false,defaultValue = "0000")String itemid)throws  Exception{
+        DataPageSubc list = issueCommentService.list(pageSize, pageNum, itemid);
+        return ResultUtil.success(list);
+    }
+    @RequestMapping("/change")
+    @ResponseBody
+    public DataVO changeStatus(@RequestParam(value = "cId",required = false,defaultValue = "0000")String cid,
+                               @RequestParam(value = "status",required = false,defaultValue = "1")int status)throws Exception{
+        DataPageSubc dataPageSubc = issueCommentService.changeStatus(cid, status);
 
+        return ResultUtil.success(dataPageSubc);
+    }
+
+    @RequestMapping("/like")
+    @ResponseBody
+    public DataVO like(@RequestParam(value = "cId",required = false,defaultValue = "0000")String cid)throws Exception{
+        DataPageSubc like = issueCommentService.like(cid);
+        return ResultUtil.success(like);
+    }
+
+    @RequestMapping("/dislike")
+    @ResponseBody
+    public DataVO dislike(@RequestParam(value = "cId",required = false,defaultValue = "0000")String cid)throws Exception{
+        DataPageSubc dislike = issueCommentService.dislike(cid);
+        return ResultUtil.success(dislike);
+    }
 
 }
