@@ -68,12 +68,12 @@ public class TokenController {
         UserEntity userEntity = userService.queryByUserPhone(phone);
         if (userEntity == null) {
             //去注册
-            return ResultUtil.error(null, ExceptionEnum.No_Register_Exception);
+            return ResultUtil.error("没有注册过", ExceptionEnum.No_Register_Exception);
         }
 
         if (!userEntity.getUser_Password().equals(password)) {  //密码错误
             //提示用户名或密码错误
-            return ResultUtil.error(null, ExceptionEnum.Login_Password_Error_Exception);
+            return ResultUtil.error("密码错误", ExceptionEnum.Login_Password_Error_Exception);
         }
         //生成一个token，保存用户登录状态
         TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
@@ -128,7 +128,7 @@ public class TokenController {
             dataPageSubc.setData(map);
             return ResultUtil.success(dataPageSubc);
         }
-        return ResultUtil.error(null, exceptionEnum);
+        return ResultUtil.error("不是我的错", exceptionEnum);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -141,7 +141,7 @@ public class TokenController {
         System.out.println("退出登录");
         tokenManager.deleteToken(userEntity.getUser_Id());
         response.setHeader(Constants.TOKEN, "");
-        return ResultUtil.success(null);
+        return ResultUtil.success("用户退出登录", ExceptionEnum.No_Login_Exception);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/test")
@@ -159,7 +159,7 @@ public class TokenController {
     @ResponseBody
     @ApiOperation("没有登录")
     public DataVO noLogin() {
-        return ResultUtil.error(null, ExceptionEnum.No_Login_Exception);
+        return ResultUtil.error("没有登录", ExceptionEnum.No_Login_Exception);
     }
 
 }

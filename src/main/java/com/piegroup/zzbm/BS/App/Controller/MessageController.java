@@ -4,6 +4,7 @@ import com.piegroup.zzbm.BS.App.Service.Adapter.MessageAt;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.VO.DataVO;
+import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,13 @@ public class MessageController {
     @ResponseBody
     @ApiOperation("发送验证码")
     public DataVO send(@ApiParam("手机号") @RequestParam("phone") String phone) {
+        DataPageSubc dataPageSubc = new DataPageSubc();
         Assert.notNull(phone, "phone can not be empty ");
         System.out.println("发送手机" + phone);
 //        phone = "13870080064";
-
-        return ResultUtil.success(null, messageAt.send(phone));
+        String s = "求求你们不要再使用验证码了...";
+        dataPageSubc.setData(s);
+//        return ResultUtil.success(dataPageSubc, messageAt.send(phone));
+        return ResultUtil.success(dataPageSubc,ExceptionEnum.Success);
     }
 }
