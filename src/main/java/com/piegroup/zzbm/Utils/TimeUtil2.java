@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.Utils;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -64,5 +65,13 @@ public class TimeUtil2 {
 
 
     }
+
+    /**
+     * @// TODO: 2019/3/18 获取数据库时间戳
+     */
+    public static Timestamp SQLTimestampNow(){
+        return new Timestamp(new Date().getTime());
+    }
+
 
 }

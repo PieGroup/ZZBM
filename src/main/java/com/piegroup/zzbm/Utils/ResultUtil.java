@@ -27,8 +27,8 @@ public class ResultUtil {
     }
 
     //成功返回的对象是空的
-    public static DataVO success() {
-        return success(null);
+    public static DataVO success(Object o,ExceptionEnum exceptionEnum) {
+        return R_save(null,exceptionEnum);
     }
 
     //保存数据

@@ -1,4 +1,4 @@
-package com.piegroup.zzbm.BS.Bg.Controllers;
+package com.piegroup.zzbm.Configs;
 
 
 import com.piegroup.zzbm.BS.Bg.Exceptions.Exceptions;
@@ -12,22 +12,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
-public class ExceptionController {
-    private final static Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+public class ExceptionAdvice {
+    private final static Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public DataVO ExceptionAuthority(Exception e) {
 
 
-        if (e instanceof Exceptions){
+        if (e instanceof Exceptions) {
             Exceptions exceptions = (Exceptions) e;
-            logger.info("报错原因={}",exceptions.getMessage());
+            logger.info("报错原因={}", exceptions.getMessage());
             return ResultUtil.error(null, ExceptionEnum.valueOf(exceptions.getCode()));
-        }
-        else {
-            logger.info("【系统异常】={}",e);
-            return ResultUtil.error(null,ExceptionEnum.Unknown_Exception);
+        } else {
+            logger.info("【系统异常】={}", e);
+            return ResultUtil.error(null, ExceptionEnum.Unknown_Exception);
         }
     }
 }

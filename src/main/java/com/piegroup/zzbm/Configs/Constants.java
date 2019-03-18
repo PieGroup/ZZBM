@@ -13,6 +13,11 @@ public class Constants {
     public static final String CURRENT_USER_ID = "CURRENT_USER_ID";
 
     /**
+     * 用户验证码注册 -- 未定义登录名
+     */
+    public static final String user_login_name = "小白脸";
+
+    /**
      * token有效期（小时）
      */
     public static final int TOKEN_EXPIRES_HOUR = 72;

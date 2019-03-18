@@ -50,8 +50,11 @@ public class SMSCodeUtil {
 
 
     //发送消息
-    public  Boolean SendCode(String phone, SMSNoticeEnum id, SMSNoticeEnum accessId, SMSNoticeEnum accessKeySecre, SMSNoticeEnum SignName, SMSNoticeEnum SMSTemplateCode) {
+    public  ExceptionEnum SendCode(String phone, SMSNoticeEnum accessId, SMSNoticeEnum accessKeySecre, SMSNoticeEnum SignName, SMSNoticeEnum SMSTemplateCode) {
 
+        if (phone == null|| phone.equals("")){
+            return Phone_Null_Exception;
+        }
 
         SMSNoticeEnum SMSNoticeEnumAccessId = SMSNoticeEnum.AccessId;
         SMSNoticeEnum SMSNoticeEnumAccessKeySecre = SMSNoticeEnum.AccessKeySecre;
@@ -111,15 +114,15 @@ public class SMSCodeUtil {
         } catch (ClientException e) {
             e.printStackTrace();
             System.out.println("网络异常");
-            return false;
+            return Netword_Exception;
         }
         if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
             //请求成功
             System.out.println("验证码发送成功！");
-            return true;
+            return Success;
         }
 
-        return false;
+        return Unknown_Exception;
     }
 
     //保存验证码
@@ -142,7 +145,7 @@ public class SMSCodeUtil {
      * @param code
      * @return
      */
-    public  ExceptionEnum checkCode(String userPhone, String code) throws Exception {
+    public  ExceptionEnum checkCode(String userPhone, String code) {
 
         if (SmsRedis.keys(userPhone).size() > 0){
 

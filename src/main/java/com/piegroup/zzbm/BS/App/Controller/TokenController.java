@@ -9,8 +9,12 @@ import com.piegroup.zzbm.DTO.TokenDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.ResultUtil;
+import com.piegroup.zzbm.Utils.SMSCodeUtil;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.experimental.PackagePrivate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +26,9 @@ import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +40,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/tokens")
 @Slf4j
+@CrossOrigin
 public class TokenController {
 
     @Autowired
@@ -42,11 +49,13 @@ public class TokenController {
     @Autowired
     private RedisTokenManager tokenManager;
 
+    @Autowired
+    private SMSCodeUtil smsCodeUtil;
+
 
     //通过密码登录
     @RequestMapping(method = RequestMethod.POST, value = "/LBP")
-//    @ApiOperation(value = "登录")
-
+    @ApiOperation(value = "密码登录")
     public DataVO loginByPassword(@RequestParam String phone, @RequestParam String password, HttpServletResponse response) {
         Assert.notNull(phone, "username can not be empty");
         Assert.notNull(password, "password can not be empty");
@@ -76,27 +85,52 @@ public class TokenController {
     }
 
     //通过验证码登录
-    @RequestMapping(method = RequestMethod.POST, value = "/LBC")
+    @RequestMapping(method = RequestMethod.GET, value = "/LBC")
     @ResponseBody
-    private DataVO loginByCode(@RequestParam String phone, @RequestParam String code, HttpServletResponse response) {
+    @ApiOperation("验证码登录 || 注册")
+    private DataVO LoginSignUpByCode(@ApiParam("手机号") @RequestParam String phone, @ApiParam("验证码") @RequestParam String code, HttpServletResponse response) {
         Assert.notNull(phone, "phone can not be empty");
         Assert.notNull(code, "phone can not be empty");
-        log.info("用户手机号：" + phone + "...验证码：" + code);
+        log.info("用户手机号：" + phone + "--验证码：" + code);
 
-        UserEntity userEntity = userService.queryByUserPhone(phone);
+        phone = "123456";
+        code = "123456";
 
-        if (userEntity == null) {
-            //去注册
-            return ResultUtil.error(null, ExceptionEnum.No_Register_Exception);
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        Map map = new HashMap();
+
+        //验证验证码
+        ExceptionEnum exceptionEnum = smsCodeUtil.checkCode(phone, code);
+        if (exceptionEnum == ExceptionEnum.Success) {
+
+            UserEntity userEntity = userService.queryByUserPhone(phone);
+
+            //如果该用户没有注册过，直接完成注册
+            if (userEntity == null) {
+                //去注册
+                log.info("没有注册过，现在开始注册。");
+                map = userService.addUser(phone);
+                log.info("注册成功！");
+                userEntity = (UserEntity) map.get("user");
+
+            }
+
+            //生成一个token，保存用户登录状态
+            TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
+
+            response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
+
+
+            map.put("token", tokenDTO.getToken());
+            dataPageSubc.setData(map);
+            return ResultUtil.success(dataPageSubc);
         }
-        return null;
-
-
+        return ResultUtil.error(null, exceptionEnum);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     @Authorization
-//    @ApiOperation(value = "退出登录")
+    @ApiOperation(value = "退出登录")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "authorization", value = "authorization", required = true, dataType = "string", paramType = "header"),
 //    })
@@ -104,7 +138,7 @@ public class TokenController {
         System.out.println("退出登录");
         tokenManager.deleteToken(userEntity.getUser_Id());
         response.setHeader(Constants.TOKEN, "");
-        return ResultUtil.success();
+        return ResultUtil.success(null);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/test")

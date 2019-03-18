@@ -2,6 +2,7 @@ package com.piegroup.zzbm.Entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @Description  
@@ -67,6 +68,6 @@ public class UserEntity  implements Serializable {
 	private String user_Experience;
 
 	 // 注册时间
-	private String user_Create_Time;
+	private Timestamp user_Create_Time;
 
 }
