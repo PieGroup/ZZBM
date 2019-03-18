@@ -131,7 +131,7 @@ public class TokenController {
         return ResultUtil.error(null, exceptionEnum);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.POST)
     @Authorization
     @ApiOperation(value = "退出登录")
 //    @ApiImplicitParams({
