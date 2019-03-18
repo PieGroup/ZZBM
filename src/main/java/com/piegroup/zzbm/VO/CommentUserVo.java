@@ -8,4 +8,5 @@ import lombok.Data;
 public class CommentUserVo extends CommentEntity {
 
     private UserEntity father_user;
+    private UserEntity user;
 }

@@ -24,7 +24,7 @@ public class IssueConsultEntity implements Serializable {
     private String issue_consult_content; //咨询内容
     private int issue_consult_anonymous; //是否匿名
     private String issue_consult_annexid;//照片附件id
-    private String issue_consult_paid; //需要多少积分查看答案
+    private int issue_consult_paid; //需要多少钱查看答案
     // 价值
     private int issue_consult_value;
 
