@@ -39,7 +39,7 @@ public class MessageController {
 //        phone = "13870080064";
         String s = "求求你们不要再使用验证码了...";
         dataPageSubc.setData(s);
-//        return ResultUtil.success(dataPageSubc, messageAt.send(phone));
-        return ResultUtil.success(dataPageSubc,ExceptionEnum.Success);
+        return ResultUtil.success(dataPageSubc, messageAt.send(phone));
+//        return ResultUtil.success(dataPageSubc,ExceptionEnum.Success);
     }
 }
