@@ -42,8 +42,8 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
         //取出鉴权时存入的登录用户Id
         String currentUserId = (String) webRequest.getAttribute(Constants.CURRENT_USER_ID, RequestAttributes.SCOPE_REQUEST);
         if (currentUserId != null) {
-            //从数据库中查询并返回
-            return userService.queryByUserId(currentUserId);
+            //从数据库中查询并返回 仅返回用户
+            return userService.queryByUserId(currentUserId).get("user");
         }
         throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
     }

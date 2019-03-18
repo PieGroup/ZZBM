@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.BS.App.Controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
@@ -56,7 +57,7 @@ public class TokenController {
     //通过密码登录
     @RequestMapping(method = RequestMethod.POST, value = "/LBP")
     @ApiOperation(value = "密码登录")
-    public DataVO loginByPassword(@RequestParam String phone, @RequestParam String password, HttpServletResponse response) {
+    public DataVO loginByPassword(@ApiParam("手机号") @RequestParam String phone, @ApiParam("密码") @RequestParam String password, HttpServletResponse response) {
         Assert.notNull(phone, "username can not be empty");
         Assert.notNull(password, "password can not be empty");
         Map map = new HashMap();
@@ -93,8 +94,8 @@ public class TokenController {
         Assert.notNull(code, "phone can not be empty");
         log.info("用户手机号：" + phone + "--验证码：" + code);
 
-        phone = "123456";
-        code = "123456";
+//        phone = "123456";
+//        code = "123456";
 
         DataPageSubc dataPageSubc = new DataPageSubc();
         Map map = new HashMap();
@@ -117,6 +118,8 @@ public class TokenController {
 
             //生成一个token，保存用户登录状态
             TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
+
+            map = userService.queryByUserId(userEntity.getUser_Id());
 
             response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
 

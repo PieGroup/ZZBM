@@ -40,8 +40,22 @@ public class UserServiceImpl implements UserServiceIF {
     UserStatusDao userStatusDao;
 
     @Override
-    public UserEntity queryByUserId(String UserId) {
-        return userDao.queryByUserId(UserId);
+    public Map queryByUserId(String UserId) {
+
+        Map map = new HashMap();
+
+        UserEntity userEntity = new UserEntity();
+
+        userEntity = userDao.queryByUserId(UserId);
+
+        userEntity.setUser_Password("");
+        //1代表正常
+        UserStatusEntity userStatusEntity = userStatusDao.queryById(userEntity.getUser_Statusid());
+
+
+        map.put("user",userEntity);
+        map.put("user_status",userStatusEntity);
+        return map;
     }
 
     @Override
@@ -52,6 +66,7 @@ public class UserServiceImpl implements UserServiceIF {
     @Override
     @Transactional
     public Map addUser(String phone) {
+
         DataPageSubc dataPageSubc = new DataPageSubc();
 
         Map map = new HashMap();
@@ -102,7 +117,7 @@ public class UserServiceImpl implements UserServiceIF {
         userEntity.setUser_Sex(user_sex);
         userEntity.setUser_Statusid(user_statusid);
         userEntity.setUser_Credit(user_credit);
-        userEntity.setUser_Password(user_password);
+        userEntity.setUser_Password("");
 
 
         map.put("user", userEntity);
