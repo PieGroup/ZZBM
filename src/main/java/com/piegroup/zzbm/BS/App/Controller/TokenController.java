@@ -128,7 +128,7 @@ public class TokenController {
             dataPageSubc.setData(map);
             return ResultUtil.success(dataPageSubc);
         }
-        return ResultUtil.error("不是我的错", exceptionEnum);
+        return ResultUtil.error(new DataPageSubc<>(), exceptionEnum);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -141,7 +141,7 @@ public class TokenController {
         System.out.println("退出登录");
         tokenManager.deleteToken(userEntity.getUser_Id());
         response.setHeader(Constants.TOKEN, "");
-        return ResultUtil.success("用户退出登录", ExceptionEnum.No_Login_Exception);
+        return ResultUtil.success(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/test")
@@ -159,7 +159,7 @@ public class TokenController {
     @ResponseBody
     @ApiOperation("没有登录")
     public DataVO noLogin() {
-        return ResultUtil.error("没有登录", ExceptionEnum.No_Login_Exception);
+        return  ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
     }
 
 }
