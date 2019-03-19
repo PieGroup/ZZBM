@@ -7,6 +7,7 @@ import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,15 +29,13 @@ public class IssueQuestionsController {
      * 需求列表
      * @param pageSize
      * @param pageNum
-     * @param all  1表示显示全部需求，其他值代表 系统推荐（非必需）
      * @return
      * @throws Exception
      */
     @RequestMapping("/list")
     @ResponseBody
     public DataVO consultList(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                              @RequestParam(value="all",required = false,defaultValue = "1")int all) throws  Exception{
+                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
         DataPageSubc list = issueQuestionsService.list(pageSize, pageNum);
 
         return ResultUtil.success(list);
@@ -44,23 +43,22 @@ public class IssueQuestionsController {
 
     @RequestMapping("/insert")
     @ResponseBody
-    public DataVO addConsult(String userid,String title,String generalize,int accept,String points,int status,String replyid,String ispay,int anonymous,String annexid) throws Exception{
+    public DataVO addConsult(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
+                             @RequestParam(value = "title",required = false,defaultValue = "")String title,
+                             @RequestParam(value = "generalize",required = false,defaultValue = "")String generalize,
+                             @RequestParam(value = "value",required = false,defaultValue = "0")int value,
+                             @RequestParam(value = "anonymous",required = false,defaultValue = "")int anonymous,
+                             @RequestParam(value = "annexid",required = false,defaultValue = "")String annexid) throws Exception{
         IssueQuestionsEntity i=new IssueQuestionsEntity();
-        String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
-        i.setIssue_questions_id(id);
-        i.setIssue_questions_userid(userid);
-        i.setIssue_questions_title(title);
-        i.setIssue_questions_generalize(generalize);
-        i.setIssue_questions_accept(accept);
-        i.setIssue_questions_points(points);
-        i.setIssue_questions_issueStatusid(status);
-        i.setIssue_questions_replyid(replyid);
-        i.setIssue_questions_paidLookReply(ispay);
-        i.setIssue_questions_anonymous(anonymous);
-        i.setIssue_questions_annexid(annexid);
-
+        String id= "q"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        i.setIssue_Questions_Id(id);
+        i.setIssue_Questions_Userid(userid);
+        i.setIssue_Questions_Title(title);
+        i.setIssue_Questions_Generalize(generalize);
+        i.setIssue_Questions_Value(value);
+        i.setIssue_Questions_Anonymous(anonymous);
+        i.setIssue_Questions_Annexid(annexid);
         DataPageSubc datas = issueQuestionsService.Insert(i);
-
         return ResultUtil.success(datas);
     }
 
@@ -69,6 +67,16 @@ public class IssueQuestionsController {
     public DataVO changeStatus(int status,String id) throws Exception{
         DataPageSubc change = issueQuestionsService.change(status,id);
         return ResultUtil.success(change);
+    }
+
+    @RequestMapping("/caina")
+    @ResponseBody
+    public DataVO caina(@RequestParam(value = "replyId",required = false,defaultValue = "0000")String reid,
+                        @RequestParam(value = "questionId",required = false,defaultValue = "0000")String qid)throws Exception{
+        DataPageSubc caina = issueQuestionsService.caina(reid, qid);
+
+        return ResultUtil.success(caina);
+
     }
 
 }

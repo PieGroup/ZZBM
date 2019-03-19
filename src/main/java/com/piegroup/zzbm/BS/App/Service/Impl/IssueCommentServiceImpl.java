@@ -23,6 +23,7 @@ public class IssueCommentServiceImpl {
 
     @Resource
     IssueUserDao issueUserDao;
+
     public DataPageSubc list(int pageSize, int pageNum, String item_id)throws  Exception{
         DataPageSubc d=new DataPageSubc();
         int count=commentDao.count(item_id);
@@ -41,6 +42,48 @@ public class IssueCommentServiceImpl {
             temtc.setUser(userEntity1);
             cuv.add(temtc);
         }
+        d.setData(cuv);
+        d.setPaginationSubC(paginationSubC);
+        return d;
+    }
+
+    public DataPageSubc QuestionRelist(int pageSize, int pageNum, String item_id)throws  Exception{
+        DataPageSubc d=new DataPageSubc();
+        int count=commentDao.count(item_id);
+        boolean nextp=(pageSize*pageNum) < count;
+        PaginationSubC paginationSubC=new PaginationSubC(pageNum,pageSize,pageNum,nextp);
+
+        List<CommentEntity> comments = commentDao.allComment(item_id, (paginationSubC.getFromIndex() - 1) * paginationSubC.getPageSize(),
+                paginationSubC.getPageSize());
+        CommentEntity replyCom = commentDao.selectReply(item_id);
+        List<CommentUserVo> cuv=new ArrayList<>();
+        if (replyCom==null){
+            for (CommentEntity c:comments) {
+                CommentUserVo temtc=new CommentUserVo();
+                UserEntity userEntity1 = issueUserDao.selectUById(c.getComment_User_Id());
+                F2C.father2child(c,temtc);
+                temtc.setUser(userEntity1);
+                cuv.add(temtc);
+            }
+        }else{
+            {
+                CommentUserVo temtc = new CommentUserVo();
+                UserEntity userEntity1 = issueUserDao.selectUById(replyCom.getComment_User_Id());
+                F2C.father2child(replyCom, temtc);
+                temtc.setUser(userEntity1);
+                cuv.add(temtc);
+            }
+            for (CommentEntity c:comments) {
+                if (c.getComment_Id().equals(replyCom.getComment_Id()))
+                    continue ;
+                CommentUserVo temtc=new CommentUserVo();
+                UserEntity userEntity1 = issueUserDao.selectUById(c.getComment_User_Id());
+                F2C.father2child(c,temtc);
+                temtc.setUser(userEntity1);
+                cuv.add(temtc);
+            }
+        }
+
         d.setData(cuv);
         d.setPaginationSubC(paginationSubC);
         return d;

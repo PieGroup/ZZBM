@@ -1,22 +1,54 @@
 package com.piegroup.zzbm.Entity;
-
 import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @Description  
+ * @Author DDLD 
+ * @Date 2019-03-18 
+ */
+
 @Data
-public class IssueQuestionsEntity implements Serializable {
-    private static final long serialVersionUID = 1638611012968716051L;
-    private String issue_questions_id; //问题id
-    private String issue_questions_userid; //发布问题人id
-    private String issue_questions_time; //发布时间
-    private String issue_questions_title; //问题标签
-    private String issue_questions_generalize; //问题概括
-    private int    issue_questions_accept; //问题是否被采纳
-    private String issue_questions_points; //问题积分
-    private int    issue_questions_issueStatusid; //问题状态id
-    private String issue_questions_replyid; //问题回复id
-    private String issue_questions_paidLookReply; //是否付费查看回答
-    private int    issue_questions_anonymous; //是否匿名
-    private String issue_questions_annexid; //问题附件id
+public class IssueQuestionsEntity  implements Serializable {
+
+	 // 问题id
+	private String issue_Questions_Id;
+
+	 // 用户id
+	private String issue_Questions_Userid;
+
+	 // 发布时间
+	private String issue_Questions_Time;
+
+	 // 问题标题
+	private String issue_Questions_Title;
+
+	 // 问题概括
+	private String issue_Questions_Generalize;
+
+	 // 是否被采纳
+	private int issue_Questions_Accept;
+
+	 // 赏金
+	private int issue_Questions_Value;
+
+	 // 积分
+	private int issue_Questions_Points;
+
+	 // 问题状态
+	private int issue_Questions_Issuestatusid;
+
+	 // 采纳答案id
+	private String issue_Questions_Replyid;
+
+	 // 回答数
+	private int issue_Questions_Answernum;
+
+	 // 是否匿名
+	private int issue_Questions_Anonymous;
+
+	 // 照片附件id
+	private String issue_Questions_Annexid;
+
 }

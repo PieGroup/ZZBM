@@ -54,6 +54,16 @@ public class IssueCommentController {
         DataPageSubc list = issueCommentService.list(pageSize, pageNum, itemid);
         return ResultUtil.success(list);
     }
+
+    @RequestMapping("/questionReplyList")
+    @ResponseBody
+    public DataVO list2(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                       @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                       @RequestParam(value = "itemid",required = false,defaultValue = "0000")String itemid)throws  Exception{
+        DataPageSubc list = issueCommentService.QuestionRelist(pageSize, pageNum, itemid);
+        return ResultUtil.success(list);
+    }
+
     @RequestMapping("/change")
     @ResponseBody
     public DataVO changeStatus(@RequestParam(value = "cId",required = false,defaultValue = "0000")String cid,
