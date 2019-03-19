@@ -50,4 +50,23 @@ public class UserController {
         log.info("查询的用户id："+userEntity.getUser_Id());
         return  ResultUtil.success( userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum));
     }
+
+    //编辑用户资料
+
+    @RequestMapping(method = RequestMethod.POST ,value = "/editUser")
+    @ResponseBody
+    @Authorization
+    public DataVO editUser(@CurrentUser UserEntity userEntity, UserEntity editUser){
+
+        log.info("编辑用户id"+userEntity.getUser_Id());
+
+        return ResultUtil.success(userService.editUser(userEntity,editUser));
+
+
+    }
+
+
+
+
+
 }

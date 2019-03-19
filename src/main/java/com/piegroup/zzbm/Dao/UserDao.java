@@ -1,10 +1,7 @@
 package com.piegroup.zzbm.Dao;
 
 import com.piegroup.zzbm.Entity.UserEntity;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -41,4 +38,7 @@ public interface UserDao {
                     @Param("8") String user_credit,
                     @Param("9") String user_experience,
                     @Param("10") Timestamp user_create_time);
+
+    @Update("update user set user_login_name = #{1} ,user_sex = #{2} where user_id = #{0}")
+    boolean editUser(@Param("0") String user_id,@Param("1") String userLoginName,@Param("2") int user_sex);
 }

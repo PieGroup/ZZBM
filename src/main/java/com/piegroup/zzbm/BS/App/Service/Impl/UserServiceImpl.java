@@ -171,4 +171,12 @@ public class UserServiceImpl implements UserServiceIF {
     }
 
 
+    public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser) {
+        DataPageSubc dataPageSubc = new DataPageSubc();
+
+        userDao.editUser(userEntity.getUser_Id(),editUser.getUser_Login_Name(),editUser.getUser_Sex());
+
+
+        return dataPageSubc;
+    }
 }

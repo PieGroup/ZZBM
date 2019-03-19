@@ -18,5 +18,7 @@ public interface UserServiceIF {
 
     //我的发布
     DataPageSubc issue(String user_id, String type, int pageSize, int pageNum);
+    //编辑个人资料
+    public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser);
 
 }
