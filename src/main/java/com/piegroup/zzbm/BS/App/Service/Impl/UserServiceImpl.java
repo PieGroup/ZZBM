@@ -8,7 +8,6 @@ import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Entity.UserStatusEntity;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
-import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.annotation.Resource;
-import java.awt.*;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.List;
 
 
 /**
@@ -38,6 +35,11 @@ public class UserServiceImpl implements UserServiceIF {
 
     @Resource
     UserStatusDao userStatusDao;
+
+    @Autowired
+    private IssueQuestionsServiceImpl issueQuestionsService;
+
+
 
     @Override
     public Map queryByUserId(String UserId) {
@@ -125,5 +127,15 @@ public class UserServiceImpl implements UserServiceIF {
 
         return map;
     }
+
+    @Override
+    public Map issue(String user_id, String type, int pageSize, int pageNum) {
+
+        if (type.equals("questions")){
+            issueQuestionsService.queryById(user_id,pageSize,pageNum);
+        }
+        return null;
+    }
+
 
 }

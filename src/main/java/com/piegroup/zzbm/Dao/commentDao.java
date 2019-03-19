@@ -35,4 +35,6 @@ public interface commentDao {
 
     @Update("update comment set comment_like=comment_like + 1 where comment_id=#{1};")
     int like(@Param(value = "1")String commentid);
+
+
 }

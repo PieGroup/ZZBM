@@ -4,14 +4,14 @@ import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.VO.DataVO;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
 /**
 *@ClassName     UserController
@@ -33,9 +33,22 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST )
     @ResponseBody
     @Authorization
+    @ApiOperation("用户查看自己")
     public DataVO mine(@CurrentUser UserEntity userEntity){
         log.info("获取到用户id:"+userEntity.getUser_Id());
-       return null ;
+
+
+       return ResultUtil.success(userEntity);
     }
 
+
+    @RequestMapping(method = RequestMethod.GET,value = "/issue")
+    @ResponseBody
+    @Authorization
+    public DataVO issue(@CurrentUser UserEntity userEntity,@RequestParam(value = "type",defaultValue = "questions") String type,int pageSize,int pageNum ){
+        Assert.notNull(type,"类型不能为空");
+
+        userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum);
+        return null;
+    }
 }

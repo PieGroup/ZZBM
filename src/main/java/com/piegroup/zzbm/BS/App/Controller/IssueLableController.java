@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @CrossOrigin
 @Slf4j
 public class IssueLableController {
+
     @Autowired
     IssueLableServiceImpl issueLableService;
 

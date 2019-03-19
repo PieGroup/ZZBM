@@ -18,4 +18,8 @@ public interface IssueLableDao {
 
     @Select("select * from issue_lable where issue_lable_id between #{pId1} and #{pId2} order by issue_lable_sort desc")
     List<IssueLableEntity> subl(@Param("pId1") int pId1, @Param("pId2") int pId2);
+
+    //通过issueId 查询 lable
+    @Select("select * from issue_lable where  issue_lable_id = (select issueLableid from issue_mtm_issuelable where issueid = #{0})")
+    public List<IssueLableEntity> loadByIssueId(@Param("0") String questionId);
 }
