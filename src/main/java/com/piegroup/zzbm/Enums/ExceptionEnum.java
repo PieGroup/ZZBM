@@ -22,7 +22,8 @@ public enum ExceptionEnum  {
     Sms_Code_Expire_Exception("100010","验证码过期"),
     Sms_Code_Error_Exception("100011","验证码过期"),
     Netword_Exception("100012","网络异常"),
-    Phone_Null_Exception("100013","手机号不能为空")
+    Phone_Null_Exception("100013","手机号不能为空"),
+    Send_Fail_Exception("100014","发送失败")
     ;
 
     private String code;

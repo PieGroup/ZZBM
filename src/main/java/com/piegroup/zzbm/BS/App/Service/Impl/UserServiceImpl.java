@@ -9,6 +9,7 @@ import com.piegroup.zzbm.Entity.UserStatusEntity;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ import java.util.*;
  * @Version 1.0
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserServiceIF {
 
     @Resource
@@ -39,6 +41,16 @@ public class UserServiceImpl implements UserServiceIF {
     @Autowired
     private IssueQuestionsServiceImpl issueQuestionsService;
 
+    @Autowired
+    private IssueCommentServiceImpl issueCommentService;
+
+    @Autowired
+    private IssueDemandServiceImpl issueDemandService;
+
+    @Autowired
+    private IssueConsultServiceImpl issueConsultService;
+    @Autowired
+    private IssueProgramServiceImpl issueProgramService;
 
 
     @Override
@@ -55,8 +67,8 @@ public class UserServiceImpl implements UserServiceIF {
         UserStatusEntity userStatusEntity = userStatusDao.queryById(userEntity.getUser_Statusid());
 
 
-        map.put("user",userEntity);
-        map.put("user_status",userStatusEntity);
+        map.put("user", userEntity);
+        map.put("user_status", userStatusEntity);
         return map;
     }
 
@@ -93,7 +105,7 @@ public class UserServiceImpl implements UserServiceIF {
 
         String user_experience = "0";
 
-        Timestamp user_create_time =TimeUtil2.SQLTimestampNow();
+        Timestamp user_create_time = TimeUtil2.SQLTimestampNow();
 
 
         userDao.addUser(user_id,
@@ -129,12 +141,33 @@ public class UserServiceImpl implements UserServiceIF {
     }
 
     @Override
-    public Map issue(String user_id, String type, int pageSize, int pageNum) {
+    public DataPageSubc issue(String user_id, String type, int pageSize, int pageNum) {
 
-        if (type.equals("questions")){
-            issueQuestionsService.queryById(user_id,pageSize,pageNum);
+        //发表的问题
+        if (type.equals("questions")) {
+            log.info("拿去用户问题");
+            return issueQuestionsService.queryById(user_id, pageSize, pageNum);
+        }//发布的需求
+        else if (type.equals("demand")) {
+            log.info("拿用户的需求");
+            return issueDemandService.loadByUserId(user_id,pageSize,pageNum);
+
+        } //发布的咨询
+        else if(type.equals("consult")){
+            log.info("拿用户的咨询");
+            return issueConsultService.loadByUserId(user_id,pageSize,pageNum);
         }
-        return null;
+        else if(type.equals("program")){
+            log.info("拿用户的方案");
+            return issueProgramService.loadByUserId(user_id,pageSize,pageNum);
+        }
+        else {
+
+            DataPageSubc dataPageSubc = new DataPageSubc();
+            dataPageSubc.setData("正在开发");
+            return dataPageSubc;
+        }
+
     }
 
 

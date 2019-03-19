@@ -1,6 +1,7 @@
 package com.piegroup.zzbm.BS.App.Service;
 
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 
 import java.util.Map;
 
@@ -16,6 +17,6 @@ public interface UserServiceIF {
     Map addUser(String phone);
 
     //我的发布
-    Map issue(String user_id, String type, int pageSize, int pageNum);
+    DataPageSubc issue(String user_id, String type, int pageSize, int pageNum);
 
 }

@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.Dao;
 
+import com.piegroup.zzbm.Entity.IssueConsultEntity;
 import com.piegroup.zzbm.Entity.IssueProgramEntity;
 import org.apache.ibatis.annotations.*;
 
@@ -22,4 +23,11 @@ public interface IssueProgramDao {
     @Update("update issue_program set issue_program_issueStatusid=#{1} where issue_program_id=#{2};")
     int changePro(@Param(value = "1") int statusid,@Param(value = "2") String proid);
 
+
+
+    @Select("select count(*) from issue_program where issue_program_userid = #{0}")
+    int countByUserid(@Param("0") String user_id);
+
+    @Select("select * from issue_program where issue_program_userid = #{0} limit #{1} , #{2}")
+    List<IssueProgramEntity> loadByUserId(@Param("0") String user_id, @Param("1") int fromIndex,@Param("2") int pageSize);
 }

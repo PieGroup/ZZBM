@@ -29,7 +29,7 @@ public class MessageController {
     private MessageAt messageAt;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/getCode")
+    @RequestMapping(method = RequestMethod.GET, value = "/getCode")
     @ResponseBody
     @ApiOperation("发送验证码")
     public DataVO send(@ApiParam("手机号") @RequestParam("phone") String phone) {

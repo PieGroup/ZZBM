@@ -122,7 +122,7 @@ public class SMSCodeUtil {
             return Success;
         }
 
-        return Unknown_Exception;
+        return Send_Fail_Exception;
     }
 
     //保存验证码
@@ -130,7 +130,7 @@ public class SMSCodeUtil {
 
         if (phone == "" || phone == null || code == "" || code == null)
             return false;
-
+        deleteCode(phone);
         SmsRedis.boundValueOps(phone).set(code, Constants.CODE_TIME, TimeUnit.SECONDS);
 
         return true;

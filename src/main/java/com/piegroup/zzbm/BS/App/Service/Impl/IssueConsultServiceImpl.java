@@ -2,10 +2,15 @@ package com.piegroup.zzbm.BS.App.Service.Impl;
 
 import com.piegroup.zzbm.BS.App.Service.IssueConsultServiceIF;
 import com.piegroup.zzbm.Dao.IssueConsultDao;
+import com.piegroup.zzbm.Dao.IssueLableDao;
+import com.piegroup.zzbm.Dao.IssueStatusDao;
 import com.piegroup.zzbm.Dao.IssueUserDao;
 import com.piegroup.zzbm.Entity.IssueConsultEntity;
+import com.piegroup.zzbm.Entity.IssueLableEntity;
+import com.piegroup.zzbm.Entity.IssueStatusEntity;
 import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Utils.F2C;
+import com.piegroup.zzbm.Utils.PaginationUtil;
 import com.piegroup.zzbm.VO.ConsultUserVo;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
@@ -14,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -24,6 +31,13 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
 
     @Resource
     IssueUserDao issueUserDao;
+
+    @Resource
+    IssueStatusDao issueStatusDao;
+
+    @Resource
+    IssueLableDao issueLableDao;
+
     @Override
     public DataPageSubc list(int pageSize, int pageNum) throws Exception {
         DataPageSubc dataPageSubc=new DataPageSubc();
@@ -65,6 +79,36 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
         DataPageSubc dataPageSubc=new DataPageSubc();
         int i = issueConsultDao.changePro(status, id);
         dataPageSubc.setData(i);
+
+        return dataPageSubc;
+    }
+
+    //用户的咨询
+    @Override
+    public DataPageSubc loadByUserId(String user_id, int pageSize, int pageNum) {
+
+        int count = issueConsultDao.countByUserid(user_id);
+
+        PaginationSubC paginationSubC = PaginationUtil.pagination(pageNum,pageSize,count);
+        List<IssueConsultEntity> issueConsults = issueConsultDao.loadByUserId(user_id,paginationSubC.getFromIndex(),paginationSubC.getPageSize());
+
+        List list = new ArrayList();
+        List<IssueLableEntity> issueLableEntity = new ArrayList<>();
+
+
+        for (IssueConsultEntity i: issueConsults) {
+            Map map = new HashMap();
+            map.put("entity",i);
+            issueLableEntity = issueLableDao.loadByIssueId(i.getIssue_consult_id());
+            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_consult_issueStatusid());
+            map.put("label",issueLableEntity);
+            map.put("status",issueStatusEntity);
+            list.add(map);
+
+        }
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        dataPageSubc.setData(list);
+        dataPageSubc.setPaginationSubC(paginationSubC);
 
         return dataPageSubc;
     }

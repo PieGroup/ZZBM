@@ -7,4 +7,6 @@ public interface IssueDemandServiceIF {
     DataPageSubc list(int pageSize, int pageNum);
     DataPageSubc Insert(IssueDemandEntity i);
     DataPageSubc change(int status, String id);
+
+    DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
 }

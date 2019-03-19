@@ -22,4 +22,11 @@ public interface IssueDemandDao {
     @Update("update issue_demand set issue_demand_issueStatusid=#{1} where issue_demand_id=#{2};")
     int change(@Param(value = "1") int statusid, @Param(value = "2") String demandid);
 
+
+
+    @Select("select count(*) from issue_demand where issue_demand_userid = #{0}")
+    int countByUserid(@Param("0") String user_id);
+
+    @Select("select * from issue_demand where issue_demand_userid = #{0} limit #{1} , #{2}")
+    List<IssueDemandEntity> loadByUserId(@Param("0") String user_id, @Param("1") int fromIndex, @Param("2") int pageSize);
 }

@@ -45,10 +45,9 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET,value = "/issue")
     @ResponseBody
     @Authorization
-    public DataVO issue(@CurrentUser UserEntity userEntity,@RequestParam(value = "type",defaultValue = "questions") String type,int pageSize,int pageNum ){
+    public DataVO issue(@CurrentUser UserEntity userEntity,@RequestParam(value = "type",defaultValue = "questions") String type,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize,@RequestParam(value = "pageNum",defaultValue = "1")int pageNum ){
         Assert.notNull(type,"类型不能为空");
-
-        userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum);
-        return null;
+        log.info("查询的用户id："+userEntity.getUser_Id());
+        return  ResultUtil.success( userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum));
     }
 }

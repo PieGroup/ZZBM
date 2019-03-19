@@ -8,4 +8,6 @@ public interface IssueProgramServiceIF {
     DataPageSubc Insert(IssueProgramEntity i);
 
     DataPageSubc change(int status,String id);
+
+    DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
 }

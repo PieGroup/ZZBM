@@ -8,4 +8,6 @@ public interface IssueConsultServiceIF {
     DataPageSubc Insert(IssueConsultEntity i);
 
     DataPageSubc change(int status, String id);
+
+    DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
 }

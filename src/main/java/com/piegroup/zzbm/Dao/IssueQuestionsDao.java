@@ -27,10 +27,16 @@ public interface IssueQuestionsDao {
     @Update("update issue_questions set issue_questions_accept=1,issue_questions_replyid=#{1} where issue_questions_id=#{2};")
     int caina(@Param(value = "1")String issue_questions_replyid,@Param(value = "2")String issue_questions_id);
 
-    @Select("select count(*) from issue_questions where issue_questions_id = #{0}")
+    @Select("select count(*) from issue_questions where issue_questions_userid = #{0}")
     int countById(@Param("0") String user_id);
 
 
+    //取用户id 的多少条记录
     @Select("select * from issue_questions where issue_questions_userid = #{0} limit #{1} , #{2}")
     List<IssueQuestionsEntity> queryById(@Param("0") String user_id, @Param("1") int fromIndex,@Param("2") int pageSize);
+
+
+
+
+
 }
