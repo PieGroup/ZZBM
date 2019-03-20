@@ -4,11 +4,11 @@ import com.piegroup.zzbm.BS.App.Service.IssueProgramServiceIF;
 import com.piegroup.zzbm.Dao.IssueLableDao;
 import com.piegroup.zzbm.Dao.IssueProgramDao;
 import com.piegroup.zzbm.Dao.IssueStatusDao;
-import com.piegroup.zzbm.Entity.IssueConsultEntity;
-import com.piegroup.zzbm.Entity.IssueLableEntity;
-import com.piegroup.zzbm.Entity.IssueProgramEntity;
-import com.piegroup.zzbm.Entity.IssueStatusEntity;
+import com.piegroup.zzbm.Dao.IssueUserDao;
+import com.piegroup.zzbm.Entity.*;
+import com.piegroup.zzbm.Utils.F2C;
 import com.piegroup.zzbm.Utils.PaginationUtil;
+import com.piegroup.zzbm.VO.ProgramUserVo;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +33,11 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
     @Resource
     IssueStatusDao issueStatusDao;
 
+    @Resource
+    IssueUserDao issueUserDao;
+
     @Override
-    public DataPageSubc list(int pageSize, int pageNum) {
+    public DataPageSubc list(int pageSize, int pageNum) throws Exception {
         DataPageSubc dataPageSubc=new DataPageSubc();
         int count=issueProgramDao.count();
         boolean nextp=(pageSize*pageNum) < count;
@@ -42,8 +45,16 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
 
         List<IssueProgramEntity> datas=issueProgramDao.list((paginationSubC.getFromIndex()-1)*paginationSubC.getPageSize(),
                 paginationSubC.getPageSize());
+        List<ProgramUserVo> puv =new ArrayList<>();
+        for (IssueProgramEntity i:datas) {
+            ProgramUserVo temp=new ProgramUserVo();
+            UserEntity userEntity = issueUserDao.selectUById(i.getIssue_Program_Userid());
+            F2C.father2child(i,temp);
+            temp.setUser(userEntity);
+            puv.add(temp);
+        }
         dataPageSubc.setPaginationSubC(paginationSubC);
-        dataPageSubc.setData(datas);
+        dataPageSubc.setData(puv);
         return dataPageSubc;
     }
 

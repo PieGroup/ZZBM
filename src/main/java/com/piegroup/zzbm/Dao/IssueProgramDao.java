@@ -11,8 +11,7 @@ public interface IssueProgramDao {
     @Select("select count(*) from issue_program")
     int count();
 
-
-    @Select("select * from issue_program where issue_program_issueStatusid=1 limit #{index},#{pageSize}")
+    @Select("select * from issue_program where issue_program_issueStatusid=1 order by issue_program_time desc limit #{index},#{pageSize}")
     List<IssueProgramEntity> list(@Param("index")int fromIndex,@Param("pageSize")int pageSize);
 
     @Insert("insert into issue_program(" +
@@ -22,8 +21,6 @@ public interface IssueProgramDao {
 
     @Update("update issue_program set issue_program_issueStatusid=#{1} where issue_program_id=#{2};")
     int changePro(@Param(value = "1") int statusid,@Param(value = "2") String proid);
-
-
 
     @Select("select count(*) from issue_program where issue_program_userid = #{0}")
     int countByUserid(@Param("0") String user_id);

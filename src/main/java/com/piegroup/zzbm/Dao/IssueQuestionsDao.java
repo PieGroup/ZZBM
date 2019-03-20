@@ -12,6 +12,8 @@ public interface IssueQuestionsDao {
     @Select("select count(*) from issue_questions")
     int count();
 
+    @Select("select * from issue_questions where issue_questions_id=#{1};")
+    IssueQuestionsEntity loadByQid(@Param(value = "1")String qid);
 
     @Select("select * from issue_questions where issue_questions_issueStatusid = 1 limit #{index},#{pageSize}")
     List<IssueQuestionsEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);

@@ -14,6 +14,7 @@ public class F2C {
 
         for(int i =0;i<declaredFields.length;i++){
             Field field=declaredFields[i];
+            if (field.toString().contains("UID")) continue;
             Method method=fatherClass.getDeclaredMethod("get"+upperHeadChar(field.getName()));
             Object obj = method.invoke(father);
             field.setAccessible(true);

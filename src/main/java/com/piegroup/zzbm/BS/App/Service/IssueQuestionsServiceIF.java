@@ -12,4 +12,8 @@ public interface IssueQuestionsServiceIF {
 
     //通过用户id 查找用户发布的问题
     DataPageSubc queryById(String user_id,int pageSize,int pageNum);
+
+    //通过问题id 查找用户发布的问题
+    DataPageSubc queryByQuestionId(String qid) throws Exception;
+
 }

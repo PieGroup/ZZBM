@@ -28,7 +28,6 @@ public class IssueProgramController {
      * 首页请求问题列表
      * @param pageSize
      * @param pageNum
-     * @param all  1表示显示全部问题，其他值代表 系统推荐（非必需）
      * @return
      * @throws Exception
      */

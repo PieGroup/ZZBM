@@ -79,4 +79,12 @@ public class IssueQuestionsController {
 
     }
 
+    @RequestMapping("/questionByQid")
+    @ResponseBody
+    public DataVO queryQbyQid(@RequestParam(value = "qid",required = false,defaultValue = "0000")String qid)throws Exception{
+        DataPageSubc dataPageSubc = issueQuestionsService.queryByQuestionId(qid);
+
+        return ResultUtil.success(dataPageSubc);
+
+    }
 }

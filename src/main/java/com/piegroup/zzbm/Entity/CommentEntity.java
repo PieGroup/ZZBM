@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class CommentEntity  implements Serializable {
 
 
+	private static final long serialVersionUID = -7904938436246661757L;
 	private String comment_Id;
 
 	 // 基于哪个话题或需求

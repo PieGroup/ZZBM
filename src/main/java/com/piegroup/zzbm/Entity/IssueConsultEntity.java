@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class IssueConsultEntity implements Serializable {
 
 
+    private static final long serialVersionUID = -4470770710985527784L;
     private String issue_consult_id;  //咨询id
     private String issue_consult_userid; //咨询人id
     private String issue_consult_time; //咨询时间

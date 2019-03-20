@@ -13,7 +13,8 @@ import java.io.Serializable;
 public class IssueProgramEntity  implements Serializable {
 
 
-	 // 方案id
+	private static final long serialVersionUID = -8338667255375387578L;
+	// 方案id
 	private String issue_Program_Id;
 
 	 // 发布人id

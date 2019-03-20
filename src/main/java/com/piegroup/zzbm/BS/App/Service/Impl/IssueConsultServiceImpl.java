@@ -83,6 +83,23 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
         return dataPageSubc;
     }
 
+    @Override
+    public DataPageSubc loadById(String Cid) throws Exception {
+        DataPageSubc dataPageSubc=new DataPageSubc();
+        IssueConsultEntity issueConsultEntity = issueConsultDao.loadById(Cid);
+        if(issueConsultEntity==null)
+            return null;
+        UserEntity userEntity = issueUserDao.selectUById(issueConsultEntity.getIssue_consult_userid());
+        UserEntity userEntity1 = issueUserDao.selectUById(issueConsultEntity.getIssue_consult_buserid());
+        ConsultUserVo cuv=new ConsultUserVo();
+        F2C.father2child(issueConsultEntity,cuv);
+        cuv.setUser(userEntity);
+        cuv.setBuser(userEntity1);
+
+        dataPageSubc.setData(cuv);
+        return dataPageSubc;
+    }
+
     //用户的咨询
     @Override
     public DataPageSubc loadByUserId(String user_id, int pageSize, int pageNum) {

@@ -10,6 +10,8 @@ public interface IssueConsultDao {
     @Select("select count(*) from issue_consult")
     int count();
 
+    @Select("select * from issue_consult where issue_consult_id=#{1};")
+    IssueConsultEntity loadById(@Param(value = "1")String cid);
 
     @Select("select * from issue_consult where issue_consult_issueStatusid=1 order by issue_consult_time desc limit #{index},#{pageSize}")
     List<IssueConsultEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);

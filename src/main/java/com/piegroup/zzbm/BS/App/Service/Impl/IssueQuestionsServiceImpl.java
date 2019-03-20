@@ -4,6 +4,7 @@ import com.piegroup.zzbm.BS.App.Service.IssueQuestionsServiceIF;
 import com.piegroup.zzbm.Dao.*;
 import com.piegroup.zzbm.Entity.*;
 import com.piegroup.zzbm.Utils.F2C;
+import com.piegroup.zzbm.VO.ConsultUserVo;
 import com.piegroup.zzbm.VO.QuestionUserVo;
 import com.piegroup.zzbm.Utils.PaginationUtil;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
@@ -36,8 +37,6 @@ public class IssueQuestionsServiceImpl implements IssueQuestionsServiceIF {
     @Resource
     private IssueRecordDao issueRecordDao;
 
-    @Resource
-    private commentDao commentDao;
 
 
     @Override
@@ -135,6 +134,18 @@ public class IssueQuestionsServiceImpl implements IssueQuestionsServiceIF {
         log.info("结束查询问题");
 
         return pageSubc;
+    }
+
+    @Override
+    public DataPageSubc queryByQuestionId(String qid) throws Exception {
+        DataPageSubc d=new DataPageSubc();
+        QuestionUserVo questionUserVo=new QuestionUserVo();
+        IssueQuestionsEntity issueQuestionsEntity = issueQuestionsDao.loadByQid(qid);
+        UserEntity userEntity = issueUserDao.selectUById(issueQuestionsEntity.getIssue_Questions_Userid());
+        F2C.father2child(issueQuestionsEntity,questionUserVo);
+        questionUserVo.setUser(userEntity);
+        d.setData(questionUserVo);
+        return  d;
     }
 
 
