@@ -41,4 +41,8 @@ public interface UserDao {
 
     @Update("update user set user_login_name = #{1} ,user_sex = #{2} where user_id = #{0}")
     boolean editUser(@Param("0") String user_id,@Param("1") String userLoginName,@Param("2") int user_sex);
+
+    //更新用户头像
+    @Update("update user set user_head_url = #{1} where user_id =#{0} ")
+    boolean updateIcon(@Param("0") String user_id,@Param("1") String url);
 }

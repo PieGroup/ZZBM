@@ -37,4 +37,9 @@ public class Constants {
      */
     public static final int UPDATE_TIME_TOKEN= 2592000;
 
+    /**
+     * 头像路径保存
+     */
+    public static final String IconUrl = "F:\\files\\upload";
+
 }
