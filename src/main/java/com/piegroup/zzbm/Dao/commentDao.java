@@ -23,8 +23,8 @@ public interface commentDao {
 
 
     @Insert("insert into " +
-            "comment(comment_id,comment_item_id,comment_user_id,comment_father_id,comment_content,comment_type) " +
-            "values(#{comment_Id},#{comment_Item_Id},#{comment_User_Id},#{comment_Father_Id},#{comment_Content},#{comment_Type});")
+            "comment(comment_id,comment_item_id,comment_user_id,comment_father_id,comment_content,comment_pic,comment_type) " +
+            "values(#{comment_Id},#{comment_Item_Id},#{comment_User_Id},#{comment_Father_Id},#{comment_Content},#{comment_Pic},#{comment_Type});")
     int addComment(CommentEntity commentEntity);
 
     @Update("update comment set comment_status=#{2} where comment_id=#{1};")

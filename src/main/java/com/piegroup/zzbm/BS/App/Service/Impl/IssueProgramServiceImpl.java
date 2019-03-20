@@ -78,8 +78,8 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
         for (IssueProgramEntity i: issueProgramEntities) {
             Map map = new HashMap();
             map.put("entity",i);
-            List<IssueLableEntity> lableEntities = issueLableDao.loadByIssueId(i.getIssue_program_id());
-            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_program_issueStatusid());
+            List<IssueLableEntity> lableEntities = issueLableDao.loadByIssueId(i.getIssue_Program_Id());
+            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_Program_Issuestatusid());
 
             map.put("label",lableEntities);
             map.put("status",issueStatusEntity);

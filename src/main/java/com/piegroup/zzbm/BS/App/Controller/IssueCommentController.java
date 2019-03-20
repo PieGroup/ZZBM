@@ -31,6 +31,7 @@ public class IssueCommentController {
                          @RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
                          @RequestParam(value = "fatherid",required = false,defaultValue = "0000")String fatherid,
                          @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
+                         @RequestParam(value = "pic",required = false,defaultValue = "0000")String pic,
                          @RequestParam(value = "type",required = false,defaultValue = "1")int type)throws Exception{
         CommentEntity c=new CommentEntity();
         String id="c"+ TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
@@ -39,6 +40,7 @@ public class IssueCommentController {
         c.setComment_User_Id(userid);
         c.setComment_Father_Id(fatherid);
         c.setComment_Content(content);
+        c.setComment_Pic(pic);
         c.setComment_Type(type);
         c.setComment_Status(1);
         DataPageSubc dataPageSubc = issueCommentService.addOneComment(c);

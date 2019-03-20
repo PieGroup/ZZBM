@@ -35,34 +35,29 @@ public class IssueProgramController {
     @RequestMapping("/list")
     @ResponseBody
     public DataVO programList(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                              @RequestParam(value="all",required = false,defaultValue = "1")int all) throws  Exception{
+                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
         DataPageSubc list = issueProgramService.list(pageSize, pageNum);
 
         return ResultUtil.success(list);
     }
 
-    @RequestMapping("/")
-    @ResponseBody
-    public String test(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-                              @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
-
-        return "pageSize:"+pageSize+" & pageNum:"+pageNum;
-    }
-
     @RequestMapping("/insert")
     @ResponseBody
-    public DataVO addProgram(String userid,String title,String content,int anonymous,String reward,int statusid,String annexid) throws Exception{
+    public DataVO addProgram(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
+                             @RequestParam(value = "title",required = false,defaultValue = "0000")String title,
+                             @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
+                             @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
+                             @RequestParam(value = "reward",required = false,defaultValue = "0")int reward,
+                             @RequestParam(value = "pic",required = false,defaultValue = "0000")String pic) throws Exception{
         IssueProgramEntity i=new IssueProgramEntity();
-        String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
-        i.setIssue_program_id(id);
-        i.setIssue_program_userid(userid);
-        i.setIssue_program_title(title);
-        i.setIssue_program_content(content);
-        i.setIssue_program_anonymous(anonymous);
-        i.setIssue_program_reward(reward);
-        i.setIssue_program_issueStatusid(statusid);
-        i.setIssue_program_annexid(annexid);
+        String id= "p"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        i.setIssue_Program_Id(id);
+        i.setIssue_Program_Userid(userid);
+        i.setIssue_Program_Title(title);
+        i.setIssue_Program_Content(content);
+        i.setIssue_Program_Anonymous(anonymous);
+        i.setIssue_Program_Reward(reward);
+        i.setIssue_Program_Pic(pic);
         DataPageSubc datas = issueProgramService.Insert(i);
 
         return ResultUtil.success(datas);
