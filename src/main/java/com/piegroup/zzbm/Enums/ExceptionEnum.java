@@ -20,13 +20,14 @@ public enum ExceptionEnum  {
     No_Register_Exception("100008","没有注册"),
     Black_Data_Exception("100009","返回数据出现问题"),
     Sms_Code_Expire_Exception("100010","验证码过期"),
-    Sms_Code_Error_Exception("100011","验证码过期"),
+    Sms_Code_Error_Exception("100011","验证码错误"),
     Netword_Exception("100012","网络异常"),
     Phone_Null_Exception("100013","手机号不能为空"),
     Send_Fail_Exception("100014","发送失败"),
     Upload_Success("100015","上传成功"),
     Upload_Fail("100016","上传失败"),
-    Param_Exception("100017","参数问题")
+    Param_Exception("100017","参数问题"),
+    Sms_Code_Frequently_Exception("100018","验证码获取频繁")
     ;
 
     private String code;

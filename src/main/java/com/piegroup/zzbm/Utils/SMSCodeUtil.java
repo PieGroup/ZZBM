@@ -121,18 +121,22 @@ public class SMSCodeUtil {
             System.out.println("验证码发送成功！");
             return Success;
         }
+        if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("isv.BUSINESS_LIMIT_CONTROL")){
+            System.out.println("验证码获取频繁");
+            return Sms_Code_Frequently_Exception;
+        }
 
         return Send_Fail_Exception;
     }
 
     //保存验证码
     public  boolean saveCode(String phone, String code) {
-
+        System.out.println("开始保存code");
         if (phone == "" || phone == null || code == "" || code == null)
             return false;
         deleteCode(phone);
         SmsRedis.boundValueOps(phone).set(code, Constants.CODE_TIME, TimeUnit.SECONDS);
-
+        System.out.println("结束保存code");
         return true;
 
     }
@@ -146,6 +150,9 @@ public class SMSCodeUtil {
      * @return
      */
     public  ExceptionEnum checkCode(String userPhone, String code) {
+        if (code == "" || code == null){
+            return Sms_Code_Error_Exception;
+        }
 
         if (SmsRedis.keys(userPhone).size() > 0){
 
