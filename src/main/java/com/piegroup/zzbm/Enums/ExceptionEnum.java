@@ -27,7 +27,9 @@ public enum ExceptionEnum  {
     Upload_Success("100015","上传成功"),
     Upload_Fail("100016","上传失败"),
     Param_Exception("100017","参数问题"),
-    Sms_Code_Frequently_Exception("100018","验证码获取频繁")
+    Sms_Code_Frequently_Exception("100018","验证码获取频繁"),
+    Request_Frequently_Exception("100019","请求频繁"),
+    Request_Frequently_Error_Exception("100020","重复提交出现异常")
     ;
 
     private String code;

@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.BS.App.Controller;
 
+import com.piegroup.zzbm.Annotation.NoRepeatSubmit;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.SMSCodeUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
@@ -37,21 +38,23 @@ public class TestAppController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/testSms")
+    @RequestMapping(method = RequestMethod.GET,value = "/testSms")
     @ResponseBody
-    public DataVO testSms(HttpServletResponse response){
+    @NoRepeatSubmit
+    public String testSms(HttpServletResponse response){
         String phone = "123456";
         String code = "123456";
-        smsCodeUtil.saveCode(phone,code);
+//        smsCodeUtil.saveCode(phone,code);
+//
+//        try {
+//            response.sendRedirect("/tokens/LBC?phone="+phone+"&code="+code);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        try {
-            response.sendRedirect("/tokens/LBC?phone="+phone+"&code="+code);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
-        return null;
+        return "你好";
 
     }
 
