@@ -1,39 +1,69 @@
 package com.piegroup.zzbm.Entity;
-
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- *咨询表
+ * @Description  
+ * @Author DDLD 
+ * @Date 2019-03-20 
  */
 
 @Data
-public class IssueConsultEntity implements Serializable {
+public class IssueConsultEntity  implements Serializable {
 
+	private static final long serialVersionUID =  4685759918588179930L;
 
-    private static final long serialVersionUID = -4470770710985527784L;
-    private String issue_consult_id;  //咨询id
-    private String issue_consult_userid; //咨询人id
-    private String issue_consult_time; //咨询时间
-    private int issue_consult_type; //咨询类型
-    private String issue_consult_buserid; //被咨询人id
-    private int  issue_consult_paidLookReply; //是否付费查看答案
-    private int issue_consult_issueStatusid; //咨询状态
-    private String issue_consult_points ; //咨询积分
-    private String issue_consult_title; //咨询标题
-    private String issue_consult_content; //咨询内容
-    private int issue_consult_anonymous; //是否匿名
-    private String issue_consult_annexid;//照片附件id
-    private int issue_consult_paid; //需要多少钱查看答案
-    // 价值
-    private int issue_consult_value;
+	 // 咨询id
+	private String issue_Consult_Id;
 
-    // 评分
-    private String issue_consult_mark;
+	 // 咨询人id
+	private String issue_Consult_Userid;
 
-    // 旁听人数
-    private int issue_consult_buynum;
+	 // 咨询时间
+	private String issue_Consult_Time;
+
+	 // 咨询类型(公开或者私密)
+	private int issue_Consult_Type;
+
+	 // 被咨询人的id
+	private String issue_Consult_Buserid;
+
+	 // 是否付费查看答案1是0否
+	private int issue_Consult_Paidlookreply;
+
+	private int issue_Consult_Read;
+
+	private int issue_Consult_Like;
+
+	 // 咨询状态1：未接受2：回答中3：已完成：4其他
+	private int issue_Consult_Issuestatusid;
+
+	 // 咨询积分
+	private String issue_Consult_Points;
+
+	 // 咨询标题
+	private String issue_Consult_Title;
+
+	 // 咨询内容
+	private String issue_Consult_Content;
+
+	 // 是否匿名1是0否
+	private int issue_Consult_Anonymous;
+
+	 // 照片附件id
+	private String issue_Consult_Annexid;
+
+	 // 需要多少钱查看
+	private int issue_Consult_Paid;
+
+	 // 当初花了多少钱咨询
+	private int issue_Consult_Value;
+
+	 // 评分
+	private String issue_Consult_Mark;
+
+	 // 旁听人数
+	private int issue_Consult_Buynum;
 
 }
-

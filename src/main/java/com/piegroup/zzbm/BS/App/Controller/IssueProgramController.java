@@ -69,4 +69,18 @@ public class IssueProgramController {
         return ResultUtil.success(change);
     }
 
+
+    @RequestMapping("/proByProId")
+    @ResponseBody
+    public DataVO loadByProId(@RequestParam(value = "pid",required = false,defaultValue = "000")String id) throws Exception{
+        DataPageSubc dataPageSubc = issueProgramService.loadByProId(id);
+        return ResultUtil.success(dataPageSubc);
+    }
+
+    @RequestMapping("/like")
+    @ResponseBody
+    public DataVO like(@RequestParam(value = "pid",required = false,defaultValue = "0000")String id) throws Exception{
+        DataPageSubc dataPageSubc = issueProgramService.like(id);
+        return ResultUtil.success(dataPageSubc);
+    }
 }

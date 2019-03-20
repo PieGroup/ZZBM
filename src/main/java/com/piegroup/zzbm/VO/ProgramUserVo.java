@@ -8,4 +8,5 @@ import lombok.Data;
 public class ProgramUserVo extends IssueProgramEntity {
     private static final long serialVersionUID = -6513604601375254122L;
     private UserEntity user;
+    int islike;
 }

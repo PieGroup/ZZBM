@@ -12,9 +12,9 @@ import java.io.Serializable;
 @Data
 public class IssueProgramEntity  implements Serializable {
 
+	private static final long serialVersionUID =  4901913366375758490L;
 
-	private static final long serialVersionUID = -8338667255375387578L;
-	// 方案id
+	 // 方案id
 	private String issue_Program_Id;
 
 	 // 发布人id
@@ -37,6 +37,9 @@ public class IssueProgramEntity  implements Serializable {
 
 	 // 浏览量
 	private int issue_Program_Read;
+
+	 // 点赞数
+	private int issue_Program_Like;
 
 	 // 打赏金额
 	private int issue_Program_Reward;

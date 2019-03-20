@@ -59,18 +59,16 @@ public class IssueConsultController {
     {
         IssueConsultEntity i=new IssueConsultEntity();
         String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
-        i.setIssue_consult_id(id);
-        i.setIssue_consult_userid(userid);
-        i.setIssue_consult_buserid(buserid);
-        i.setIssue_consult_type(type);
-        i.setIssue_consult_paidLookReply(ispay);
-        i.setIssue_consult_issueStatusid(status);
-        i.setIssue_consult_points(points);
-        i.setIssue_consult_title(title);
-        i.setIssue_consult_content(content);
-        i.setIssue_consult_anonymous(anonymous);
-        i.setIssue_consult_annexid(annexid);
-        i.setIssue_consult_paid(value);
+        i.setIssue_Consult_Id(id);
+        i.setIssue_Consult_Userid(userid);
+        i.setIssue_Consult_Type(type);
+        i.setIssue_Consult_Buserid(buserid);
+        i.setIssue_Consult_Paidlookreply(ispay);
+        i.setIssue_Consult_Points(points);
+        i.setIssue_Consult_Title(title);
+        i.setIssue_Consult_Content(content);
+        i.setIssue_Consult_Anonymous(anonymous);
+        i.setIssue_Consult_Annexid(annexid);
         DataPageSubc datas = issueConsultService.Insert(i);
         return ResultUtil.success(datas);
     }

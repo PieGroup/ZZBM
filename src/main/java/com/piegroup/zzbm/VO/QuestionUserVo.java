@@ -9,4 +9,5 @@ public class QuestionUserVo extends IssueQuestionsEntity {
 
     private static final long serialVersionUID = -4560630744071558967L;
     private UserEntity user;
+    int islike;
 }

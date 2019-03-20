@@ -1,14 +1,8 @@
 package com.piegroup.zzbm.BS.App.Service.Impl;
 
 import com.piegroup.zzbm.BS.App.Service.IssueConsultServiceIF;
-import com.piegroup.zzbm.Dao.IssueConsultDao;
-import com.piegroup.zzbm.Dao.IssueLableDao;
-import com.piegroup.zzbm.Dao.IssueStatusDao;
-import com.piegroup.zzbm.Dao.IssueUserDao;
-import com.piegroup.zzbm.Entity.IssueConsultEntity;
-import com.piegroup.zzbm.Entity.IssueLableEntity;
-import com.piegroup.zzbm.Entity.IssueStatusEntity;
-import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Dao.*;
+import com.piegroup.zzbm.Entity.*;
 import com.piegroup.zzbm.Utils.F2C;
 import com.piegroup.zzbm.Utils.PaginationUtil;
 import com.piegroup.zzbm.VO.ConsultUserVo;
@@ -16,6 +10,7 @@ import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -32,6 +27,10 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
     @Resource
     IssueUserDao issueUserDao;
 
+    @Resource
+    likeDao likeDao;
+    @Resource
+    notifyDao notifyDao;
     @Resource
     IssueStatusDao issueStatusDao;
 
@@ -50,8 +49,8 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
         List<ConsultUserVo> realD=new ArrayList<>();
         for (IssueConsultEntity I : cls) {
             ConsultUserVo cuv= new ConsultUserVo();
-            UserEntity buserEntity = issueUserDao.selectUById(I.getIssue_consult_buserid());
-            UserEntity userEntity = issueUserDao.selectUById(I.getIssue_consult_userid());
+            UserEntity buserEntity = issueUserDao.selectUById(I.getIssue_Consult_Buserid());
+            UserEntity userEntity = issueUserDao.selectUById(I.getIssue_Consult_Userid());
             F2C.father2child(I,cuv);
             cuv.setUser(userEntity);
             cuv.setBuser(buserEntity);
@@ -89,13 +88,14 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
         IssueConsultEntity issueConsultEntity = issueConsultDao.loadById(Cid);
         if(issueConsultEntity==null)
             return null;
-        UserEntity userEntity = issueUserDao.selectUById(issueConsultEntity.getIssue_consult_userid());
-        UserEntity userEntity1 = issueUserDao.selectUById(issueConsultEntity.getIssue_consult_buserid());
+        UserEntity userEntity = issueUserDao.selectUById(issueConsultEntity.getIssue_Consult_Userid());
+        UserEntity userEntity1 = issueUserDao.selectUById(issueConsultEntity.getIssue_Consult_Buserid());
         ConsultUserVo cuv=new ConsultUserVo();
         F2C.father2child(issueConsultEntity,cuv);
         cuv.setUser(userEntity);
         cuv.setBuser(userEntity1);
-
+        if(likeDao.checkLike(userEntity.getUser_Id(),issueConsultEntity.getIssue_Consult_Id()) != null )
+            cuv.setIslike(1);
         dataPageSubc.setData(cuv);
         return dataPageSubc;
     }
@@ -116,8 +116,8 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
         for (IssueConsultEntity i: issueConsults) {
             Map map = new HashMap();
             map.put("entity",i);
-            issueLableEntity = issueLableDao.loadByIssueId(i.getIssue_consult_id());
-            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_consult_issueStatusid());
+            issueLableEntity = issueLableDao.loadByIssueId(i.getIssue_Consult_Id());
+            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_Consult_Issuestatusid());
             map.put("label",issueLableEntity);
             map.put("status",issueStatusEntity);
             list.add(map);
@@ -128,5 +128,17 @@ public class IssueConsultServiceImpl implements IssueConsultServiceIF {
         dataPageSubc.setPaginationSubC(paginationSubC);
 
         return dataPageSubc;
+    }
+
+    @Override
+    public DataPageSubc like(String Cid,String userid) throws Exception {
+        DataPageSubc d=new DataPageSubc();
+        int like = issueConsultDao.like(Cid);
+        int like1 = likeDao.like(new IssueLikeEntity(Cid, userid));
+        d.setData(0);
+        if(like1==like)
+            if (like==1)
+                d.setData(like);
+        return d;
     }
 }

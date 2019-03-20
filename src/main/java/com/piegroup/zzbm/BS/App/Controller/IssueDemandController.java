@@ -28,15 +28,13 @@ public class IssueDemandController {
      * 需求列表
      * @param pageSize
      * @param pageNum
-     * @param all  1表示显示全部需求，其他值代表 系统推荐（非必需）
      * @return
      * @throws Exception
      */
     @RequestMapping("/list")
     @ResponseBody
     public DataVO consultList(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
-                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                              @RequestParam(value="all",required = false,defaultValue = "1")int all) throws  Exception{
+                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
         DataPageSubc list = issueDemandService.list(pageSize, pageNum);
 
         return ResultUtil.success(list);
@@ -44,17 +42,20 @@ public class IssueDemandController {
 
     @RequestMapping("/insert")
     @ResponseBody
-    public DataVO addConsult(String title,String content,int status,int anonymous,String userid,String annexid) throws Exception{
+    public DataVO addConsult(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
+                             @RequestParam(value = "title",required = false,defaultValue = "0000")String title,
+                             @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
+                             @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
+                             @RequestParam(value = "annexid",required = false,defaultValue = "0000")String annexid) throws Exception{
         IssueDemandEntity i=new IssueDemandEntity();
-        String id= TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        String id= "d"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
 
-        i.setIssue_demand_id(id);
-        i.setIssue_demand_title(title);
-        i.setIssue_demand_content(content);
-        i.setIssue_demand_issueStatusid(status);
-        i.setIssue_demand_anonymous(anonymous);
-        i.setIssue_demand_userid(userid);
-        i.setIssue_demand_annexid(annexid);
+        i.setIssue_Demand_Id(id);
+        i.setIssue_Demand_Userid(userid);
+        i.setIssue_Demand_Title(title);
+        i.setIssue_Demand_Content(content);
+        i.setIssue_Demand_Anonymous(anonymous);
+        i.setIssue_Demand_Annexid(annexid);
         DataPageSubc datas = issueDemandService.Insert(i);
 
         return ResultUtil.success(datas);
@@ -65,6 +66,20 @@ public class IssueDemandController {
     public DataVO changeStatus(int status,String id) throws Exception{
         DataPageSubc change = issueDemandService.change(status, id);
         return ResultUtil.success(change);
+    }
+
+    @RequestMapping("/demandById")
+    @ResponseBody
+    public DataVO loadByDId(@RequestParam(value = "did",required = false,defaultValue = "0000")String id) throws Exception{
+        DataPageSubc dataPageSubc = issueDemandService.loadByDemandId(id);
+        return ResultUtil.success(dataPageSubc);
+    }
+
+    @RequestMapping("/like")
+    @ResponseBody
+    public DataVO like(@RequestParam(value = "did",required = false,defaultValue = "0000")String id) throws Exception{
+        DataPageSubc like = issueDemandService.like(id);
+        return ResultUtil.success(like);
     }
 
 }

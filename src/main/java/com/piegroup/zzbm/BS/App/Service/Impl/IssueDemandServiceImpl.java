@@ -4,10 +4,14 @@ import com.piegroup.zzbm.BS.App.Service.IssueDemandServiceIF;
 import com.piegroup.zzbm.Dao.IssueDemandDao;
 import com.piegroup.zzbm.Dao.IssueLableDao;
 import com.piegroup.zzbm.Dao.IssueStatusDao;
+import com.piegroup.zzbm.Dao.UserDao;
 import com.piegroup.zzbm.Entity.IssueDemandEntity;
 import com.piegroup.zzbm.Entity.IssueLableEntity;
 import com.piegroup.zzbm.Entity.IssueStatusEntity;
+import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Utils.F2C;
 import com.piegroup.zzbm.Utils.PaginationUtil;
+import com.piegroup.zzbm.VO.DemandUserVo;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +28,8 @@ import java.util.Map;
 public class IssueDemandServiceImpl implements IssueDemandServiceIF {
     @Resource
     IssueDemandDao  issueDemandDao;
-
+    @Resource
+    UserDao userDao;
     @Resource
     IssueLableDao issueLableDao;
 
@@ -32,7 +37,7 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
     IssueStatusDao issueStatusDao;
 
     @Override
-    public DataPageSubc list(int pageSize, int pageNum) {
+    public DataPageSubc list(int pageSize, int pageNum) throws Exception {
         DataPageSubc dataPageSubc=new DataPageSubc();
         int count=issueDemandDao.count();
         boolean nextp=(pageSize*pageNum) < count;
@@ -40,8 +45,17 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
 
         List<IssueDemandEntity> datas=issueDemandDao.list((paginationSubC.getFromIndex()-1)*paginationSubC.getPageSize(),
                 paginationSubC.getPageSize());
+        List<DemandUserVo> duvs=new ArrayList<>();
+        for (IssueDemandEntity i:datas) {
+            DemandUserVo d=new DemandUserVo();
+            UserEntity userEntity = userDao.queryByUserId(i.getIssue_Demand_Userid());
+            F2C.father2child(i,d);
+            d.setUser(userEntity);
+            duvs.add(d);
+
+        }
         dataPageSubc.setPaginationSubC(paginationSubC);
-        dataPageSubc.setData(datas);
+        dataPageSubc.setData(duvs);
         return dataPageSubc;
     }
 
@@ -80,8 +94,8 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
         for (IssueDemandEntity i: issueDemandEntities) {
             Map map = new HashMap();
             map.put("entity",i);
-            List<IssueLableEntity> lableEntities = issueLableDao.loadByIssueId(i.getIssue_demand_id());
-            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_demand_issueStatusid());
+            List<IssueLableEntity> lableEntities = issueLableDao.loadByIssueId(i.getIssue_Demand_Id());
+            IssueStatusEntity issueStatusEntity = issueStatusDao.loadById(i.getIssue_Demand_Issuestatusid());
 
             map.put("label",lableEntities);
             map.put("status",issueStatusEntity);
@@ -92,5 +106,26 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
         dataPageSubc.setPaginationSubC(paginationSubC);
 
         return dataPageSubc;
+    }
+
+    @Override
+    public DataPageSubc loadByDemandId(String did) throws Exception {
+        DataPageSubc d=new DataPageSubc();
+        IssueDemandEntity issueDemandEntity = issueDemandDao.queryByDid(did);
+        if(issueDemandEntity==null) return null;
+        DemandUserVo duv=new DemandUserVo();
+        UserEntity userEntity = userDao.queryByUserId(issueDemandEntity.getIssue_Demand_Userid());
+        F2C.father2child(issueDemandEntity,d);
+        duv.setUser(userEntity);
+        d.setData(duv);
+        return d;
+    }
+
+    @Override
+    public DataPageSubc like(String did) {
+        DataPageSubc d=new DataPageSubc();
+        int like = issueDemandDao.like(did);
+        d.setData(like);
+        return d;
     }
 }

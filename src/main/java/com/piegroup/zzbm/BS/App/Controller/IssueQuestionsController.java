@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.BS.App.Controller;
 
+import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.BS.App.Service.Impl.IssueQuestionsServiceImpl;
 import com.piegroup.zzbm.Entity.IssueQuestionsEntity;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
@@ -7,6 +8,7 @@ import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import io.swagger.annotations.ApiOperation;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +85,6 @@ public class IssueQuestionsController {
     @ResponseBody
     public DataVO queryQbyQid(@RequestParam(value = "qid",required = false,defaultValue = "0000")String qid)throws Exception{
         DataPageSubc dataPageSubc = issueQuestionsService.queryByQuestionId(qid);
-
         return ResultUtil.success(dataPageSubc);
 
     }

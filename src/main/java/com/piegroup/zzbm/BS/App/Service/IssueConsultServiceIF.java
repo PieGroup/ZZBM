@@ -12,4 +12,6 @@ public interface IssueConsultServiceIF {
     DataPageSubc loadById(String Cid) throws Exception;
 
     DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
+
+    DataPageSubc like(String Cid,String userid) throws Exception;
 }

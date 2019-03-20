@@ -104,4 +104,25 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
         return dataPageSubc;
 
     }
+
+    @Override
+    public DataPageSubc loadByProId(String pidp) throws Exception {
+        DataPageSubc d=new DataPageSubc();
+        IssueProgramEntity issueProgramEntity = issueProgramDao.queryByPid(pidp);
+        if(issueProgramEntity==null) return null;
+        issueProgramDao.read(issueProgramEntity.getIssue_Program_Id());
+        ProgramUserVo puv=new ProgramUserVo();
+        F2C.father2child(issueProgramEntity,puv);
+        puv.setUser(issueUserDao.selectUById(issueProgramEntity.getIssue_Program_Userid()));
+        d.setData(puv);
+        return d;
+    }
+
+    @Override
+    public DataPageSubc like(String id) {
+        DataPageSubc d=new DataPageSubc();
+        int like = issueProgramDao.like(id);
+        d.setData(like);
+        return d;
+    }
 }

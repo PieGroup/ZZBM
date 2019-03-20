@@ -1,26 +1,47 @@
 package com.piegroup.zzbm.Entity;
-
-
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * @// TODO: 2019/3/1 需求表
+ * @Description  
+ * @Author DDLD 
+ * @Date 2019-03-20 
  */
 
 @Data
-public class IssueDemandEntity implements Serializable {
+public class IssueDemandEntity  implements Serializable {
 
+	private static final long serialVersionUID =  4130996315660790681L;
 
-    private static final long serialVersionUID = -6343914622297816493L;
+	 // 需求id
+	private String issue_Demand_Id;
 
-    private String issue_demand_id; //需求id
-    private String issue_demand_time; //需求发布时间
-    private String issue_demand_title; //需求标签
-    private String issue_demand_content; //需求内容
-    private int issue_demand_issueStatusid; //需求状态
-    private int issue_demand_anonymous; //需求是否匿名
-    private String issue_demand_userid; //需求发布人
-    private String issue_demand_annexid; //需求照片附件id
+	 // 需求时间
+	private String issue_Demand_Time;
+
+	 // 需求标题
+	private String issue_Demand_Title;
+
+	 // 需求内容
+	private String issue_Demand_Content;
+
+	 // 阅读量
+	private int issue_Demand_Read;
+
+	 // 点赞量
+	private int issue_Demand_Like;
+
+	 // 需求状态
+	private int issue_Demand_Issuestatusid;
+
+	 // 是否匿名
+	private int issue_Demand_Anonymous;
+
+	 // 提出人
+	private String issue_Demand_Userid;
+
+	 // 照片附件id
+	private String issue_Demand_Annexid;
+
 }

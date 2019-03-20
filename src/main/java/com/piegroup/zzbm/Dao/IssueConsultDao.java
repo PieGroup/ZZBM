@@ -24,7 +24,8 @@ public interface IssueConsultDao {
     @Update("update issue_consult set issue_consult_issueStatusid=#{1} where issue_consult_id=#{2};")
     int changePro(@Param(value = "1") int statusid, @Param(value = "2") String conid);
 
-
+    @Update("update issue_consult set issue_consult_like=issue_consult_like+1 where issue_consult_id=#{1};")
+    int like(@Param(value = "1")String cid);
 
     @Select("select count(*) from issue_consult where issue_consult_userid = #{0}")
     int countByUserid(@Param("0") String user_id);

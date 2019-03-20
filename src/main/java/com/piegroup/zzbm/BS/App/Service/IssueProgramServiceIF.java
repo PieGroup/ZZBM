@@ -10,4 +10,8 @@ public interface IssueProgramServiceIF {
     DataPageSubc change(int status,String id);
 
     DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
+
+    DataPageSubc loadByProId(String pid) throws Exception;
+
+    DataPageSubc like(String id);
 }
