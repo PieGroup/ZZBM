@@ -126,7 +126,7 @@ public class FileUnit {
                 stream.close();
                 //每成功上传一个文件,将上传文件名作为key,服务器保存路径作为value存入returnfileMap中
 
-                returnfileMap.add(url+"/"+fileName);
+                returnfileMap.add(Constants.httpUrl+url+"/"+fileName);
 
 
             } catch (Exception e) {

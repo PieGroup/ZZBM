@@ -80,5 +80,10 @@ public class Constants {
      */
     public static final String WcLoginUrl = "https://api.weixin.qq.com/sns/jscode2session";
 
+    /**
+     * 服务器路径
+     */
+    public static final String httpUrl = "139.159.162.156:9080";
+
 
 }

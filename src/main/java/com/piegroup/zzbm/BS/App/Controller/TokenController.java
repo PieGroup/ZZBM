@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.experimental.PackagePrivate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -169,8 +170,10 @@ public class TokenController {
     @ResponseBody
     @ApiOperation("微信登录")
     @NoRepeatSubmit
-    public DataVO jscode2session(@ApiParam("参数code") String codes, HttpServletResponse response) {
+    public DataVO jscode2session(@ApiParam("参数code")@Param("codes") String codes, HttpServletResponse response) {
 
+
+        System.out.println("请求的code::"+codes);
         Map map = userService.WcLogin(codes);
         Map map1 = new HashMap();
         DataPageSubc dataPageSubc = new DataPageSubc();
