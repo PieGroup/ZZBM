@@ -58,7 +58,7 @@ public class UserEntity  implements Serializable {
 //	 @JsonView(NotView.class)
 	private String user_Qqid;
 
-	 // 微信验证id
+	 // 微信openid
 //	 @JsonView(NotView.class)
 	private String user_Wcid;
 

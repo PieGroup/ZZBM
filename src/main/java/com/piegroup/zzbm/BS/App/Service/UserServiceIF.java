@@ -1,8 +1,11 @@
 package com.piegroup.zzbm.BS.App.Service;
 
+import com.piegroup.zzbm.DTO.UserLabelDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public interface UserServiceIF {
@@ -13,7 +16,7 @@ public interface UserServiceIF {
     //通过手机拿身份
     UserEntity queryByUserPhone(String phone);
 
-    //添加用户
+    //添加安卓用户
     Map addUser(String phone);
 
     //我的发布
@@ -21,4 +24,10 @@ public interface UserServiceIF {
     //编辑个人资料
     public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser);
 
+    ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO, int type);
+
+    Map WcLogin(String code);
+
+    //添加微信用户
+    UserEntity addWcUser(String openid);
 }

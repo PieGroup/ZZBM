@@ -29,7 +29,9 @@ public enum ExceptionEnum  {
     Param_Exception("100017","参数问题"),
     Sms_Code_Frequently_Exception("100018","验证码获取频繁"),
     Request_Frequently_Exception("100019","请求频繁"),
-    Request_Frequently_Error_Exception("100020","重复提交出现异常")
+    Request_Frequently_Error_Exception("100020","重复提交出现异常"),
+    Request_Type_Error_Exception("100021","请求方式有问题"),
+    Wc_Login_Exception("100022","微信默认登录出问题")
     ;
 
     private String code;

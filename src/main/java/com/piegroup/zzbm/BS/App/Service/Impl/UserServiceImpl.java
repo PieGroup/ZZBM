@@ -1,14 +1,21 @@
 package com.piegroup.zzbm.BS.App.Service.Impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.piegroup.zzbm.BS.App.Service.UserServiceIF;
+import com.piegroup.zzbm.BS.Bg.Exceptions.Exceptions;
 import com.piegroup.zzbm.Configs.Constants;
+import com.piegroup.zzbm.DTO.UserLabelDTO;
 import com.piegroup.zzbm.Dao.UserDao;
 import com.piegroup.zzbm.Dao.UserStatusDao;
+import com.piegroup.zzbm.Dao.WcUserDao;
 import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Entity.UserStatusEntity;
+import com.piegroup.zzbm.Enums.ExceptionEnum;
+import com.piegroup.zzbm.Utils.HttpClientUtil;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import com.piegroup.zzbm.VO.SubC.WcUserInfoSubC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -37,6 +45,9 @@ public class UserServiceImpl implements UserServiceIF {
 
     @Resource
     UserStatusDao userStatusDao;
+
+    @Resource
+    WcUserDao wcUserDao;
 
     @Autowired
     private IssueQuestionsServiceImpl issueQuestionsService;
@@ -85,61 +96,32 @@ public class UserServiceImpl implements UserServiceIF {
 
         Map map = new HashMap();
 
-        UserEntity userEntity = new UserEntity();
-        String user_id = "U" + RandomNumberUtil.createRandom(false, 16);
-        String user_login_name = Constants.user_login_name;
-        //1男
-        int user_sex = 1;
-        String user_phone = phone;
-        String user_password = RandomNumberUtil.createRandom(true, 6);
+        UserEntity userEntity = defaultUser(phone, null);
 
-        //1代表正常
-        UserStatusEntity userStatusEntity = userStatusDao.queryById(1);
-        int user_statusid = userStatusEntity.getUser_Status_Id();
-        //积分
-        String user_point = "0";
-        //睿币
-        String user_money = "0";
-        //用户信用
-        String user_credit = "100";
+        UserStatusEntity userStatusEntity = userStatusDao.queryById(userEntity.getUser_Statusid());
 
-        String user_experience = "0";
+        userDao.addUser(userEntity.getUser_Id(),
+                userEntity.getUser_Login_Name(),
+                userEntity.getUser_Phone(),
+                userEntity.getUser_Password(),
+                userEntity.getUser_Sex(),
+                userEntity.getUser_Statusid(),
+                userEntity.getUser_Point(),
+                userEntity.getUser_Money(),
+                userEntity.getUser_Credit(),
+                userEntity.getUser_Experience(),
+                userEntity.getUser_Create_Time(),
+                userEntity.getUser_Wcid());
 
-        Timestamp user_create_time = TimeUtil2.SQLTimestampNow();
-
-
-        userDao.addUser(user_id,
-                user_login_name,
-                user_phone,
-                user_password,
-                user_sex,
-                user_statusid,
-                user_point,
-                user_money,
-                user_credit,
-                user_experience,
-                user_create_time);
-
-
-        userEntity.setUser_Id(user_id);
-        userEntity.setUser_Create_Time(user_create_time);
-        userEntity.setUser_Experience(user_experience);
-        userEntity.setUser_Login_Name(user_login_name);
-        userEntity.setUser_Money(user_money);
-        userEntity.setUser_Phone(user_phone);
-        userEntity.setUser_Point(user_point);
-        userEntity.setUser_Sex(user_sex);
-        userEntity.setUser_Statusid(user_statusid);
-        userEntity.setUser_Credit(user_credit);
+        //不显示密码
         userEntity.setUser_Password("");
-
-
         map.put("user", userEntity);
         map.put("user_status", userStatusEntity);
 
         return map;
     }
 
+    //查询用户的提问、咨询等
     @Override
     public DataPageSubc issue(String user_id, String type, int pageSize, int pageNum) {
 
@@ -150,18 +132,16 @@ public class UserServiceImpl implements UserServiceIF {
         }//发布的需求
         else if (type.equals("demand")) {
             log.info("拿用户的需求");
-            return issueDemandService.loadByUserId(user_id,pageSize,pageNum);
+            return issueDemandService.loadByUserId(user_id, pageSize, pageNum);
 
         } //发布的咨询
-        else if(type.equals("consult")){
+        else if (type.equals("consult")) {
             log.info("拿用户的咨询");
-            return issueConsultService.loadByUserId(user_id,pageSize,pageNum);
-        }
-        else if(type.equals("program")){
+            return issueConsultService.loadByUserId(user_id, pageSize, pageNum);
+        } else if (type.equals("program")) {
             log.info("拿用户的方案");
-            return issueProgramService.loadByUserId(user_id,pageSize,pageNum);
-        }
-        else {
+            return issueProgramService.loadByUserId(user_id, pageSize, pageNum);
+        } else {
 
             DataPageSubc dataPageSubc = new DataPageSubc();
             dataPageSubc.setData("正在开发");
@@ -170,13 +150,156 @@ public class UserServiceImpl implements UserServiceIF {
 
     }
 
-
+    //编辑用户信息
     public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser) {
         DataPageSubc dataPageSubc = new DataPageSubc();
 
-        userDao.editUser(userEntity.getUser_Id(),editUser.getUser_Login_Name(),editUser.getUser_Sex());
-
+        userDao.editUser(userEntity.getUser_Id(), editUser.getUser_Login_Name(), editUser.getUser_Sex());
 
         return dataPageSubc;
+    }
+
+    //设置用户刚兴趣的标签
+    @Transactional
+    @Override
+    public ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO, int type) {
+
+        //type 默认插入
+        if (type == 0) {
+            System.out.println("用户选择的标签" + userLabelDTO);
+            setLable(user_id, userLabelDTO);
+        }
+
+        return ExceptionEnum.Success;
+    }
+
+    //插入
+    private void setLable(String user_id, UserLabelDTO userLabelDTO) {
+        if (userLabelDTO.getId1() != null && !userLabelDTO.getId1().equals(""))
+            if (!userDao.existUserLabel(user_id, userLabelDTO.getId1()))
+                userDao.setuserlable(user_id, userLabelDTO.getId1());
+
+        if (userLabelDTO.getId2() != null && !userLabelDTO.getId2().equals(""))
+            if (!userDao.existUserLabel(user_id, userLabelDTO.getId2()))
+                userDao.setuserlable(user_id, userLabelDTO.getId2());
+
+        if (userLabelDTO.getId3() != null && !userLabelDTO.getId3().equals(""))
+            if (!userDao.existUserLabel(user_id, userLabelDTO.getId3()))
+                userDao.setuserlable(user_id, userLabelDTO.getId3());
+
+        if (userLabelDTO.getId4() != null && !userLabelDTO.getId4().equals(""))
+            if (!userDao.existUserLabel(user_id, userLabelDTO.getId4()))
+                userDao.setuserlable(user_id, userLabelDTO.getId4());
+
+        if (userLabelDTO.getId5() != null && !userLabelDTO.getId5().equals(""))
+            if (!userDao.existUserLabel(user_id, userLabelDTO.getId5()))
+                userDao.setuserlable(user_id, userLabelDTO.getId5());
+    }
+
+    //微信用户请求登录
+    @Transactional
+    public Map WcLogin(String code) {
+
+        WcUserInfoSubC wcUserInfoSubC = new WcUserInfoSubC();
+
+        Map maps = new HashMap();
+
+        //设置请求参数
+        Map<String, String> map = new HashMap<>();
+
+        map.put("appid", Constants.appid);
+        map.put("secret", Constants.secret);
+        map.put("js_code", code);
+        map.put("grant_type", "authorization_code");
+
+        try {
+
+            JSONObject o = HttpClientUtil.sendGet(Constants.WcLoginUrl, HttpClientUtil.getParams(map));
+            if (o != null) {
+
+                wcUserInfoSubC.setOpenid(o.getString("openid"));
+                wcUserInfoSubC.setSession_key(o.getString("session_key"));
+                wcUserInfoSubC.setUnionid(o.getString("unionid"));
+
+
+                //先判断user 表里面存在该微信用户
+                UserEntity user = userDao.existWcid(wcUserInfoSubC.getOpenid());
+                //不存在添加userid,返回userid
+                if (user ==null)
+                    user = addWcUser(wcUserInfoSubC.getOpenid());
+
+                boolean wcuser = wcUserDao.existWcOpenid(wcUserInfoSubC.getOpenid());
+
+                //不存在wcuser 个人资料添加
+                if (!wcuser){
+                    wcUserDao.addWcUser(wcUserInfoSubC.getOpenid(),wcUserInfoSubC.getSession_key());
+                }
+                //设置返回密码为空
+                user.setUser_Password("");
+                UserStatusEntity userStatusEntity = userStatusDao.queryById(user.getUser_Statusid());
+
+                maps.put("entity",user);
+                maps.put("status",userStatusEntity);
+
+            }
+
+            return maps;
+
+        } catch (Exception e) {
+            throw new Exceptions(ExceptionEnum.Wc_Login_Exception);
+        }
+
+    }
+
+    //添加微信用户
+    //返回新建用户的userid
+    @Transactional
+    @Override
+    public UserEntity addWcUser(String openid) {
+        UserEntity userEntity = defaultUser(null, openid);
+        userDao.addUser(userEntity.getUser_Id(),
+                userEntity.getUser_Login_Name(),
+                userEntity.getUser_Phone(),
+                userEntity.getUser_Password(),
+                userEntity.getUser_Sex(),
+                userEntity.getUser_Statusid(),
+                userEntity.getUser_Point(),
+                userEntity.getUser_Money(),
+                userEntity.getUser_Credit(),
+                userEntity.getUser_Experience(),
+                userEntity.getUser_Create_Time(),
+                userEntity.getUser_Wcid());
+        return userEntity;
+    }
+
+    //返回生成一个默认的用户对象
+    private UserEntity defaultUser(String phone, String openid) {
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUser_Id("U" + RandomNumberUtil.createRandom(false, 16));
+        userEntity.setUser_Login_Name(Constants.user_login_name);
+        //1男
+        userEntity.setUser_Sex(1);
+        String user_phone = "";
+        if (phone != null && phone.equals(""))
+            userEntity.setUser_Phone(phone);
+        userEntity.setUser_Password(RandomNumberUtil.createRandom(true, 6));
+
+        //1代表正常
+        UserStatusEntity userStatusEntity = userStatusDao.queryById(1);
+        userEntity.setUser_Statusid(userStatusEntity.getUser_Status_Id());
+        //积分
+        userEntity.setUser_Point("0");
+        //睿币
+        userEntity.setUser_Money("0");
+        //用户信用
+        userEntity.setUser_Credit("100");
+        userEntity.setUser_Experience("0");
+        userEntity.setUser_Create_Time(TimeUtil2.SQLTimestampNow());
+        String user_wcid = "";
+        if (openid != null && openid.equals(""))
+            userEntity.setUser_Wcid(openid);
+        return userEntity;
+
     }
 }

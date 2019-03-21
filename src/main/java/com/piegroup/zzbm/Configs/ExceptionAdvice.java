@@ -7,6 +7,7 @@ import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.VO.DataVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,9 @@ public class ExceptionAdvice {
             Exceptions exceptions = (Exceptions) e;
             logger.info("报错原因={}", exceptions.getMessage());
             return ResultUtil.error(null, ExceptionEnum.valueOf(exceptions.getCode()));
+        }if (e instanceof HttpRequestMethodNotSupportedException){
+            logger.info("报错原因={}",e.getMessage());
+            return ResultUtil.error(null,ExceptionEnum.Request_Type_Error_Exception);
         } else {
             logger.info("【系统异常】={}", e);
             return ResultUtil.error(null, ExceptionEnum.Unknown_Exception);

@@ -3,10 +3,13 @@ package com.piegroup.zzbm.BS.App.Controller;
 import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
+import com.piegroup.zzbm.DTO.UserLabelDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.VO.DataVO;
+import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,9 +39,9 @@ public class UserController {
     @ApiOperation("用户查看自己")
     public DataVO mine(@CurrentUser UserEntity userEntity){
         log.info("获取到用户id:"+userEntity.getUser_Id());
-
-
-       return ResultUtil.success(userEntity);
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        dataPageSubc.setData(userEntity);
+       return ResultUtil.success(dataPageSubc);
     }
 
 
@@ -64,6 +67,18 @@ public class UserController {
 
 
     }
+
+    //用户感兴趣的标签
+    @RequestMapping(method = RequestMethod.POST,value = "/setuserlabel")
+    @ResponseBody
+    @ApiOperation("用户感兴趣的标签选择")
+    @Authorization
+    public DataVO SetUserLabel(@CurrentUser UserEntity userEntity, UserLabelDTO userLabelDTO,@ApiParam("0 为设置 1 为修改") @RequestParam(value = "type",defaultValue = "0") int type){
+
+        return ResultUtil.success(new DataPageSubc<>(),userService.SetUserLabel(userEntity.getUser_Id(),userLabelDTO,type));
+
+    }
+
 
 
 

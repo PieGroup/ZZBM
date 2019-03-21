@@ -2,6 +2,7 @@ package com.piegroup.zzbm.Configs;
 
 /**
  * 常量
+ *
  * @author ScienJus
  * @date 2015/7/31.
  */
@@ -35,11 +36,29 @@ public class Constants {
     /**
      * token 更新时间 秒
      */
-    public static final int UPDATE_TIME_TOKEN= 2592000;
+    public static final int UPDATE_TIME_TOKEN = 2592000;
 
     /**
      * 头像路径保存
      */
     public static final String IconUrl = "F:\\files\\upload";
+
+
+    /**
+     * 微信appId
+     */
+    public static final String appid = "wxf21c2f2905962198";
+
+
+    /**
+     * 微信secret
+     */
+    public static final String secret = "bef929e25267f35baec521314d4138b4";
+
+    /**
+     * 微信 登录凭证校验 url。
+     */
+    public static final String WcLoginUrl = "https://api.weixin.qq.com/sns/jscode2session";
+
 
 }

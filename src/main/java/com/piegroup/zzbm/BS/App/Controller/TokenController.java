@@ -159,7 +159,29 @@ public class TokenController {
     @ResponseBody
     @ApiOperation("没有登录")
     public DataVO noLogin() {
-        return  ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
+        return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
+    }
+
+
+    //微信登录验证
+    @RequestMapping(value = "/jscode2session", method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation("微信登录")
+    public DataVO jscode2session(@ApiParam("参数code") String code, HttpServletResponse response) {
+
+        Map map = userService.WcLogin(code);
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        //生成一个token，保存用户登录状态
+        UserEntity userEntity = (UserEntity) map.get("entity");
+        TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
+
+        response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
+
+        map.put("token", tokenDTO.getToken());
+
+        dataPageSubc.setData(map);
+
+        return ResultUtil.success(dataPageSubc);
     }
 
 }
