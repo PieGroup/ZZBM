@@ -41,7 +41,7 @@ public class Constants {
     /**
      * 头像路径保存
      */
-    public static final String IconUrl = "/usr/local/tomcat-server2/webapps/zzbm/files/usericon";
+    public static final String IconUrl = "/zzbmImg/userHead";
 
 
     /**

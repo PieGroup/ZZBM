@@ -33,7 +33,7 @@ public class FileUnit {
     public ExceptionEnum uploadByIcon(String user_id , MultipartFile file, HttpServletRequest request){
 
         if (null != file) {
-            String uploadImagePath = Constants.IconUrl;
+            String uploadImagePath = request.getServletContext().getContextPath()+Constants.IconUrl;
             System.out.println("保存路径："+uploadImagePath);
             File uploadImageDir = new File(uploadImagePath);
             if (!uploadImageDir.exists()) {

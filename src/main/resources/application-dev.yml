@@ -38,7 +38,11 @@ spring:
       use-key-prefix: true
   jmx:
     enabled: false
-
+  #    设置上传文件大小
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
 
 #日志配置
 #logging:
@@ -48,7 +52,7 @@ spring:
 #静态资源文件
 web:
   upload:
-    path: H:/html/html/
+    path: /zzbmImg/userHead
   resources:
     static-locations: classpath:/static/,file:${web.upload.path}
 
@@ -64,12 +68,7 @@ wechat:
   notify_url: http://gzcstec.com/sell/pay/notify
 
 
-#  token 设置
-token:
-# 重新登录时间 时
-  out_Time: 25200
-#  token 过期时间 秒
-  update_Time: 600
+
 
 
 

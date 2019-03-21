@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  messages:
+    encoding: UTF-8
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/zz?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false
+    prefix: classpath:H:/html/html/
+    #    prefix: classpath:file:${web.upload.path}
+    suffix: .html
+  #链接配置
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+    jedis:
+      pool:
+        #连接池最大活动连接
+        max-active: 30
+        #最大空闲链接
+        max-idle: 10
+        #超过时间
+        max-wait: 10ms
+        #连接池最小空闲连接
+        min-idle: 3
+  cache:
+    cache-names: redis-cache
+    redis:
+      cache-null-values: true #是否可以储存空值
+      time-to-live: 300s
+      use-key-prefix: true
+  jmx:
+    enabled: false
+#    设置上传文件大小
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
