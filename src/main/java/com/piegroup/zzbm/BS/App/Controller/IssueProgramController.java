@@ -46,6 +46,7 @@ public class IssueProgramController {
                              @RequestParam(value = "title",required = false,defaultValue = "0000")String title,
                              @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
+                             @RequestParam(value = "table",required = false,defaultValue = "###")String table,
                              @RequestParam(value = "reward",required = false,defaultValue = "0")int reward,
                              @RequestParam(value = "pic",required = false,defaultValue = "0000")String pic) throws Exception{
         IssueProgramEntity i=new IssueProgramEntity();
@@ -57,6 +58,7 @@ public class IssueProgramController {
         i.setIssue_Program_Anonymous(anonymous);
         i.setIssue_Program_Reward(reward);
         i.setIssue_Program_Pic(pic);
+        i.setIssue_Program_Table(table);
         DataPageSubc datas = issueProgramService.Insert(i);
 
         return ResultUtil.success(datas);
@@ -72,15 +74,17 @@ public class IssueProgramController {
 
     @RequestMapping("/proByProId")
     @ResponseBody
-    public DataVO loadByProId(@RequestParam(value = "pid",required = false,defaultValue = "000")String id) throws Exception{
-        DataPageSubc dataPageSubc = issueProgramService.loadByProId(id);
+    public DataVO loadByProId(@RequestParam(value = "pid",required = false,defaultValue = "000")String pid,
+                              @RequestParam(value = "uid",required = false,defaultValue = "000")String uid) throws Exception{
+        DataPageSubc dataPageSubc = issueProgramService.loadByProId(pid,uid);
         return ResultUtil.success(dataPageSubc);
     }
 
     @RequestMapping("/like")
     @ResponseBody
-    public DataVO like(@RequestParam(value = "pid",required = false,defaultValue = "0000")String id) throws Exception{
-        DataPageSubc dataPageSubc = issueProgramService.like(id);
+    public DataVO like(@RequestParam(value = "pid",required = false,defaultValue = "0000")String pid,
+                       @RequestParam(value = "uid",required = false,defaultValue = "000")String uid) throws Exception{
+        DataPageSubc dataPageSubc = issueProgramService.like(pid,uid);
         return ResultUtil.success(dataPageSubc);
     }
 }

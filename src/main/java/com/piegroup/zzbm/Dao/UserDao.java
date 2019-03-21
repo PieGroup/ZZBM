@@ -9,7 +9,8 @@ import java.sql.Timestamp;
 @Mapper
 public interface UserDao {
 
-    @Select("select * from user where user_id = #{0}")
+    @Select("select user_id,user_login_name,user_real_name,user_phone,user_sex,user_head_url,user_qqid," +
+            "user_wcid,user_inid,user_statusid,user_point,user_money,user_introduction,user_credit,user_experience from user where user_id = #{0}")
     public UserEntity queryByUserId(@Param("0") String UserId);
 
     @Select("select * from user where user_phone = #{0}")

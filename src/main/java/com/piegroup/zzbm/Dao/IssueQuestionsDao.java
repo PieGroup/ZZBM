@@ -19,8 +19,8 @@ public interface IssueQuestionsDao {
     List<IssueQuestionsEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);
 
     @Insert("insert into issue_questions(" +
-            "issue_questions_id,issue_questions_userid,issue_questions_title,issue_questions_generalize,issue_questions_value,issue_questions_anonymous,issue_questions_annexid)" +
-            " values(#{issue_Questions_Id},#{issue_Questions_Userid},#{issue_Questions_Title},#{issue_Questions_Generalize},#{issue_Questions_Value},#{issue_Questions_Anonymous},#{issue_Questions_Annexid});")
+            "issue_questions_id,issue_questions_userid,issue_questions_title,issue_questions_generalize,issue_questions_table,issue_questions_value,issue_questions_anonymous,issue_questions_annexid)" +
+            " values(#{issue_Questions_Id},#{issue_Questions_Userid},#{issue_Questions_Title},#{issue_Questions_Generalize},#{issue_Questions_Table},#{issue_Questions_Value},#{issue_Questions_Anonymous},#{issue_Questions_Annexid});")
     int addDemand(IssueQuestionsEntity I);
 
     @Update("update issue_questions set issue_questions_issueStatusid=#{1} where issue_questions_id=#{2};")
@@ -32,6 +32,11 @@ public interface IssueQuestionsDao {
     @Select("select count(*) from issue_questions where issue_questions_userid = #{0}")
     int countById(@Param("0") String user_id);
 
+    @Update("update issue_questions set issue_questions_like=issue_questions_like+1 where issue_questions_id=#{1};")
+    int like(@Param(value = "1")String qid);
+
+    @Update("update issue_questions set issue_questions_read=issue_questions_read+1 where issue_questions_id=#{1};")
+    int read(@Param(value = "1")String qid);
 
     //取用户id 的多少条记录
     @Select("select * from issue_questions where issue_questions_userid = #{0} limit #{1} , #{2}")

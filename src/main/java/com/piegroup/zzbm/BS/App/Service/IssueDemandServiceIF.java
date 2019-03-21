@@ -10,7 +10,7 @@ public interface IssueDemandServiceIF {
 
     DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
 
-    DataPageSubc loadByDemandId(String did) throws Exception;
+    DataPageSubc loadByDemandId(String did,String uid) throws Exception;
 
-    DataPageSubc like(String did);
+    DataPageSubc like(String did,String uid);
 }

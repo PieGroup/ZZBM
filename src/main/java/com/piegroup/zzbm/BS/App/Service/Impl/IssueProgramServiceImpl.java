@@ -1,13 +1,12 @@
 package com.piegroup.zzbm.BS.App.Service.Impl;
 
 import com.piegroup.zzbm.BS.App.Service.IssueProgramServiceIF;
-import com.piegroup.zzbm.Dao.IssueLableDao;
-import com.piegroup.zzbm.Dao.IssueProgramDao;
-import com.piegroup.zzbm.Dao.IssueStatusDao;
-import com.piegroup.zzbm.Dao.IssueUserDao;
+import com.piegroup.zzbm.Dao.*;
 import com.piegroup.zzbm.Entity.*;
 import com.piegroup.zzbm.Utils.F2C;
 import com.piegroup.zzbm.Utils.PaginationUtil;
+import com.piegroup.zzbm.Utils.RandomNumberUtil;
+import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.ProgramUserVo;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
@@ -35,7 +34,10 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
 
     @Resource
     IssueUserDao issueUserDao;
-
+    @Resource
+    com.piegroup.zzbm.Dao.likeDao likeDao;
+    @Resource
+    notifyDao notifyDao;
     @Override
     public DataPageSubc list(int pageSize, int pageNum) throws Exception {
         DataPageSubc dataPageSubc=new DataPageSubc();
@@ -48,7 +50,14 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
         List<ProgramUserVo> puv =new ArrayList<>();
         for (IssueProgramEntity i:datas) {
             ProgramUserVo temp=new ProgramUserVo();
-            UserEntity userEntity = issueUserDao.selectUById(i.getIssue_Program_Userid());
+            UserEntity userEntity;
+            if (i.getIssue_Program_Anonymous()==1){
+                userEntity= issueUserDao.selectUById("defaultid");
+                userEntity.setUser_Id(i.getIssue_Program_Userid());
+            }
+            else{
+                userEntity= issueUserDao.selectUById(i.getIssue_Program_Userid());
+            }
             F2C.father2child(i,temp);
             temp.setUser(userEntity);
             puv.add(temp);
@@ -106,23 +115,44 @@ public class IssueProgramServiceImpl implements IssueProgramServiceIF {
     }
 
     @Override
-    public DataPageSubc loadByProId(String pidp) throws Exception {
+    public DataPageSubc loadByProId(String pid,String uid) throws Exception {
         DataPageSubc d=new DataPageSubc();
-        IssueProgramEntity issueProgramEntity = issueProgramDao.queryByPid(pidp);
+        IssueProgramEntity issueProgramEntity = issueProgramDao.queryByPid(pid);
         if(issueProgramEntity==null) return null;
         issueProgramDao.read(issueProgramEntity.getIssue_Program_Id());
         ProgramUserVo puv=new ProgramUserVo();
         F2C.father2child(issueProgramEntity,puv);
-        puv.setUser(issueUserDao.selectUById(issueProgramEntity.getIssue_Program_Userid()));
+        UserEntity userEntity;
+        if (issueProgramEntity.getIssue_Program_Anonymous()==1){
+            userEntity= issueUserDao.selectUById("defaultid");
+            userEntity.setUser_Id(issueProgramEntity.getIssue_Program_Userid());
+        }
+        else{
+            userEntity= issueUserDao.selectUById(issueProgramEntity.getIssue_Program_Userid());
+        }
+        puv.setUser(userEntity);
+        if(likeDao.checkLike(uid,issueProgramEntity.getIssue_Program_Id())!=null)
+            puv.setIslike(1);
         d.setData(puv);
         return d;
     }
 
     @Override
-    public DataPageSubc like(String id) {
+    public DataPageSubc like(String pid,String uid) {
         DataPageSubc d=new DataPageSubc();
-        int like = issueProgramDao.like(id);
-        d.setData(like);
+        int like1 = likeDao.like(new IssueLikeEntity(pid,uid));
+        int like = issueProgramDao.like(pid);
+        IssueProgramEntity issueProgramEntity = issueProgramDao.queryByPid(pid);
+        String notifyid="noti"+ TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        IssueNotifyEntity notifyEntity=new IssueNotifyEntity();
+        notifyEntity.setNotifyid(notifyid);
+        notifyEntity.setNotifyfromid(pid);
+        notifyEntity.setNotifytype(""+3);
+        notifyEntity.setNotifytitle("有人点赞了你的方案");
+        notifyEntity.setUserid(uid);
+        notifyEntity.setNotifycontent(issueProgramEntity.getIssue_Program_Title());
+        int i = notifyDao.insertOneNotify(notifyEntity);
+        d.setData((like+like1+i)/3);
         return d;
     }
 }

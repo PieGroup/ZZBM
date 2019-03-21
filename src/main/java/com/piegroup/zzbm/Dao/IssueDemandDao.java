@@ -15,8 +15,8 @@ public interface IssueDemandDao {
     List<IssueDemandEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);
 
     @Insert("insert into issue_demand(" +
-            "issue_demand_id,issue_demand_title,issue_demand_content,issue_demand_anonymous,issue_Demand_Userid,issue_demand_annexid)" +
-            " values(#{issue_Demand_Id},#{issue_Demand_Title},#{issue_Demand_Content},#{issue_Demand_Anonymous},#{issue_Demand_Userid},#{issue_Demand_Annexid});")
+            "issue_demand_id,issue_demand_title,issue_demand_table,issue_demand_content,issue_demand_anonymous,issue_Demand_Userid,issue_demand_annexid)" +
+            " values(#{issue_Demand_Id},#{issue_Demand_Title},#{issue_Demand_Table},#{issue_Demand_Content},#{issue_Demand_Anonymous},#{issue_Demand_Userid},#{issue_Demand_Annexid});")
     int addDemand(IssueDemandEntity I);
 
     @Update("update issue_demand set issue_demand_issueStatusid=#{1} where issue_demand_id=#{2};")

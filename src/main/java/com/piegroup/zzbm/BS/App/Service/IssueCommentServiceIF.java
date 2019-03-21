@@ -13,16 +13,16 @@ import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 */
 public interface IssueCommentServiceIF {
 
-    public DataPageSubc list(int pageSize, int pageNum, String item_id)throws  Exception;
+    public DataPageSubc list(int pageSize, int pageNum, String itemid,String uid)throws  Exception;
 
-    public DataPageSubc QuestionRelist(int pageSize, int pageNum, String item_id)throws  Exception;
+    public DataPageSubc QuestionRelist(int pageSize, int pageNum, String itemid,String uid)throws  Exception;
 
     public DataPageSubc addOneComment(CommentEntity c);
 
     public DataPageSubc changeStatus(String cid,int status);
 
-    public DataPageSubc like(String cid);
+    public DataPageSubc like(String cid,String uid) throws Exception;
 
-    public DataPageSubc dislike(String cid);
+    public DataPageSubc dislike(String cid,String uid) throws Exception;
 
 }

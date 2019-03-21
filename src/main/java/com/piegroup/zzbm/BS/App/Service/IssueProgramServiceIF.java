@@ -11,7 +11,7 @@ public interface IssueProgramServiceIF {
 
     DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
 
-    DataPageSubc loadByProId(String pid) throws Exception;
+    DataPageSubc loadByProId(String pid,String uid) throws Exception;
 
-    DataPageSubc like(String id);
+    DataPageSubc like(String pid,String uid);
 }

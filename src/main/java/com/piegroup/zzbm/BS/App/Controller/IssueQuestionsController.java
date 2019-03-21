@@ -26,7 +26,6 @@ public class IssueQuestionsController {
     @Autowired
     IssueQuestionsServiceImpl issueQuestionsService;
 
-
     /**
      * 需求列表
      * @param pageSize
@@ -50,7 +49,8 @@ public class IssueQuestionsController {
                              @RequestParam(value = "generalize",required = false,defaultValue = "")String generalize,
                              @RequestParam(value = "value",required = false,defaultValue = "0")int value,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "")int anonymous,
-                             @RequestParam(value = "annexid",required = false,defaultValue = "")String annexid) throws Exception{
+                             @RequestParam(value = "annexid",required = false,defaultValue = "")String annexid,
+                             @RequestParam(value = "table",required = false,defaultValue = "###")String table) throws Exception{
         IssueQuestionsEntity i=new IssueQuestionsEntity();
         String id= "q"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
         i.setIssue_Questions_Id(id);
@@ -60,6 +60,7 @@ public class IssueQuestionsController {
         i.setIssue_Questions_Value(value);
         i.setIssue_Questions_Anonymous(anonymous);
         i.setIssue_Questions_Annexid(annexid);
+        i.setIssue_Questions_Table(table);
         DataPageSubc datas = issueQuestionsService.Insert(i);
         return ResultUtil.success(datas);
     }
@@ -83,9 +84,19 @@ public class IssueQuestionsController {
 
     @RequestMapping("/questionByQid")
     @ResponseBody
-    public DataVO queryQbyQid(@RequestParam(value = "qid",required = false,defaultValue = "0000")String qid)throws Exception{
-        DataPageSubc dataPageSubc = issueQuestionsService.queryByQuestionId(qid);
+    public DataVO queryQbyQid(@RequestParam(value = "qid",required = false,defaultValue = "0000")String qid,
+                              @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid)throws Exception{
+        DataPageSubc dataPageSubc = issueQuestionsService.queryByQuestionId(qid,uid);
         return ResultUtil.success(dataPageSubc);
+
+    }
+
+    @RequestMapping("/like")
+    @ResponseBody
+    public DataVO like(@RequestParam(value = "qid",required = false,defaultValue = "0000")String qid,
+                              @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid)throws Exception{
+        DataPageSubc like = issueQuestionsService.like(qid, uid);
+        return ResultUtil.success(like);
 
     }
 }
