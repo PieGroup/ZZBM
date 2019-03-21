@@ -170,11 +170,11 @@ public class TokenController {
     @ResponseBody
     @ApiOperation("微信登录")
     @NoRepeatSubmit
-    public DataVO jscode2session(@ApiParam("参数code")@Param("codes") String codes, HttpServletResponse response) {
+    public DataVO jscode2session(@RequestParam("code")String code , HttpServletResponse response,HttpServletRequest request) {
 
 
-        System.out.println("请求的code::"+codes);
-        Map map = userService.WcLogin(codes);
+        System.out.println("请求的code::"+code);
+        Map map = userService.WcLogin(code);
         Map map1 = new HashMap();
         DataPageSubc dataPageSubc = new DataPageSubc();
         if (map.get("entity") != null) {
@@ -192,5 +192,6 @@ public class TokenController {
         }
         return ResultUtil.error(dataPageSubc,ExceptionEnum.Wc_Login_Exception);
     }
+
 
 }
