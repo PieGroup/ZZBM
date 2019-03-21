@@ -216,16 +216,15 @@ public class UserServiceImpl implements UserServiceIF {
             try {
 
                  o = HttpClientUtil.sendGet(Constants.WcLoginUrl, HttpClientUtil.getParams(map));
+                System.out.println(o.toJSONString());
 
-            }catch (Exception e)
-            {
+            }catch (Exception e) {
                 throw new Exceptions(ExceptionEnum.Wc_User_Request_Exception);
             }
             if (o.getString("openid") != null) {
                 System.out.println(o.toJSONString());
                 wcUserInfoSubC.setOpenid(o.getString("openid"));
                 wcUserInfoSubC.setSession_key(o.getString("session_key"));
-                wcUserInfoSubC.setUnionid(o.getString("unionid"));
 
 
                 //先判断user 表里面存在该微信用户
@@ -262,6 +261,7 @@ public class UserServiceImpl implements UserServiceIF {
     @Transactional
     @Override
     public UserEntity addWcUser(String openid) {
+        log.info("开始注册微信用户");
         UserEntity userEntity = defaultUser(null, openid);
         userDao.addUser(userEntity.getUser_Id(),
                 userEntity.getUser_Login_Name(),
@@ -275,6 +275,7 @@ public class UserServiceImpl implements UserServiceIF {
                 userEntity.getUser_Experience(),
                 userEntity.getUser_Create_Time(),
                 userEntity.getUser_Wcid());
+        log.info("结束注册微信用户");
         return userEntity;
     }
 
@@ -287,7 +288,7 @@ public class UserServiceImpl implements UserServiceIF {
         //1男
         userEntity.setUser_Sex(1);
         String user_phone = "";
-        if (phone != null && phone.equals(""))
+        if (phone != null && !phone.equals(""))
             userEntity.setUser_Phone(phone);
         userEntity.setUser_Password(RandomNumberUtil.createRandom(true, 6));
 
@@ -303,7 +304,7 @@ public class UserServiceImpl implements UserServiceIF {
         userEntity.setUser_Experience("0");
         userEntity.setUser_Create_Time(TimeUtil2.SQLTimestampNow());
         String user_wcid = "";
-        if (openid != null && openid.equals(""))
+        if (openid != null && !openid.equals(""))
             userEntity.setUser_Wcid(openid);
         return userEntity;
 

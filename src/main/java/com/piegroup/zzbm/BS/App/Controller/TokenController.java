@@ -167,9 +167,9 @@ public class TokenController {
     @RequestMapping(value = "/jscode2session", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("微信登录")
-    public DataVO jscode2session(@ApiParam("参数code") String code, HttpServletResponse response) {
+    public DataVO jscode2session(@ApiParam("参数code") String codes, HttpServletResponse response) {
 
-        Map map = userService.WcLogin(code);
+        Map map = userService.WcLogin(codes);
         DataPageSubc dataPageSubc = new DataPageSubc();
         if (map.get("entity") != null) {
             //生成一个token，保存用户登录状态

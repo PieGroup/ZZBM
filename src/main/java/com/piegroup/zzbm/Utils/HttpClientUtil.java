@@ -84,7 +84,7 @@ public class HttpClientUtil {
              * 获取响应吗
              */
             int statusCode = response.getStatusLine().getStatusCode();
-
+            System.out.println("响应码："+statusCode);
             if (SUCCESS_CODE == statusCode) {
                 /**
                  * 获取返回对象
