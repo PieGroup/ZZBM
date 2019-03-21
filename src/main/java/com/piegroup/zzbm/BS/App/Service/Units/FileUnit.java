@@ -44,7 +44,7 @@ public class FileUnit {
                     System.out.println("文件夹创建失败");
                 }
             }
-            String fileUrlName = uploadImagePath+ "\\"+user_id+"_Icon.png";
+            String fileUrlName = uploadImagePath+ "/"+user_id+"_Icon.png";
             // 要保存的图片
             File saveToServerImage = new File(fileUrlName);
             try {

@@ -32,7 +32,7 @@ public enum ExceptionEnum  {
     Request_Frequently_Error_Exception("100020","重复提交出现异常"),
     Request_Type_Error_Exception("100021","请求方式有问题"),
     Wc_Login_Exception("100022","微信默认登录出问题"),
-    Wc_User_Request_Exception("100021","微信获取用户信息问题")
+    Wc_User_Request_Exception("100023","微信获取用户信息问题")
     ;
 
     private String code;
