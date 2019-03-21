@@ -4,6 +4,7 @@ import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.FileServiceImpl;
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
@@ -53,9 +54,19 @@ public class FileController {
     })
     public DataVO upload(@CurrentUser UserEntity userEntity, MultipartFile file, HttpServletRequest request , int type){
         Assert.notNull(type,"类型不能为空");
-
-        return ResultUtil.success( new DataPageSubc<>(),fileService.upload(userEntity.getUser_Id(),file,request,type));
+       DataPageSubc dataPageSubc =  fileService.upload(userEntity.getUser_Id(),file,request,type);
+        return ResultUtil.success(dataPageSubc, ExceptionEnum.Success);
     }
+
+
+    @RequestMapping(value = "/batchUpload",method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation("多文件上传")
+    @Authorization
+    public DataVO batchUpload(@CurrentUser UserEntity userEntity,HttpServletRequest request,int type){
+       return ResultUtil.success( fileService.batchUpload(userEntity.getUser_Id(),request,type),ExceptionEnum.Success);
+    }
+
 
 
 }

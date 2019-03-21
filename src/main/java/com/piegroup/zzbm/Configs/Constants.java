@@ -43,6 +43,26 @@ public class Constants {
      */
     public static final String IconUrl = "/zzbmImg/userHead";
 
+    /**
+     * 问题保存路径
+     */
+    public static final String questionUrl = "/zzbmImg/question";
+
+    /**
+     * 咨询保存路径
+     */
+    public static final String consultUrl = "/zzbmImg/consult";
+
+    /**
+     * 需求保存路径
+     */
+    public static final String demandUrl = "/zzbmImg/demand";
+
+    /**
+     * 方案保存路径
+     */
+    public static final String programUrl = "/zzbmImg/program";
+
 
     /**
      * 微信appId
