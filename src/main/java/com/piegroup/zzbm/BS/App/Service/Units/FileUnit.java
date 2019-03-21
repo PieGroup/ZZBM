@@ -50,12 +50,13 @@ public class FileUnit {
             }
             String fileUrlName = uploadImagePath+ "/"+user_id+"_Icon.png";
             // 要保存的图片
+            String fileName = Constants.IconUrl+user_id+"_Icon.png";
             File saveToServerImage = new File(fileUrlName);
             try {
                 // 将要上传的图片信息写入要保存的图片中
                 file.transferTo(saveToServerImage);
                 // 将图片信息存储到数据库
-               boolean b = userDao.updateIcon(user_id,fileUrlName);
+               boolean b = userDao.updateIcon(user_id,fileName);
 
                 if (b) {
                     log.info("结束上传");
