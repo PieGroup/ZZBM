@@ -3,6 +3,7 @@ package com.piegroup.zzbm.BS.App.Controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
+import com.piegroup.zzbm.Annotation.NoRepeatSubmit;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
 import com.piegroup.zzbm.BS.App.TokenManager.RedisTokenManager;
 import com.piegroup.zzbm.Configs.Constants;
@@ -163,13 +164,15 @@ public class TokenController {
     }
 
 
-    //微信登录验证
+    //微信登录验证 请求次数不要重复 （2秒）
     @RequestMapping(value = "/jscode2session", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("微信登录")
+    @NoRepeatSubmit
     public DataVO jscode2session(@ApiParam("参数code") String codes, HttpServletResponse response) {
 
         Map map = userService.WcLogin(codes);
+        Map map1 = new HashMap();
         DataPageSubc dataPageSubc = new DataPageSubc();
         if (map.get("entity") != null) {
             //生成一个token，保存用户登录状态
@@ -178,9 +181,9 @@ public class TokenController {
 
             response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
 
-            map.put("token", tokenDTO.getToken());
+            map1.put("token", tokenDTO.getToken());
 
-            dataPageSubc.setData(map);
+            dataPageSubc.setData(map1);
 
             return ResultUtil.success(dataPageSubc);
         }
