@@ -171,17 +171,20 @@ public class TokenController {
 
         Map map = userService.WcLogin(code);
         DataPageSubc dataPageSubc = new DataPageSubc();
-        //生成一个token，保存用户登录状态
-        UserEntity userEntity = (UserEntity) map.get("entity");
-        TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
+        if (map.get("entity") != null) {
+            //生成一个token，保存用户登录状态
+            UserEntity userEntity = (UserEntity) map.get("entity");
+            TokenDTO tokenDTO = tokenManager.createToken(userEntity.getUser_Id());
 
-        response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
+            response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
 
-        map.put("token", tokenDTO.getToken());
+            map.put("token", tokenDTO.getToken());
 
-        dataPageSubc.setData(map);
+            dataPageSubc.setData(map);
 
-        return ResultUtil.success(dataPageSubc);
+            return ResultUtil.success(dataPageSubc);
+        }
+        return ResultUtil.error(dataPageSubc,ExceptionEnum.Wc_Login_Exception);
     }
 
 }

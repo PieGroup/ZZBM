@@ -211,12 +211,18 @@ public class UserServiceImpl implements UserServiceIF {
         map.put("secret", Constants.secret);
         map.put("js_code", code);
         map.put("grant_type", "authorization_code");
-
+        JSONObject o = new JSONObject();
         try {
+            try {
 
-            JSONObject o = HttpClientUtil.sendGet(Constants.WcLoginUrl, HttpClientUtil.getParams(map));
-            if (o != null) {
+                 o = HttpClientUtil.sendGet(Constants.WcLoginUrl, HttpClientUtil.getParams(map));
 
+            }catch (Exception e)
+            {
+                throw new Exceptions(ExceptionEnum.Wc_User_Request_Exception);
+            }
+            if (o.getString("openid") != null) {
+                System.out.println(o.toJSONString());
                 wcUserInfoSubC.setOpenid(o.getString("openid"));
                 wcUserInfoSubC.setSession_key(o.getString("session_key"));
                 wcUserInfoSubC.setUnionid(o.getString("unionid"));
@@ -246,7 +252,7 @@ public class UserServiceImpl implements UserServiceIF {
             return maps;
 
         } catch (Exception e) {
-            throw new Exceptions(ExceptionEnum.Wc_Login_Exception);
+            throw e;
         }
 
     }
