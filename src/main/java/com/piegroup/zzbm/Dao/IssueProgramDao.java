@@ -19,8 +19,8 @@ public interface IssueProgramDao {
     IssueProgramEntity queryByPid(@Param(value = "1")String pid);
 
     @Insert("insert into issue_program(" +
-            "issue_program_id,issue_program_userid,issue_program_title,issue_program_content,issue_program_anonymous,issue_program_reward,issue_program_issueStatusid,issue_program_annexid)" +
-            " values(#{issue_program_id},#{issue_program_userid},#{issue_program_title},#{issue_program_content},#{issue_program_anonymous},#{issue_program_reward},#{issue_program_issueStatusid},#{issue_program_annexid});")
+            "issue_program_id,issue_program_userid,issue_program_title,issue_program_table,issue_program_content,issue_program_anonymous,issue_program_reward,issue_program_issueStatusid,issue_program_annexid)" +
+            " values(#{issue_program_id},#{issue_program_userid},#{issue_program_title},#{issue_Program_Table},#{issue_program_content},#{issue_program_anonymous},#{issue_program_reward},#{issue_program_issueStatusid},#{issue_program_annexid});")
     int addProgram(IssueProgramEntity I);
 
     @Update("update issue_program set issue_program_issueStatusid=#{1} where issue_program_id=#{2};")

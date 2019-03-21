@@ -9,7 +9,7 @@ public interface IssueConsultServiceIF {
 
     DataPageSubc change(int status, String id);
 
-    DataPageSubc loadById(String Cid) throws Exception;
+    DataPageSubc loadById(String Cid,String uid) throws Exception;
 
     DataPageSubc loadByUserId(String user_id,int pageSize,int pageNum);
 

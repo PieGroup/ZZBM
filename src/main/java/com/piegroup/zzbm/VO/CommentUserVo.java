@@ -10,4 +10,6 @@ public class CommentUserVo extends CommentEntity {
     private static final long serialVersionUID = 8654804473461566788L;
     private UserEntity father_user;
     private UserEntity user;
+    private int islike;
+    private int dislike;
 }

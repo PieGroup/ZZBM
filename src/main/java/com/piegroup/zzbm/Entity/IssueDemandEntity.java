@@ -6,13 +6,13 @@ import java.io.Serializable;
 /**
  * @Description  
  * @Author DDLD 
- * @Date 2019-03-20 
+ * @Date 2019-03-21 
  */
 
 @Data
 public class IssueDemandEntity  implements Serializable {
 
-	private static final long serialVersionUID =  4130996315660790681L;
+	private static final long serialVersionUID =  6015707622480936167L;
 
 	 // 需求id
 	private String issue_Demand_Id;
@@ -22,6 +22,8 @@ public class IssueDemandEntity  implements Serializable {
 
 	 // 需求标题
 	private String issue_Demand_Title;
+
+	private String issue_Demand_Table;
 
 	 // 需求内容
 	private String issue_Demand_Content;

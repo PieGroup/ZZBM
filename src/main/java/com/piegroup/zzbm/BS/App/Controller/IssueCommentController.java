@@ -52,8 +52,9 @@ public class IssueCommentController {
     @ResponseBody
     public DataVO list(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
                        @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                       @RequestParam(value = "itemid",required = false,defaultValue = "0000")String itemid)throws  Exception{
-        DataPageSubc list = issueCommentService.list(pageSize, pageNum, itemid);
+                       @RequestParam(value = "itemid",required = false,defaultValue = "0000")String itemid,
+                       @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid)throws  Exception{
+        DataPageSubc list = issueCommentService.list(pageSize, pageNum, itemid,uid);
         return ResultUtil.success(list);
     }
 
@@ -61,8 +62,9 @@ public class IssueCommentController {
     @ResponseBody
     public DataVO list2(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
                        @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                       @RequestParam(value = "itemid",required = false,defaultValue = "0000")String itemid)throws  Exception{
-        DataPageSubc list = issueCommentService.QuestionRelist(pageSize, pageNum, itemid);
+                       @RequestParam(value = "itemid",required = false,defaultValue = "0000")String itemid,
+                        @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid)throws  Exception{
+        DataPageSubc list = issueCommentService.QuestionRelist(pageSize, pageNum, itemid,uid);
         return ResultUtil.success(list);
     }
 
@@ -77,15 +79,17 @@ public class IssueCommentController {
 
     @RequestMapping("/like")
     @ResponseBody
-    public DataVO like(@RequestParam(value = "cId",required = false,defaultValue = "0000")String cid)throws Exception{
-        DataPageSubc like = issueCommentService.like(cid);
+    public DataVO like(@RequestParam(value = "cid",required = false,defaultValue = "0000")String cid,
+                       @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid)throws Exception{
+        DataPageSubc like = issueCommentService.like(cid,uid);
         return ResultUtil.success(like);
     }
 
     @RequestMapping("/dislike")
     @ResponseBody
-    public DataVO dislike(@RequestParam(value = "cId",required = false,defaultValue = "0000")String cid)throws Exception{
-        DataPageSubc dislike = issueCommentService.dislike(cid);
+    public DataVO dislike(@RequestParam(value = "cid",required = false,defaultValue = "0000")String cid,
+                          @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid)throws Exception{
+        DataPageSubc dislike = issueCommentService.dislike(cid,uid);
         return ResultUtil.success(dislike);
     }
 

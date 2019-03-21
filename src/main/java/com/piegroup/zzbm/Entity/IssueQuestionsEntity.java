@@ -6,13 +6,13 @@ import java.io.Serializable;
 /**
  * @Description  
  * @Author DDLD 
- * @Date 2019-03-20 
+ * @Date 2019-03-21 
  */
 
 @Data
 public class IssueQuestionsEntity  implements Serializable {
 
-	private static final long serialVersionUID =  8005674180985926223L;
+	private static final long serialVersionUID =  6769122792383424479L;
 
 	 // 问题id
 	private String issue_Questions_Id;
@@ -28,6 +28,8 @@ public class IssueQuestionsEntity  implements Serializable {
 
 	 // 问题概括
 	private String issue_Questions_Generalize;
+
+	private String issue_Questions_Table;
 
 	private int issue_Questions_Read;
 

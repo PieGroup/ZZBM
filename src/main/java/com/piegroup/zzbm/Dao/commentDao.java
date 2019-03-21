@@ -33,10 +33,14 @@ public interface commentDao {
     @Update("update comment set comment_dislike=comment_dislike+1 where comment_id=#{1};")
     int dislike(@Param(value = "1")String commentid);
 
+    @Update("update comment set comment_dislike=comment_dislike-1 where comment_id=#{1};")
+    int cancelDislike(@Param(value = "1")String commentid);
+
     @Update("update comment set comment_like=comment_like + 1 where comment_id=#{1};")
     int like(@Param(value = "1")String commentid);
 
-
+    @Update("update comment set comment_like=comment_like - 1 where comment_id=#{1};")
+    int cancelLike(@Param(value = "1")String commentid);
 
 
 

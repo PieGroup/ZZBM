@@ -46,6 +46,7 @@ public class IssueDemandController {
                              @RequestParam(value = "title",required = false,defaultValue = "0000")String title,
                              @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
+                             @RequestParam(value = "table",required = false,defaultValue = "###")String table,
                              @RequestParam(value = "annexid",required = false,defaultValue = "0000")String annexid) throws Exception{
         IssueDemandEntity i=new IssueDemandEntity();
         String id= "d"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
@@ -56,6 +57,7 @@ public class IssueDemandController {
         i.setIssue_Demand_Content(content);
         i.setIssue_Demand_Anonymous(anonymous);
         i.setIssue_Demand_Annexid(annexid);
+        i.setIssue_Demand_Table(table);
         DataPageSubc datas = issueDemandService.Insert(i);
 
         return ResultUtil.success(datas);
@@ -70,15 +72,17 @@ public class IssueDemandController {
 
     @RequestMapping("/demandById")
     @ResponseBody
-    public DataVO loadByDId(@RequestParam(value = "did",required = false,defaultValue = "0000")String id) throws Exception{
-        DataPageSubc dataPageSubc = issueDemandService.loadByDemandId(id);
+    public DataVO loadByDId(@RequestParam(value = "did",required = false,defaultValue = "0000")String id,
+                            @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid) throws Exception{
+        DataPageSubc dataPageSubc = issueDemandService.loadByDemandId(id,uid);
         return ResultUtil.success(dataPageSubc);
     }
 
     @RequestMapping("/like")
     @ResponseBody
-    public DataVO like(@RequestParam(value = "did",required = false,defaultValue = "0000")String id) throws Exception{
-        DataPageSubc like = issueDemandService.like(id);
+    public DataVO like(@RequestParam(value = "did",required = false,defaultValue = "0000")String id,
+                       @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid) throws Exception{
+        DataPageSubc like = issueDemandService.like(id,uid);
         return ResultUtil.success(like);
     }
 

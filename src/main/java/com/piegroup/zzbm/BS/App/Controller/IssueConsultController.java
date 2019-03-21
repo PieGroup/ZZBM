@@ -82,9 +82,17 @@ public class IssueConsultController {
 
     @RequestMapping("/listById")
     @ResponseBody
-    public DataVO changeStatus(@RequestParam(value = "cid",required = false,defaultValue = "0000")String cid) throws Exception{
-        DataPageSubc dataPageSubc = issueConsultService.loadById(cid);
+    public DataVO changeStatus(@RequestParam(value = "cid",required = false,defaultValue = "0000")String cid,
+                               @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid) throws Exception{
+        DataPageSubc dataPageSubc = issueConsultService.loadById(cid,uid);
         return ResultUtil.success(dataPageSubc);
     }
 
+    @RequestMapping("/like")
+    @ResponseBody
+    public DataVO like(@RequestParam(value = "cid",required = false,defaultValue = "0000")String cid,
+                        @RequestParam(value = "uid",required = false,defaultValue = "0000")String uid) throws Exception{
+        DataPageSubc like = issueConsultService.like(cid, uid);
+        return ResultUtil.success(like);
+    }
 }

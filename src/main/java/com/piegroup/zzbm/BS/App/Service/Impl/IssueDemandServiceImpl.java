@@ -1,16 +1,12 @@
 package com.piegroup.zzbm.BS.App.Service.Impl;
 
 import com.piegroup.zzbm.BS.App.Service.IssueDemandServiceIF;
-import com.piegroup.zzbm.Dao.IssueDemandDao;
-import com.piegroup.zzbm.Dao.IssueLableDao;
-import com.piegroup.zzbm.Dao.IssueStatusDao;
-import com.piegroup.zzbm.Dao.UserDao;
-import com.piegroup.zzbm.Entity.IssueDemandEntity;
-import com.piegroup.zzbm.Entity.IssueLableEntity;
-import com.piegroup.zzbm.Entity.IssueStatusEntity;
-import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Dao.*;
+import com.piegroup.zzbm.Entity.*;
 import com.piegroup.zzbm.Utils.F2C;
 import com.piegroup.zzbm.Utils.PaginationUtil;
+import com.piegroup.zzbm.Utils.RandomNumberUtil;
+import com.piegroup.zzbm.Utils.TimeUtil2;
 import com.piegroup.zzbm.VO.DemandUserVo;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import com.piegroup.zzbm.VO.SubC.PaginationSubC;
@@ -29,13 +25,15 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
     @Resource
     IssueDemandDao  issueDemandDao;
     @Resource
-    UserDao userDao;
+    IssueUserDao issueUserDao;
     @Resource
     IssueLableDao issueLableDao;
-
+    @Resource
+    likeDao likeDao;
     @Resource
     IssueStatusDao issueStatusDao;
-
+    @Resource
+    notifyDao notifyDao;
     @Override
     public DataPageSubc list(int pageSize, int pageNum) throws Exception {
         DataPageSubc dataPageSubc=new DataPageSubc();
@@ -48,7 +46,14 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
         List<DemandUserVo> duvs=new ArrayList<>();
         for (IssueDemandEntity i:datas) {
             DemandUserVo d=new DemandUserVo();
-            UserEntity userEntity = userDao.queryByUserId(i.getIssue_Demand_Userid());
+            UserEntity userEntity;
+            if (i.getIssue_Demand_Anonymous()==1){
+                userEntity= issueUserDao.selectUById("defaultid");
+                userEntity.setUser_Id(i.getIssue_Demand_Userid());
+            }
+            else{
+                userEntity= issueUserDao.selectUById(i.getIssue_Demand_Userid());
+            }
             F2C.father2child(i,d);
             d.setUser(userEntity);
             duvs.add(d);
@@ -109,23 +114,43 @@ public class IssueDemandServiceImpl implements IssueDemandServiceIF {
     }
 
     @Override
-    public DataPageSubc loadByDemandId(String did) throws Exception {
+    public DataPageSubc loadByDemandId(String did,String uid) throws Exception {
         DataPageSubc d=new DataPageSubc();
         IssueDemandEntity issueDemandEntity = issueDemandDao.queryByDid(did);
         if(issueDemandEntity==null) return null;
+        issueDemandDao.read(did);
         DemandUserVo duv=new DemandUserVo();
-        UserEntity userEntity = userDao.queryByUserId(issueDemandEntity.getIssue_Demand_Userid());
-        F2C.father2child(issueDemandEntity,d);
+        UserEntity userEntity ;
+        if (issueDemandEntity.getIssue_Demand_Anonymous()==1){
+            userEntity= issueUserDao.selectUById("defaultid");
+            userEntity.setUser_Id(issueDemandEntity.getIssue_Demand_Userid());
+        }
+        else{
+            userEntity= issueUserDao.selectUById(issueDemandEntity.getIssue_Demand_Userid());}
+        if(likeDao.checkLike(uid,issueDemandEntity.getIssue_Demand_Id())!= null)
+            duv.setIslike(1);
+        F2C.father2child(issueDemandEntity,duv);
         duv.setUser(userEntity);
         d.setData(duv);
         return d;
     }
 
     @Override
-    public DataPageSubc like(String did) {
+    public DataPageSubc like(String did,String uid) {
         DataPageSubc d=new DataPageSubc();
+        int like1 = likeDao.like(new IssueLikeEntity(did, uid));
         int like = issueDemandDao.like(did);
-        d.setData(like);
+        IssueDemandEntity issueDemandEntity = issueDemandDao.queryByDid(did);
+        String notifyid="noti"+ TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
+        IssueNotifyEntity notifyEntity=new IssueNotifyEntity();
+        notifyEntity.setNotifyid(notifyid);
+        notifyEntity.setNotifyfromid(did);
+        notifyEntity.setNotifytype(""+2);
+        notifyEntity.setNotifytitle("有人点赞了你的需求");
+        notifyEntity.setUserid(uid);
+        notifyEntity.setNotifycontent(issueDemandEntity.getIssue_Demand_Title());
+        int i = notifyDao.insertOneNotify(notifyEntity);
+        d.setData((like+like1+i)/3);
         return d;
     }
 }
