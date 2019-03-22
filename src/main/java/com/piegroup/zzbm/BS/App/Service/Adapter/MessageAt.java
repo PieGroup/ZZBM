@@ -3,7 +3,9 @@ package com.piegroup.zzbm.BS.App.Service.Adapter;
 import com.piegroup.zzbm.BS.App.Service.MessageServiceIF;
 import com.piegroup.zzbm.BS.App.Service.Units.SmsCodeUnit;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
+import com.piegroup.zzbm.Utils.SMSCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,14 +17,17 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-public class MessageAt implements MessageServiceIF {
+public abstract class MessageAt implements MessageServiceIF {
 
     @Autowired
     private SmsCodeUnit smsCodeUnit;
 
-    @Override
-    public ExceptionEnum send(String phone) {
 
-        return smsCodeUnit.send(phone);
-    }
+
+    @Override
+    public abstract ExceptionEnum send(String phone);
+
+
+
+
 }

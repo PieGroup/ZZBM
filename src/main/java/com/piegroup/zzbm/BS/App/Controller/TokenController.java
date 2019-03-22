@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.piegroup.zzbm.Annotation.Authorization;
 import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.Annotation.NoRepeatSubmit;
+import com.piegroup.zzbm.BS.App.Service.Adapter.MessageAt;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
+import com.piegroup.zzbm.BS.App.Service.Units.SmsCodeUnit;
 import com.piegroup.zzbm.BS.App.TokenManager.RedisTokenManager;
 import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.DTO.TokenDTO;
@@ -12,6 +14,7 @@ import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.Utils.SMSCodeUtil;
+import com.piegroup.zzbm.Utils.SpringUtil;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import io.swagger.annotations.ApiOperation;
@@ -20,8 +23,10 @@ import lombok.experimental.PackagePrivate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
@@ -40,7 +45,7 @@ import java.util.Map;
  * @author ScienJus
  * @date 2015/7/30.
  */
-@RestController
+@Controller
 @RequestMapping("/tokens")
 @Slf4j
 @CrossOrigin
@@ -53,11 +58,15 @@ public class TokenController {
     private RedisTokenManager tokenManager;
 
     @Autowired
-    private SMSCodeUtil smsCodeUtil;
+    private MessageAt messageAt;
+
+    @Autowired
+    SmsCodeUnit smsCodeUnit;
 
 
     //通过密码登录
     @RequestMapping(method = RequestMethod.POST, value = "/LBP")
+    @ResponseBody
     @ApiOperation(value = "密码登录")
     public DataVO loginByPassword(@ApiParam("手机号") @RequestParam String phone, @ApiParam("密码") @RequestParam String password, HttpServletResponse response) {
         Assert.notNull(phone, "username can not be empty");
@@ -87,11 +96,11 @@ public class TokenController {
         return ResultUtil.success(dataPageSubc);
     }
 
-    //通过验证码登录
     @RequestMapping(method = RequestMethod.POST, value = "/LBC")
     @ResponseBody
     @ApiOperation("验证码登录 || 注册")
-    private DataVO LoginSignUpByCode(@ApiParam("手机号") @RequestParam String phone, @ApiParam("验证码") @RequestParam String code, HttpServletResponse response) {
+    @NoRepeatSubmit
+    public DataVO LoginSignUpByCode(@ApiParam("手机号") @RequestParam String phone, @ApiParam("验证码") @RequestParam String code, HttpServletResponse response) {
         Assert.notNull(phone, "phone can not be empty");
         Assert.notNull(code, "phone can not be empty");
         log.info("用户手机号：" + phone + "--验证码：" + code);
@@ -103,7 +112,10 @@ public class TokenController {
         Map map = new HashMap();
 
         //验证验证码
-        ExceptionEnum exceptionEnum = smsCodeUtil.checkCode(phone, code);
+        if (smsCodeUnit==null){
+            System.out.println("123456");
+        }
+        ExceptionEnum exceptionEnum = smsCodeUnit.check(phone, code);
         if (exceptionEnum == ExceptionEnum.Success) {
 
             UserEntity userEntity = userService.queryByUserPhone(phone);
@@ -132,6 +144,7 @@ public class TokenController {
         }
         return ResultUtil.error(new DataPageSubc<>(), exceptionEnum);
     }
+    //通过验证码登录
 
     @RequestMapping(method = RequestMethod.POST)
     @Authorization

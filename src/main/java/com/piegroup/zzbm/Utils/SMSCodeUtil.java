@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class SMSCodeUtil {
      * @param id
      * @return
      */
-    private  RedisTemplate SmsRedis;
+    public RedisTemplate SmsRedis;
 
     @Autowired
     public SMSCodeUtil(RedisTemplate redisTemplate) {
@@ -150,10 +151,11 @@ public class SMSCodeUtil {
      * @return
      */
     public  ExceptionEnum checkCode(String userPhone, String code) {
-        if (code == "" || code == null){
+       /* if (code == "" || code == null || SmsRedis.hasKey(userPhone)){
             return Sms_Code_Error_Exception;
-        }
+        }*/
 
+        System.out.println("code 个数：");
         if (SmsRedis.keys(userPhone).size() > 0){
 
             String smsCode = (String) SmsRedis.boundValueOps(userPhone).get();

@@ -6,6 +6,7 @@ import com.piegroup.zzbm.Enums.SMSNoticeEnum;
 import com.piegroup.zzbm.Utils.SMSCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
 *@ClassName     SmsCodeUnit
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class SmsCodeUnit extends MessageAt {
 
     @Autowired
-    private SMSCodeUtil smsCodeUtil;
+    public SMSCodeUtil smsCodeUtil;
 
     public ExceptionEnum send(String phone) {
 
@@ -30,4 +31,9 @@ public class SmsCodeUnit extends MessageAt {
                 SMSNoticeEnum.SignName,
                 SMSNoticeEnum.SMSTemplateCode);
     }
+    public ExceptionEnum check(String userPhone,String code){
+        return smsCodeUtil.checkCode(userPhone,code);
+    }
+
+
 }
