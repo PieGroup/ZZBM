@@ -355,10 +355,11 @@ public class UserServiceImpl implements UserServiceIF {
 
         userEntity.setUser_Id("");
         userEntity.setUser_Wcid("");
-        userDetailEntity.setUserid("");
-        map.put("user",userEntity);
-        map.put("userdetail",userDetailEntity);
-        map.put("label",list);
+        if (userDetailEntity != null)
+            userDetailEntity.setUserid("");
+        map.put("user", userEntity);
+        map.put("userdetail", userDetailEntity);
+        map.put("label", list);
 
         dataPageSubc.setData(map);
 
