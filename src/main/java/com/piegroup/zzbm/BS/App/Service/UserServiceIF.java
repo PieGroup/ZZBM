@@ -5,7 +5,7 @@ import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface UserServiceIF {
@@ -30,4 +30,9 @@ public interface UserServiceIF {
 
     //添加微信用户
     UserEntity addWcUser(String openid);
+
+    //查看钱包
+    DataPageSubc wallet(String user_id);
+
+    DataPageSubc certification(String user_id, HttpServletRequest request);
 }

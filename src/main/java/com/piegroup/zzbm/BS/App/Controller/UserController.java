@@ -5,6 +5,7 @@ import com.piegroup.zzbm.Annotation.CurrentUser;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
 import com.piegroup.zzbm.DTO.UserLabelDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.ResultUtil;
 import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
 *@ClassName     UserController
@@ -79,7 +82,28 @@ public class UserController {
 
     }
 
+    //我的钱包
+    @RequestMapping(method = RequestMethod.GET,value = "/wallet")
+    @ResponseBody
+    @Authorization
+    public DataVO wallet(@CurrentUser UserEntity userEntity){
+        if (userEntity == null){
+            return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
+        }
+        return ResultUtil.success(userService.wallet(userEntity.getUser_Id()));
+    }
 
+    //app请求认证接口
+    @RequestMapping(method = RequestMethod.POST,value = "/certification")
+    @ResponseBody
+    @Authorization
+    public DataVO certification(@CurrentUser UserEntity userEntity, HttpServletRequest request){
+
+        if (userEntity == null){
+            return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
+        }
+        return ResultUtil.success(userService.certification(userEntity.getUser_Id(),request));
+    }
 
 
 

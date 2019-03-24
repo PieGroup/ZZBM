@@ -23,8 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -215,10 +214,10 @@ public class UserServiceImpl implements UserServiceIF {
         try {
             try {
 
-                 o = HttpClientUtil.sendGet(Constants.WcLoginUrl, HttpClientUtil.getParams(map));
+                o = HttpClientUtil.sendGet(Constants.WcLoginUrl, HttpClientUtil.getParams(map));
                 System.out.println(o.toJSONString());
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 throw new Exceptions(ExceptionEnum.Wc_User_Request_Exception);
             }
             if (o.getString("openid") != null) {
@@ -230,21 +229,21 @@ public class UserServiceImpl implements UserServiceIF {
                 //先判断user 表里面存在该微信用户
                 UserEntity user = userDao.existWcid(wcUserInfoSubC.getOpenid());
                 //不存在添加userid,返回userid
-                if (user ==null)
+                if (user == null)
                     user = addWcUser(wcUserInfoSubC.getOpenid());
 
                 boolean wcuser = wcUserDao.existWcOpenid(wcUserInfoSubC.getOpenid());
 
                 //不存在wcuser 个人资料添加
-                if (!wcuser){
-                    wcUserDao.addWcUser(wcUserInfoSubC.getOpenid(),wcUserInfoSubC.getSession_key());
+                if (!wcuser) {
+                    wcUserDao.addWcUser(wcUserInfoSubC.getOpenid(), wcUserInfoSubC.getSession_key());
                 }
                 //设置返回密码为空
                 user.setUser_Password("");
                 UserStatusEntity userStatusEntity = userStatusDao.queryById(user.getUser_Statusid());
 
-                maps.put("entity",user);
-                maps.put("status",userStatusEntity);
+                maps.put("entity", user);
+                maps.put("status", userStatusEntity);
 
             }
 
@@ -308,5 +307,27 @@ public class UserServiceImpl implements UserServiceIF {
             userEntity.setUser_Wcid(openid);
         return userEntity;
 
+    }
+
+    //查看用户的钱包
+    public DataPageSubc wallet(String user_id) {
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        String user_money = userDao.loadWalletById(user_id);
+
+        Map map = new HashMap();
+        map.put("user_money", user_money);
+        dataPageSubc.setData(map);
+        return dataPageSubc;
+    }
+
+
+    //app 专家认证
+    @Override
+    public DataPageSubc certification(String user_id, HttpServletRequest request) {
+
+
+        request.getParameter("");
+
+        return null;
     }
 }

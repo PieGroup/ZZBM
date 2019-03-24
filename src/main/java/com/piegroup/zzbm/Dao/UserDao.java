@@ -60,4 +60,7 @@ public interface UserDao {
     //判断该用户openid
     @Select("select * from user where user_wcid = #{0}")
     UserEntity existWcid(@Param("0") String openid);
+
+    @Select("select user_money from user where user_id = #{0}")
+    String loadWalletById(@Param("0") String user_id);
 }

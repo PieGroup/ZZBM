@@ -1,5 +1,6 @@
 package com.piegroup.zzbm.BS.App.Service.Units;
 
+import com.piegroup.zzbm.BS.Bg.Exceptions.Exceptions;
 import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.Dao.UserDao;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
@@ -36,16 +37,18 @@ public class FileUnit {
 
     //用户头像
     @Transactional
-    public DataPageSubc uploadByIcon(String user_id, MultipartFile file, HttpServletRequest request) {
+    public DataPageSubc uploadByIcon(String user_id, MultipartFile file, HttpServletRequest request, String url) throws Exception {
 
         DataPageSubc dataPageSubc = new DataPageSubc();
 
         Map map = new HashMap();
 
         if (null != file) {
+            //项目路径tomcat/ webapp/zzbm
             String realPath = request.getServletContext().getRealPath("/");
 
-            String uploadImagePath = (new File(realPath)).getParent() + Constants.IconUrl;
+            //.getParent()  tomcat /webApp 路径下
+            String uploadImagePath = (new File(realPath)).getParent() +url;
 
             System.out.println("保存路径：" + uploadImagePath);
 
@@ -62,15 +65,14 @@ public class FileUnit {
 
             String fileUrlName = uploadImagePath + "/" + user_id + "_Icon.png";
             // 要保存的图片
-            String fileName = Constants.IconUrl + user_id + "_Icon.png";
-            map.put("url", fileName);
+            String fileName = url + user_id + "_Icon.png";
+            map.put("url", Constants.httpUrl+fileName);
             File saveToServerImage = new File(fileUrlName);
             try {
                 // 将要上传的图片信息写入要保存的图片中
                 file.transferTo(saveToServerImage);
 //                 将图片信息存储到数据库
 //               boolean b = userDao.updateIcon(user_id,fileName);
-
 //                if (b) {
                 log.info("结束上传");
                 dataPageSubc.setData(map);
@@ -78,11 +80,11 @@ public class FileUnit {
 //                }
             } catch (IOException e) {
                 log.info("保存失败");
-                return dataPageSubc;
+               throw e;
             }
         }
         log.info("文件为空");
-        return dataPageSubc;
+       return dataPageSubc;
 
     }
 

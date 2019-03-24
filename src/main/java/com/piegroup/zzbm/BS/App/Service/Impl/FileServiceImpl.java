@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
 
 /**
  * @ClassName FileServiceImpl
@@ -32,18 +33,26 @@ public class FileServiceImpl implements FileServiceIF {
     @Override
     public DataPageSubc upload(String user_id, MultipartFile file, HttpServletRequest request, int type) {
 
+
         DataPageSubc dataPageSubc = new DataPageSubc();
+        //根据上传方式判断保存的路径
+        String url = "";
         //用户头像上传
         if (type == 1) {
-
             log.info("开始上传");
-            dataPageSubc = fileUnit.uploadByIcon(user_id, file, request);
-            return dataPageSubc;
+            url = Constants.IconUrl;
+        } else {
 
-        } else  {
-
-            return null;
+            url = Constants.IconUrl;
         }
+        try {
+
+            return fileUnit.uploadByIcon(user_id, file, request, url);
+
+        } catch (Exception e) {
+            throw new Exceptions(ExceptionEnum.Upload_Fail);
+        }
+
     }
 
     //多文件

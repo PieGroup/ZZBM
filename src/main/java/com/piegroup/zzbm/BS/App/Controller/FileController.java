@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,28 +42,35 @@ public class FileController {
     private FileServiceImpl fileService;
 
     //单个文件上传
-    @RequestMapping(value = "/upload" ,method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
     @Authorization
     @ApiOperation("单文件上传")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "authorization", required = true, dataType = "string", paramType = "header"),
     })
-    public DataVO upload(@CurrentUser UserEntity userEntity, MultipartFile file, HttpServletRequest request , int type){
-        Assert.notNull(type,"类型不能为空");
-       DataPageSubc dataPageSubc =  fileService.upload(userEntity.getUser_Id(),file,request,type);
+    public DataVO upload(@CurrentUser UserEntity userEntity, MultipartFile file, HttpServletRequest request, @RequestParam(value = "type", defaultValue = "1") int type) {
+        Assert.notNull(type, "类型不能为空");
+//        Assert.notNull(file,"文件不能为空");
+        DataPageSubc dataPageSubc = new DataPageSubc();
+
+        if (file == null) {
+            return ResultUtil.error(dataPageSubc, ExceptionEnum.Upload_Null);
+        }
+        dataPageSubc = fileService.upload(userEntity.getUser_Id(), file, request, type);
+
+
         return ResultUtil.success(dataPageSubc, ExceptionEnum.Success);
     }
 
 
-    @RequestMapping(value = "/batchUpload",method = RequestMethod.POST)
+    @RequestMapping(value = "/batchUpload", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("多文件上传")
     @Authorization
-    public DataVO batchUpload(@CurrentUser UserEntity userEntity,HttpServletRequest request,int type){
-       return ResultUtil.success( fileService.batchUpload(userEntity.getUser_Id(),request,type),ExceptionEnum.Success);
+    public DataVO batchUpload(@CurrentUser UserEntity userEntity, HttpServletRequest request, int type) {
+        return ResultUtil.success(fileService.batchUpload(userEntity.getUser_Id(), request, type), ExceptionEnum.Success);
     }
-
 
 
 }
