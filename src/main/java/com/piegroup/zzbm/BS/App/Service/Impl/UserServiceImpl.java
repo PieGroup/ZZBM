@@ -289,7 +289,7 @@ public class UserServiceImpl implements UserServiceIF {
         userEntity.setUser_Id("U" + RandomNumberUtil.createRandom(false, 16));
         userEntity.setUser_Login_Name(Constants.user_login_name);
         //1男
-        userEntity.setUser_Sex(1);
+        userEntity.setUser_Sex("男");
         String user_phone = "";
         if (phone != null && !phone.equals(""))
             userEntity.setUser_Phone(phone);

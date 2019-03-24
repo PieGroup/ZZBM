@@ -36,7 +36,7 @@ public interface UserDao {
                     @Param("1") String user_login_name,
                     @Param("2") String phone,
                     @Param("3") String user_password,
-                    @Param("4") int user_sex,
+                    @Param("4") String user_sex,
                     @Param("5") int user_statusid,
                     @Param("6") String user_point,
                     @Param("7") String user_money,
@@ -46,7 +46,7 @@ public interface UserDao {
                     @Param("11") String openid);
 
     @Update("update user set user_login_name = #{1} ,user_sex = #{2} where user_id = #{0}")
-    boolean editUser(@Param("0") String user_id,@Param("1") String userLoginName,@Param("2") int user_sex);
+    boolean editUser(@Param("0") String user_id,@Param("1") String userLoginName,@Param("2") String user_sex);
 
     //更新用户头像
     @Update("update user set user_head_url = #{1} where user_id =#{0} ")

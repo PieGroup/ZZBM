@@ -41,7 +41,7 @@ public class UserEntity  implements Serializable {
 
 	 // 性别
 //	 @JsonView(Visible.class)
-	private int user_Sex;
+	private String user_Sex;
 
 	 // 身份证
 //	 @JsonView(Visible.class)
