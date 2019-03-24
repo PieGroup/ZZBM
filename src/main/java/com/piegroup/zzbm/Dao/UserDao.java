@@ -1,10 +1,13 @@
 package com.piegroup.zzbm.Dao;
 
+import com.piegroup.zzbm.Entity.UserDetailEntity;
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.Entity.UserLableEntity;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Mapper
 public interface UserDao {
@@ -63,4 +66,12 @@ public interface UserDao {
 
     @Select("select user_money from user where user_id = #{0}")
     String loadWalletById(@Param("0") String user_id);
+
+
+    //查找用户细节信息
+    @Select("select * from user_detail where userid = #{0}")
+    UserDetailEntity loadByUserId(@Param("0") String user_id);
+
+    @Select("select * from user_lable where userid = #{0}")
+    List<UserLableEntity> loadUserLabel(@Param("0") String user_id);
 }

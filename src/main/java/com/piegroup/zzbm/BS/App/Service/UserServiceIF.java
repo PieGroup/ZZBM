@@ -35,4 +35,8 @@ public interface UserServiceIF {
     DataPageSubc wallet(String user_id);
 
     DataPageSubc certification(String user_id, HttpServletRequest request);
+
+
+    //显示个人详细信息
+    DataPageSubc detail(UserEntity userEntity);
 }

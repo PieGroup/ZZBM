@@ -5,11 +5,11 @@ import com.piegroup.zzbm.BS.App.Service.UserServiceIF;
 import com.piegroup.zzbm.BS.Bg.Exceptions.Exceptions;
 import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.DTO.UserLabelDTO;
+import com.piegroup.zzbm.Dao.IssueLableDao;
 import com.piegroup.zzbm.Dao.UserDao;
 import com.piegroup.zzbm.Dao.UserStatusDao;
 import com.piegroup.zzbm.Dao.WcUserDao;
-import com.piegroup.zzbm.Entity.UserEntity;
-import com.piegroup.zzbm.Entity.UserStatusEntity;
+import com.piegroup.zzbm.Entity.*;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.HttpClientUtil;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
@@ -48,6 +48,9 @@ public class UserServiceImpl implements UserServiceIF {
     @Resource
     WcUserDao wcUserDao;
 
+    @Resource
+    IssueLableDao issueLableDao;
+
     @Autowired
     private IssueQuestionsServiceImpl issueQuestionsService;
 
@@ -59,6 +62,7 @@ public class UserServiceImpl implements UserServiceIF {
 
     @Autowired
     private IssueConsultServiceImpl issueConsultService;
+
     @Autowired
     private IssueProgramServiceImpl issueProgramService;
 
@@ -329,5 +333,35 @@ public class UserServiceImpl implements UserServiceIF {
         request.getParameter("");
 
         return null;
+    }
+
+    //个人细节
+    @Override
+    public DataPageSubc detail(UserEntity userEntity) {
+
+        UserDetailEntity userDetailEntity = userDao.loadByUserId(userEntity.getUser_Id());
+        List<String> list = new ArrayList<String>();
+        Map map = new HashMap();
+        DataPageSubc dataPageSubc = new DataPageSubc();
+
+
+        //查询用户个人认证的标签
+        List<UserLableEntity> userLableEntities = userDao.loadUserLabel(userEntity.getUser_Id());
+        if (userLableEntities != null) {
+            for (UserLableEntity i : userLableEntities) {
+                list.add(issueLableDao.findOneIssueId(i.getUser_Issue_Labelid()).getIssue_lable_name());
+            }
+        }
+
+        userEntity.setUser_Id("");
+        userEntity.setUser_Wcid("");
+        userDetailEntity.setUserid("");
+        map.put("user",userEntity);
+        map.put("userdetail",userDetailEntity);
+        map.put("label",list);
+
+        dataPageSubc.setData(map);
+
+        return dataPageSubc;
     }
 }

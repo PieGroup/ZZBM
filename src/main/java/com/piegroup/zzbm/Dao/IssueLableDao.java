@@ -22,4 +22,10 @@ public interface IssueLableDao {
     //通过issueId 查询 lable
     @Select("select * from issue_lable where  issue_lable_id = (select issueLableid from issue_mtm_issuelable where issueid = #{0})")
     public List<IssueLableEntity> loadByIssueId(@Param("0") String questionId);
+
+    //通过lable id 查找标签
+    @Select("select * from issue_lable where issue_lable_id = #{0}")
+    IssueLableEntity findOneIssueId(@Param("0") String issueId);
+
+
 }

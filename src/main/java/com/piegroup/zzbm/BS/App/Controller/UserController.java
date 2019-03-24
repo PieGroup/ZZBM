@@ -57,7 +57,7 @@ public class UserController {
         return  ResultUtil.success( userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum));
     }
 
-    //编辑用户资料
+    //
 
     @RequestMapping(method = RequestMethod.POST ,value = "/editUser")
     @ResponseBody
@@ -103,6 +103,17 @@ public class UserController {
             return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
         }
         return ResultUtil.success(userService.certification(userEntity.getUser_Id(),request));
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/detail")
+    @ResponseBody
+    @Authorization
+    public DataVO detail(@CurrentUser UserEntity userEntity){
+        if (userEntity == null){
+            return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
+        }
+        return ResultUtil.success(userService.detail(userEntity));
+
     }
 
 
