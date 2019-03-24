@@ -78,6 +78,7 @@ public class UserEntity  implements Serializable {
 //	 @JsonView(Visible.class)
 	private String user_Money;
 
+	//描述
 //	@JsonView(Visible.class)
 	private String user_Introduction;
 

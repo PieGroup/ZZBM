@@ -157,7 +157,12 @@ public class UserServiceImpl implements UserServiceIF {
     public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser) {
         DataPageSubc dataPageSubc = new DataPageSubc();
 
-        userDao.editUser(userEntity.getUser_Id(), editUser.getUser_Login_Name(), editUser.getUser_Sex());
+        if (editUser.getUser_Sex() == null || editUser.getUser_Sex().equals(""))
+            editUser.setUser_Sex(userEntity.getUser_Sex());
+        if (editUser.getUser_Login_Name() == null || editUser.getUser_Login_Name().equals(""))
+            editUser.setUser_Login_Name(userEntity.getUser_Login_Name());
+
+        userDao.editUser(userEntity.getUser_Id(), editUser.getUser_Login_Name(), editUser.getUser_Sex(), editUser.getUser_Introduction());
 
         return dataPageSubc;
     }
@@ -165,39 +170,27 @@ public class UserServiceImpl implements UserServiceIF {
     //设置用户刚兴趣的标签
     @Transactional
     @Override
-    public ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO, int type) {
+    public ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO) {
 
-        //type 默认插入
-        if (type == 0) {
-            System.out.println("用户选择的标签" + userLabelDTO);
-            setLable(user_id, userLabelDTO);
+
+        System.out.println("用户选择的标签" + userLabelDTO);
+
+        List<String> list = userLabelDTO.getLabel_id();
+
+        for (String i : list) {
+            if (i != null && !i.equals("")) {
+                if (!userDao.existUserLabel(user_id, i))
+                    if (issueLableDao.findOneIssueId(i) != null)
+                        userDao.setuserlable(user_id, i);
+                    else
+                        return ExceptionEnum.Label_Null_Exception;
+            } else
+                return ExceptionEnum.Param_Exception;
         }
 
         return ExceptionEnum.Success;
     }
 
-    //插入
-    private void setLable(String user_id, UserLabelDTO userLabelDTO) {
-        if (userLabelDTO.getId1() != null && !userLabelDTO.getId1().equals(""))
-            if (!userDao.existUserLabel(user_id, userLabelDTO.getId1()))
-                userDao.setuserlable(user_id, userLabelDTO.getId1());
-
-        if (userLabelDTO.getId2() != null && !userLabelDTO.getId2().equals(""))
-            if (!userDao.existUserLabel(user_id, userLabelDTO.getId2()))
-                userDao.setuserlable(user_id, userLabelDTO.getId2());
-
-        if (userLabelDTO.getId3() != null && !userLabelDTO.getId3().equals(""))
-            if (!userDao.existUserLabel(user_id, userLabelDTO.getId3()))
-                userDao.setuserlable(user_id, userLabelDTO.getId3());
-
-        if (userLabelDTO.getId4() != null && !userLabelDTO.getId4().equals(""))
-            if (!userDao.existUserLabel(user_id, userLabelDTO.getId4()))
-                userDao.setuserlable(user_id, userLabelDTO.getId4());
-
-        if (userLabelDTO.getId5() != null && !userLabelDTO.getId5().equals(""))
-            if (!userDao.existUserLabel(user_id, userLabelDTO.getId5()))
-                userDao.setuserlable(user_id, userLabelDTO.getId5());
-    }
 
     //微信用户请求登录
     @Transactional

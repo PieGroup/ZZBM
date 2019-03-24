@@ -24,7 +24,7 @@ public interface UserServiceIF {
     //编辑个人资料
     public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser);
 
-    ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO, int type);
+    ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO);
 
     Map WcLogin(String code);
 

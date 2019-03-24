@@ -1,6 +1,7 @@
 package com.piegroup.zzbm.Dao;
 
 import com.piegroup.zzbm.Entity.OrderMasterEntity;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -25,4 +26,19 @@ public interface OrderMasterDao {
 
     @Select("select * from issue_status")
     public int test();
+
+
+    //保存订单
+    @Insert("insert into order_master values(#{order_Master_Id},\n" +
+            "#{order_Master_Userid},\n" +
+            "#{order_Master_Money},\n" +
+            "#{order_Master_Piad_Type},\n" +
+            "#{order_Master_Status},\n" +
+            "#{order_Master_Pay_Status},\n" +
+            "#{order_Master_Create_Time},\n" +
+            "#{order_Master_Update_Time},\n" +
+            "#{order_Master_Buyer_Openid},\n" +
+            "#{order_Master_Phone})")
+    boolean save( OrderMasterEntity orderMasterEntity);
+
 }

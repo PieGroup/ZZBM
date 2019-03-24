@@ -2,6 +2,8 @@ package com.piegroup.zzbm.DTO;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @ClassName UserLabelDTO
  * @Description TODO 用户兴趣的五个标签
@@ -13,10 +15,6 @@ import lombok.Data;
 @Data
 public class UserLabelDTO {
 
-    private String id1;
-    private String id2;
-    private String id3;
-    private String id4;
-    private String id5;
+    private List<String> label_id;
 
 }

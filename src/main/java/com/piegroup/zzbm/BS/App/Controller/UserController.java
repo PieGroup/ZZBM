@@ -57,8 +57,7 @@ public class UserController {
         return  ResultUtil.success( userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum));
     }
 
-    //
-
+    //用户编辑个人资料
     @RequestMapping(method = RequestMethod.POST ,value = "/editUser")
     @ResponseBody
     @Authorization
@@ -76,9 +75,9 @@ public class UserController {
     @ResponseBody
     @ApiOperation("用户感兴趣的标签选择")
     @Authorization
-    public DataVO SetUserLabel(@CurrentUser UserEntity userEntity, UserLabelDTO userLabelDTO,@ApiParam("0 为设置 1 为修改") @RequestParam(value = "type",defaultValue = "0") int type){
+    public DataVO SetUserLabel(@CurrentUser UserEntity userEntity,@RequestBody UserLabelDTO userLabelDTO){
 
-        return ResultUtil.success(new DataPageSubc<>(),userService.SetUserLabel(userEntity.getUser_Id(),userLabelDTO,type));
+        return ResultUtil.success(new DataPageSubc<>(),userService.SetUserLabel(userEntity.getUser_Id(),userLabelDTO));
 
     }
 
@@ -105,6 +104,7 @@ public class UserController {
         return ResultUtil.success(userService.certification(userEntity.getUser_Id(),request));
     }
 
+    //个人详情
     @RequestMapping(method = RequestMethod.POST,value = "/detail")
     @ResponseBody
     @Authorization

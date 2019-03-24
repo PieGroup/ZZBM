@@ -45,8 +45,8 @@ public interface UserDao {
                     @Param("10") Timestamp user_create_time,
                     @Param("11") String openid);
 
-    @Update("update user set user_login_name = #{1} ,user_sex = #{2} where user_id = #{0}")
-    boolean editUser(@Param("0") String user_id,@Param("1") String userLoginName,@Param("2") String user_sex);
+    @Update("update user set user_login_name = #{1} ,user_sex = #{2}, user_introduction = #{3} where user_id = #{0}")
+    boolean editUser( @Param("0") String user_id, @Param("1") String userLoginName, @Param("2") String user_sex, @Param("3") String Introduction );
 
     //更新用户头像
     @Update("update user set user_head_url = #{1} where user_id =#{0} ")
@@ -58,7 +58,7 @@ public interface UserDao {
 
     //插入用户兴趣标签
     @Insert("insert into user_mtm_issue_lable(userid, issue_lableid) VALUES (#{0},#{1})")
-    boolean setuserlable(@Param("0") String user_id,@Param("1") String id1);
+    boolean setuserlable(@Param("0") String user_id,@Param("1") String labelId);
 
     //判断该用户openid
     @Select("select * from user where user_wcid = #{0}")

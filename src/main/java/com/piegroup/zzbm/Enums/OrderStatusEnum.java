@@ -7,7 +7,7 @@ public enum OrderStatusEnum  {
     Unpaid_OrderState("400001", "未支付"),
     Success_OrderState("400002", "交易成功"),
     Fail_OrderState("400003", "交易失败"),
-    Cancel_OrderState("400004", "取消");
+    Cancel_OrderState("400004", "取消订单");
 
     private String code;
     private String message;

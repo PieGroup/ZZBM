@@ -33,7 +33,11 @@ public enum ExceptionEnum  {
     Request_Type_Error_Exception("100021","请求方式有问题"),
     Wc_Login_Exception("100022","微信默认登录出问题"),
     Wc_User_Request_Exception("100023","微信获取用户信息问题"),
-    Upload_Null("100024","文件为空")
+    Upload_Null("100024","文件为空"),
+    Create_Order_Exception("100025","下单失败"),
+    Product_Null_Exception("100026","商品不存在"),
+    Product_Stock_Error("100027","商品库存异常"),
+    Label_Null_Exception("100028","标签不存在")
     ;
 
     private String code;
