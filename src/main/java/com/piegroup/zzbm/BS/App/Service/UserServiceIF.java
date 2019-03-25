@@ -26,6 +26,7 @@ public interface UserServiceIF {
 
     ExceptionEnum SetUserLabel(String user_id, UserLabelDTO userLabelDTO);
 
+    //微信登录
     Map WcLogin(String code);
 
     //添加微信用户
@@ -39,4 +40,7 @@ public interface UserServiceIF {
 
     //显示个人详细信息
     DataPageSubc detail(UserEntity userEntity);
+
+    //显示用户感兴趣的标签
+    DataPageSubc listUserLabel(String user_id);
 }

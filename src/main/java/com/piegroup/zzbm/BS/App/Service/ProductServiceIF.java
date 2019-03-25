@@ -19,4 +19,7 @@ public interface ProductServiceIF {
 
     //减库存
     public void decreaseStock(List<ProductSubC> productSubCs);
+
+    //增加库存
+    public void increaseStock(List<ProductSubC> productSubCS);
 }

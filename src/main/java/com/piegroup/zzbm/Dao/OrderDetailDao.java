@@ -5,8 +5,10 @@ import lombok.Data;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ClassName OrderDetailDao
@@ -36,4 +38,7 @@ public interface OrderDetailDao {
             "#{order_Detail_Quantity},\n" +
             "#{order_Detail_Price})")
     public boolean save( OrderDetailEntity orderDetailEntity);
+
+    @Select("select * from order_detail where order_detail_orderid = #{0}")
+    List<OrderDetailEntity> findByOrderId(@Param("0") String orderId);
 }

@@ -1,4 +1,5 @@
 package com.piegroup.zzbm.Entity;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.piegroup.zzbm.Enums.OrderStatusEnum;
 import com.piegroup.zzbm.Enums.PayStatusEnum;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
  */
 
 @Data
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderMasterEntity  implements Serializable {
 
 	private static final long serialVersionUID =  3343645549874551651L;
@@ -31,7 +33,7 @@ public class OrderMasterEntity  implements Serializable {
 	private String order_Master_Piad_Type;
 
 	 /** 订单状态,默认为新下单 . */ 
-	private int order_Master_Status = Integer.parseInt(OrderStatusEnum.Unpaid_OrderState.getCode());
+	private int order_Master_Status = Integer.parseInt(OrderStatusEnum.Default_OrderState.getCode());
 
 	 /** 支付状态,默认未支付 . */ 
 	private int order_Master_Pay_Status = Integer.parseInt(PayStatusEnum.Pay_Wait_PayStatus.getCode());

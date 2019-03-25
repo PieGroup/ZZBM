@@ -1,11 +1,9 @@
 package com.piegroup.zzbm.Dao;
 
 import com.piegroup.zzbm.Entity.OrderMasterEntity;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -18,11 +16,12 @@ public interface OrderMasterDao {
    public int OrderSize();
 
     //分页获取Orders表中的数据
-    @Select("SELECT * FROM orders WHERE orders.uid = #{2} LIMIT  #{0},#{1}")
-    public List<OrderMasterEntity> loadPage(@Param("2") String userId, @Param("0") int fromIndex, @Param("1") int pageSize);
+    @Select("SELECT * FROM order_master WHERE order_master_userid = #{2} LIMIT  #{0},#{1}")
+    public List<OrderMasterEntity> findList(@Param("2") String userId, @Param("0") int fromIndex, @Param("1") int pageSize);
 
     //获取单个订单
-    OrderMasterEntity findOne(String orderId);
+    @Select("select * from order_master where order_master_id = #{0}")
+    OrderMasterEntity findOne(@Param("0") String orderId);
 
     @Select("select * from issue_status")
     public int test();
@@ -41,4 +40,14 @@ public interface OrderMasterDao {
             "#{order_Master_Phone})")
     boolean save( OrderMasterEntity orderMasterEntity);
 
+    @Select("select count(*) from order_master where order_master_userid = #{0}")
+    public int SizeByUserId(@Param("0") String User_id);
+
+    //更新订单状态
+    @Update("update order_master set order_master_status = #{2}, order_master_update_time = #{0} where order_master_id = #{1}")
+    boolean UpOrderStatus(@Param("0") Timestamp timestamp,@Param("1") String order_master_id,@Param("2") int parseInt);
+
+    //更新支付状态
+    @Update("update order_master set order_master_pay_status = #{2}, order_master_update_time = #{0} where order_master_id = #{1}")
+    boolean UpPaytatus(@Param("0") Timestamp sqlTimestampNow, @Param("1") String order_master_id,@Param("2") int parseInt);
 }

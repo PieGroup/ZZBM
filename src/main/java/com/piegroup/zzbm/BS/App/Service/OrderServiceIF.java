@@ -3,8 +3,11 @@ package com.piegroup.zzbm.BS.App.Service;
 import com.piegroup.zzbm.DTO.OrderDTO;
 import com.piegroup.zzbm.DTO.ProductDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
+import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
 *@ClassName     OrderService
@@ -23,7 +26,7 @@ public interface OrderServiceIF {
     OrderDTO findOne(String orderId);
 
     /** 查询订单列表. */
-    Page<OrderDTO> findList(String user_id,String pageNum,String pageSize);
+    DataPageSubc findList(String user_id, int pageNum, int pageSize);
 
     /** 取消订单. */
     OrderDTO cancel(OrderDTO orderDTO);

@@ -28,6 +28,7 @@ public class WCPayConfig {
         wxPayH5Config.setMchId(wcAccountConfig.getMchId());
         wxPayH5Config.setMchKey(wcAccountConfig.getMchKey());
         wxPayH5Config.setKeyPath(wcAccountConfig.getKeyPath());
+        wxPayH5Config.setNotifyUrl(wcAccountConfig.getNotify_url());
         return wxPayH5Config;
     }
 }

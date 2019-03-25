@@ -48,7 +48,7 @@ public class OrderServiceImpl extends OrderService {
         PaginationSubC paginationSubC = PaginationUtil.pagination(pageNum,pageSize,count);
         //System.out.println("分页信息"+r_pagination);
         //模仿 去数据库拿值
-        List<OrderMasterEntity> orderEntities =  orderMasterDao.loadPage(UserId, paginationSubC.getFromIndex(), paginationSubC.getPageSize());
+        List<OrderMasterEntity> orderEntities =  orderMasterDao.findList(UserId, paginationSubC.getFromIndex(), paginationSubC.getPageSize());
 
 
         System.out.println(UserId+"订单"+orderEntities);

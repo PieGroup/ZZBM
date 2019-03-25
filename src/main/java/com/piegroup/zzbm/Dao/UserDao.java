@@ -1,8 +1,6 @@
 package com.piegroup.zzbm.Dao;
 
-import com.piegroup.zzbm.Entity.UserDetailEntity;
-import com.piegroup.zzbm.Entity.UserEntity;
-import com.piegroup.zzbm.Entity.UserLableEntity;
+import com.piegroup.zzbm.Entity.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +70,17 @@ public interface UserDao {
     @Select("select * from user_detail where userid = #{0}")
     UserDetailEntity loadByUserId(@Param("0") String user_id);
 
-    @Select("select * from user_lable where userid = #{0}")
-    List<UserLableEntity> loadUserLabel(@Param("0") String user_id);
+    @Select("select * from certification where userid = #{0}")
+    CertificationEntity loadUserLabel(@Param("0") String user_id);
+
+    //查找用户感兴趣的标签
+    @Select("select * from user_mtm_issue_lable where userid = #{0}")
+    List<UserMtmIssueLableEntity> listUserLabelById(@Param("0") String user_id);
+
+    @Select("select count(*) from user_mtm_issue_lable where userid = #{0} ")
+    int SizeUserLabel(@Param("0") String user_id);
+
+    //删除用户感兴趣标签
+    @Delete("DELETE FROM user_mtm_issue_lable where userid = #{0}  ")
+    boolean delUserlable(@Param("0") String user_id);
 }

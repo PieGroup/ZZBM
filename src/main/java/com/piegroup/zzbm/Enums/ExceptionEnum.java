@@ -37,7 +37,13 @@ public enum ExceptionEnum  {
     Create_Order_Exception("100025","下单失败"),
     Product_Null_Exception("100026","商品不存在"),
     Product_Stock_Error("100027","商品库存异常"),
-    Label_Null_Exception("100028","标签不存在")
+    Label_Null_Exception("100028","标签不存在"),
+    Order_Null_Exception("100029","订单不存在"),
+    Order_Status_Error("100030","订单状态异常"),
+    Order_UP_Status_Error("100031","更新订单状态失败"),
+    Order_Not_Match_User_Error("100032","该订单不属于该用户"),
+    User_Paid_Not_Stand_Exception("100033","该版本不能支持支付"),
+    WC_Pay_Notify_Verify_Error("100034","微信支付异步校验金额不通过")
     ;
 
     private String code;

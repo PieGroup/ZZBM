@@ -1,4 +1,5 @@
 package com.piegroup.zzbm.Entity;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
  */
 
 @Data
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDetailEntity  implements Serializable {
 
 	private static final long serialVersionUID =  5269826502710793233L;

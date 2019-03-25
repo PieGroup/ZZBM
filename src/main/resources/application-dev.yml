@@ -65,6 +65,7 @@ wechat:
   mchId: 1483469312
   mchKey: 06C56A89949D617xxxxxxxxxxx
   keyPath: /var/weixin_cert/h5.p12
+#回调地址
   notify_url: http://gzcstec.com/sell/pay/notify
 
 

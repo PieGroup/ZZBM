@@ -10,6 +10,7 @@ import com.piegroup.zzbm.Dao.UserDao;
 import com.piegroup.zzbm.Dao.UserStatusDao;
 import com.piegroup.zzbm.Dao.WcUserDao;
 import com.piegroup.zzbm.Entity.*;
+import com.piegroup.zzbm.Enums.CertificateEnum;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
 import com.piegroup.zzbm.Utils.HttpClientUtil;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
@@ -176,14 +177,23 @@ public class UserServiceImpl implements UserServiceIF {
         System.out.println("用户选择的标签" + userLabelDTO);
 
         List<String> list = userLabelDTO.getLabel_id();
-
+        userDao.delUserlable(user_id);
         for (String i : list) {
             if (i != null && !i.equals("")) {
-                if (!userDao.existUserLabel(user_id, i))
-                    if (issueLableDao.findOneIssueId(i) != null)
-                        userDao.setuserlable(user_id, i);
+                if (!userDao.existUserLabel(user_id, i)) {
+                    if (issueLableDao.findOneIssueId(i) != null) {
+                        //先查是否满了5条，如果不满再加，满的话，先删除再加
+//                        int num = userDao.SizeUserLabel(user_id);
+//                        if (num < 6) {
+//                            userDao.setuserlable(user_id, i);
+//                        } else {
+
+                            userDao.setuserlable(user_id, i);
+//                        }
+                    }
                     else
                         return ExceptionEnum.Label_Null_Exception;
+                }
             } else
                 return ExceptionEnum.Param_Exception;
         }
@@ -339,11 +349,11 @@ public class UserServiceImpl implements UserServiceIF {
 
 
         //查询用户个人认证的标签
-        List<UserLableEntity> userLableEntities = userDao.loadUserLabel(userEntity.getUser_Id());
-        if (userLableEntities != null) {
-            for (UserLableEntity i : userLableEntities) {
-                list.add(issueLableDao.findOneIssueId(i.getUser_Issue_Labelid()).getIssue_lable_name());
-            }
+        CertificationEntity certificationEntity = userDao.loadUserLabel(userEntity.getUser_Id());
+        if (certificationEntity != null) {
+
+                list.add(issueLableDao.findOneIssueId(certificationEntity.getUser_Labelid()).getIssue_lable_name());
+
         }
 
         userEntity.setUser_Id("");
@@ -353,8 +363,28 @@ public class UserServiceImpl implements UserServiceIF {
         map.put("user", userEntity);
         map.put("userdetail", userDetailEntity);
         map.put("label", list);
+        map.put("labelStatus", CertificateEnum.valueOf(String.valueOf(certificationEntity.getCertification_Statusid())));
 
         dataPageSubc.setData(map);
+
+        return dataPageSubc;
+    }
+
+    //显示用户感兴趣的标签
+    @Override
+    public DataPageSubc listUserLabel(String user_id) {
+
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        List<UserMtmIssueLableEntity> l = userDao.listUserLabelById(user_id);
+        List list = new ArrayList();
+        Map map = new HashMap();
+        if (l != null) {
+            for(UserMtmIssueLableEntity u : l) {
+                list.add(issueLableDao.findOneIssueId(u.getIssue_Lableid()).getIssue_lable_name());
+            }
+            map.put("label",list);
+            dataPageSubc.setData(map);
+        }
 
         return dataPageSubc;
     }

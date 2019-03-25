@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
-*@ClassName     UserController
-*@Description   TODO 获取用户信息
-*@Author        DDLD
-*@Date          2019/3/17 11:29
-*@ModifyDate    2019/3/17 11:29
-*@Version       1.0
-*/
+ * @ClassName UserController
+ * @Description TODO 获取用户信息
+ * @Author DDLD
+ * @Date 2019/3/17 11:29
+ * @ModifyDate 2019/3/17 11:29
+ * @Version 1.0
+ */
 @Slf4j
 @Controller
 @RequestMapping("/mine")
@@ -36,87 +36,97 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-    @RequestMapping(method = RequestMethod.POST )
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @Authorization
     @ApiOperation("用户查看自己")
-    public DataVO mine(@CurrentUser UserEntity userEntity){
-        log.info("获取到用户id:"+userEntity.getUser_Id());
+    public DataVO mine(@CurrentUser UserEntity userEntity) {
+        log.info("获取到用户id:" + userEntity.getUser_Id());
         DataPageSubc dataPageSubc = new DataPageSubc();
         dataPageSubc.setData(userEntity);
-       return ResultUtil.success(dataPageSubc);
+        return ResultUtil.success(dataPageSubc);
     }
 
 
-    @RequestMapping(method = RequestMethod.GET,value = "/issue")
+    @RequestMapping(method = RequestMethod.GET, value = "/issue")
     @ResponseBody
     @Authorization
-    public DataVO issue(@CurrentUser UserEntity userEntity,@RequestParam(value = "type",defaultValue = "questions") String type,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize,@RequestParam(value = "pageNum",defaultValue = "1")int pageNum ){
-        Assert.notNull(type,"类型不能为空");
-        log.info("查询的用户id："+userEntity.getUser_Id());
-        return  ResultUtil.success( userService.issue(userEntity.getUser_Id(),type,pageSize,pageNum));
+    public DataVO issue(@CurrentUser UserEntity userEntity, @RequestParam(value = "type", defaultValue = "questions") String type, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+        Assert.notNull(type, "类型不能为空");
+        log.info("查询的用户id：" + userEntity.getUser_Id());
+        return ResultUtil.success(userService.issue(userEntity.getUser_Id(), type, pageSize, pageNum));
     }
 
     //用户编辑个人资料
-    @RequestMapping(method = RequestMethod.POST ,value = "/editUser")
+    @RequestMapping(method = RequestMethod.POST, value = "/editUser")
     @ResponseBody
     @Authorization
-    public DataVO editUser(@CurrentUser UserEntity userEntity, UserEntity editUser){
+    public DataVO editUser(@CurrentUser UserEntity userEntity, UserEntity editUser) {
 
-        log.info("编辑用户id"+userEntity.getUser_Id());
+        log.info("编辑用户id" + userEntity.getUser_Id());
 
-        return ResultUtil.success(userService.editUser(userEntity,editUser));
+        return ResultUtil.success(userService.editUser(userEntity, editUser));
 
 
     }
 
     //用户感兴趣的标签
-    @RequestMapping(method = RequestMethod.POST,value = "/setuserlabel")
+    @RequestMapping(method = RequestMethod.POST, value = "/userlabel/set")
     @ResponseBody
     @ApiOperation("用户感兴趣的标签选择")
     @Authorization
-    public DataVO SetUserLabel(@CurrentUser UserEntity userEntity,@RequestBody UserLabelDTO userLabelDTO){
+    public DataVO SetUserLabel(@CurrentUser UserEntity userEntity, @RequestBody UserLabelDTO userLabelDTO) {
 
-        return ResultUtil.success(new DataPageSubc<>(),userService.SetUserLabel(userEntity.getUser_Id(),userLabelDTO));
+        return ResultUtil.success(new DataPageSubc<>(), userService.SetUserLabel(userEntity.getUser_Id(), userLabelDTO));
 
     }
 
-    //我的钱包
-    @RequestMapping(method = RequestMethod.GET,value = "/wallet")
+    @RequestMapping(method = RequestMethod.GET, value = "/userlabel/list")
     @ResponseBody
+    @ApiOperation("查找用户感兴趣的标签")
     @Authorization
-    public DataVO wallet(@CurrentUser UserEntity userEntity){
-        if (userEntity == null){
+    public DataVO listUserLabel(@CurrentUser UserEntity userEntity) {
+        if (userEntity.getUser_Id() == null || userEntity.getUser_Id().equals(""))
+            return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
+        return ResultUtil.success(userService.listUserLabel(userEntity.getUser_Id()));
+    }
+
+    //我的钱包
+    @RequestMapping(method = RequestMethod.GET, value = "/wallet")
+    @ResponseBody
+    @ApiOperation("我的钱包")
+    @Authorization
+    public DataVO wallet(@CurrentUser UserEntity userEntity) {
+        if (userEntity == null) {
             return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
         }
         return ResultUtil.success(userService.wallet(userEntity.getUser_Id()));
     }
 
     //app请求认证接口
-    @RequestMapping(method = RequestMethod.POST,value = "/certification")
+    @RequestMapping(method = RequestMethod.POST, value = "/certification")
     @ResponseBody
+    @ApiOperation("用户认证")
     @Authorization
-    public DataVO certification(@CurrentUser UserEntity userEntity, HttpServletRequest request){
+    public DataVO certification(@CurrentUser UserEntity userEntity, HttpServletRequest request) {
 
-        if (userEntity == null){
+        if (userEntity == null) {
             return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
         }
-        return ResultUtil.success(userService.certification(userEntity.getUser_Id(),request));
+        return ResultUtil.success(userService.certification(userEntity.getUser_Id(), request));
     }
 
     //个人详情
-    @RequestMapping(method = RequestMethod.POST,value = "/detail")
+    @RequestMapping(method = RequestMethod.POST, value = "/detail")
     @ResponseBody
     @Authorization
-    public DataVO detail(@CurrentUser UserEntity userEntity){
-        if (userEntity == null){
+    public DataVO detail(@CurrentUser UserEntity userEntity) {
+        if (userEntity == null) {
             return ResultUtil.error(new DataPageSubc<>(), ExceptionEnum.No_Login_Exception);
         }
         return ResultUtil.success(userService.detail(userEntity));
 
     }
-
-
 
 
 }

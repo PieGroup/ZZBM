@@ -13,15 +13,23 @@ import com.piegroup.zzbm.Entity.OrderMasterEntity;
 import com.piegroup.zzbm.Entity.ProductEntity;
 import com.piegroup.zzbm.Entity.UserEntity;
 import com.piegroup.zzbm.Enums.ExceptionEnum;
+import com.piegroup.zzbm.Enums.OrderStatusEnum;
+import com.piegroup.zzbm.Enums.PayStatusEnum;
 import com.piegroup.zzbm.Enums.PayStyleEnum;
+import com.piegroup.zzbm.Utils.PaginationUtil;
 import com.piegroup.zzbm.Utils.RandomNumberUtil;
 import com.piegroup.zzbm.Utils.TimeUtil2;
+import com.piegroup.zzbm.VO.SubC.DataPageSubc;
+import com.piegroup.zzbm.VO.SubC.PaginationSubC;
 import com.piegroup.zzbm.VO.SubC.ProductSubC;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -38,6 +46,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@Slf4j
 public class OrderServiceIFImpl implements OrderServiceIF {
 
     @Resource
@@ -135,29 +144,126 @@ public class OrderServiceIFImpl implements OrderServiceIF {
 
     }
 
+    //查询单个订单
     @Override
     public OrderDTO findOne(String orderId) {
-        return null;
+
+
+        OrderMasterEntity orderMasterEntity = orderMasterDao.findOne(orderId);
+        if (orderMasterEntity == null)
+            throw new Exceptions(ExceptionEnum.Order_Null_Exception);
+        List<OrderDetailEntity> orderDetailEntities = orderDetailDao.findByOrderId(orderId);
+        if (CollectionUtils.isEmpty(orderDetailEntities))
+            throw new Exceptions(ExceptionEnum.Product_Null_Exception);
+
+        OrderDTO orderDTO = new OrderDTO();
+       orderDTO.setOrderMasterEntity(orderMasterEntity);
+       orderDTO.setOrderDetailEntities(orderDetailEntities);
+
+        return orderDTO;
     }
 
     @Override
-    public Page<OrderDTO> findList(String user_id, String pageNum, String pageSize) {
-        return null;
+    public DataPageSubc findList(String user_id, int pageNum, int pageSize) {
+
+        int count = orderMasterDao.SizeByUserId(user_id);
+
+        PaginationSubC paginationSubC = PaginationUtil.pagination(pageNum,pageSize,count);
+
+        List<OrderMasterEntity> orderMasterEntities = orderMasterDao.findList(user_id,paginationSubC.getFromIndex(),paginationSubC.getPageSize());
+        DataPageSubc dataPageSubc = new DataPageSubc();
+        dataPageSubc.setData(orderMasterEntities);
+        dataPageSubc.setPaginationSubC(paginationSubC);
+
+        return dataPageSubc;
     }
 
+    //取消订单
     @Override
+    @Transactional
     public OrderDTO cancel(OrderDTO orderDTO) {
-        return null;
+
+        //判断订单状态
+        if (!(orderDTO.getOrderMasterEntity().getOrder_Master_Status() == Integer.parseInt(OrderStatusEnum.Default_OrderState.getCode()))){
+            log.error("【取消订单】订单状态不正确，orderId={},orderStatus={}",orderDTO.getOrderMasterEntity().getOrder_Master_Id(),orderDTO.getOrderMasterEntity().getOrder_Master_Status());
+            throw new Exceptions(ExceptionEnum.Order_Status_Error);
+        }
+
+        //修改订单状态
+
+        orderDTO.getOrderMasterEntity().setOrder_Master_Status(Integer.parseInt(OrderStatusEnum.Cancel_OrderState.getCode()));
+        boolean b  = orderMasterDao.UpOrderStatus(TimeUtil2.SQLTimestampNow(),orderDTO.getOrderMasterEntity().getOrder_Master_Id(),Integer.parseInt(OrderStatusEnum.Cancel_OrderState.getCode()));
+        if (b == false){
+            log.error("【取消订单】更新失败，orderMaster={}",orderDTO.getOrderMasterEntity());
+            throw new Exceptions(ExceptionEnum.Order_UP_Status_Error);
+        }
+
+        //返还库存
+
+        if (CollectionUtils.isEmpty(orderDTO.getOrderDetailEntities())){
+            log.error("【取消订单】订单中无商品详情，orderMaster={}",orderDTO.getOrderMasterEntity());
+            throw new Exceptions(ExceptionEnum.Product_Stock_Error);
+        }
+        List<ProductSubC> productSubCS = orderDTO.getOrderDetailEntities().stream()
+                .map(e -> new ProductSubC(e.getOrder_Detail_Productid(),e.getOrder_Detail_Quantity()))
+                .collect(Collectors.toList());
+        productServiceIF.increaseStock(productSubCS);
+
+        //如果已支付，需要退款
+
+        if (orderDTO.getOrderMasterEntity().getOrder_Master_Pay_Status() == Integer.parseInt( PayStatusEnum.Pay_Success_PayStatus.getCode())){
+            //TODO
+        }
+
+        return orderDTO;
     }
 
+    //完结订单
     @Override
+    @Transactional
     public OrderDTO finish(OrderDTO orderDTO) {
-        return null;
+        //判断订单状态
+        if(!String.valueOf(orderDTO.getOrderMasterEntity().getOrder_Master_Status()).equals(OrderStatusEnum.Default_OrderState.getCode())){
+            log.error("【完结订单】订单状态不正确，orderId={},orderStatus={}",orderDTO.getOrderMasterEntity().getOrder_Master_Id(),orderDTO.getOrderMasterEntity().getOrder_Master_Status());
+            throw new Exceptions(ExceptionEnum.Order_Status_Error);
+        }
+        //修改订单状态
+        orderDTO.getOrderMasterEntity().setOrder_Master_Status(Integer.parseInt(OrderStatusEnum.Success_OrderState.getCode()));
+        boolean b  = orderMasterDao.UpOrderStatus(TimeUtil2.SQLTimestampNow(),orderDTO.getOrderMasterEntity().getOrder_Master_Id(),Integer.parseInt(OrderStatusEnum.Success_OrderState.getCode()));
+        if (b == false){
+            log.error("【完结订单】更新失败，orderMaster={}",orderDTO.getOrderMasterEntity());
+            throw new Exceptions(ExceptionEnum.Order_UP_Status_Error);
+        }
+
+        return orderDTO;
     }
 
+    //修改支付
     @Override
+    @Transactional
     public OrderDTO paid(OrderDTO orderDTO) {
-        return null;
+
+        //判断订单状态
+        if(!String.valueOf(orderDTO.getOrderMasterEntity().getOrder_Master_Status()).equals(OrderStatusEnum.Default_OrderState.getCode())){
+            log.error("【订单支付完成】订单状态不正确，orderId={},orderStatus={}",orderDTO.getOrderMasterEntity().getOrder_Master_Id(),orderDTO.getOrderMasterEntity().getOrder_Master_Status());
+            throw new Exceptions(ExceptionEnum.Order_Status_Error);
+        }
+        //判断支付状态
+        if (!String.valueOf(orderDTO.getOrderMasterEntity().getOrder_Master_Pay_Status()).equals(PayStatusEnum.Pay_Wait_PayStatus.getCode())){
+            log.error("【订单支付完成】订单状态不正确，orderDTO={}",orderDTO);
+            throw new Exceptions(ExceptionEnum.Order_Status_Error);
+        }
+
+        //修改支付状态
+        orderDTO.getOrderMasterEntity().setOrder_Master_Pay_Status(Integer.parseInt(PayStatusEnum.Pay_Success_PayStatus.getCode()));
+        boolean b  = orderMasterDao.UpPaytatus(TimeUtil2.SQLTimestampNow(),orderDTO.getOrderMasterEntity().getOrder_Master_Id(),Integer.parseInt(PayStatusEnum.Pay_Success_PayStatus.getCode()));
+        if (b == false){
+            log.error("【订单支付完成】更新失败，orderMaster={}",orderDTO.getOrderMasterEntity());
+            throw new Exceptions(ExceptionEnum.Order_UP_Status_Error);
+        }
+
+
+        return orderDTO;
     }
 
     @Override

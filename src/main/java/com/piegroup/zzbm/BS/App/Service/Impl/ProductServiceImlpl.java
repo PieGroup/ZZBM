@@ -42,4 +42,19 @@ public class ProductServiceImlpl implements ProductServiceIF {
            productDao.updateStock(p.getProduct_id(),result);
         }
     }
+
+    //加库存
+    @Override
+    @Transactional
+    public void increaseStock(List<ProductSubC> productSubCS) {
+
+        for (ProductSubC p : productSubCS){
+            ProductEntity productEntity =  productDao.loadByProId(p.getProduct_id());
+            if (productEntity == null)
+                throw new Exceptions(ExceptionEnum.Product_Null_Exception);
+            int result = productEntity.getProduct_Stock() + p.getNum();
+
+            productDao.updateStock(p.getProduct_id(),result);
+        }
+    }
 }

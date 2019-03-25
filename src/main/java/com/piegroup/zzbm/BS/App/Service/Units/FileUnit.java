@@ -39,6 +39,8 @@ public class FileUnit {
     @Transactional
     public DataPageSubc uploadByIcon(String user_id, MultipartFile file, HttpServletRequest request, String url) throws Exception {
 
+//        url = "D:\\zz\\head";
+
         DataPageSubc dataPageSubc = new DataPageSubc();
 
         Map map = new HashMap();
@@ -49,6 +51,8 @@ public class FileUnit {
 
             //.getParent()  tomcat /webApp 路径下
             String uploadImagePath = (new File(realPath)).getParent() +url;
+
+//            uploadImagePath = url;
 
             System.out.println("保存路径：" + uploadImagePath);
 
@@ -65,7 +69,7 @@ public class FileUnit {
 
             String fileUrlName = uploadImagePath + "/" + user_id + "_Icon.png";
             // 要保存的图片
-            String fileName = url + user_id + "_Icon.png";
+            String fileName = url +"/"+ user_id + "_Icon.png";
             map.put("url", Constants.httpUrl+fileName);
             File saveToServerImage = new File(fileUrlName);
             try {
