@@ -40,6 +40,15 @@ public class IssueProgramController {
         return ResultUtil.success(list);
     }
 
+    @RequestMapping("/suggestlist")
+    @ResponseBody
+    public DataVO programListSuggest(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                              @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
+        DataPageSubc list = issueProgramService.list(pageSize, pageNum);
+
+        return ResultUtil.success(list);
+    }
+
     @RequestMapping("/insert")
     @ResponseBody
     public DataVO addProgram(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,

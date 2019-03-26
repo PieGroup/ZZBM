@@ -15,7 +15,7 @@ public interface IssueQuestionsDao {
     @Select("select * from issue_questions where issue_questions_id=#{1};")
     IssueQuestionsEntity loadByQid(@Param(value = "1")String qid);
 
-    @Select("select * from issue_questions where issue_questions_issueStatusid = 1 limit #{index},#{pageSize}")
+    @Select("select * from issue_questions where issue_questions_issueStatusid = 1 order by issue_questions_time desc limit #{index},#{pageSize}")
     List<IssueQuestionsEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);
 
     @Insert("insert into issue_questions(" +
@@ -41,9 +41,5 @@ public interface IssueQuestionsDao {
     //取用户id 的多少条记录
     @Select("select * from issue_questions where issue_questions_userid = #{0} limit #{1} , #{2}")
     List<IssueQuestionsEntity> queryById(@Param("0") String user_id, @Param("1") int fromIndex,@Param("2") int pageSize);
-
-
-
-
 
 }

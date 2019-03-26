@@ -48,9 +48,9 @@ public class IssueCommentServiceImpl implements IssueCommentServiceIF {
         DataPageSubc d = new DataPageSubc();
         int count = commentDao.count(itemid);
         boolean nextp = (pageSize * pageNum) < count;
-        PaginationSubC paginationSubC = new PaginationSubC(pageNum, pageSize, pageNum, nextp);
+        PaginationSubC paginationSubC = new PaginationSubC((pageNum-1)*pageSize, pageSize, pageNum, nextp);
 
-        List<CommentEntity> comments = commentDao.allComment(itemid, (paginationSubC.getFromIndex() - 1) * paginationSubC.getPageSize(),
+        List<CommentEntity> comments = commentDao.allComment(itemid, paginationSubC.getFromIndex(),
                 paginationSubC.getPageSize());
         List<CommentUserVo> cuv = new ArrayList<>();
         for (CommentEntity c : comments) {

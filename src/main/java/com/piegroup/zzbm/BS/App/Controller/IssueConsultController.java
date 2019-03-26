@@ -42,6 +42,17 @@ public class IssueConsultController {
         return ResultUtil.success(list);
     }
 
+    @RequestMapping("/suggestlist")
+    @ResponseBody
+    public DataVO consultListSuggest(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                              @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                              @RequestParam(value="all",required = false,defaultValue = "1")int all) throws  Exception{
+        DataPageSubc list = issueConsultService.list(pageSize, pageNum);
+
+        return ResultUtil.success(list);
+    }
+
+
     @RequestMapping("/insert")
     @ResponseBody
     public DataVO addConsult(@RequestParam(value = "token",required = false,defaultValue = "32132132") String token,

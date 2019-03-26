@@ -26,17 +26,19 @@ public class IssueQuestionsController {
     @Autowired
     IssueQuestionsServiceImpl issueQuestionsService;
 
-    /**
-     * 需求列表
-     * @param pageSize
-     * @param pageNum
-     * @return
-     * @throws Exception
-     */
     @RequestMapping("/list")
     @ResponseBody
     public DataVO consultList(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
                                     @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
+        DataPageSubc list = issueQuestionsService.list(pageSize, pageNum);
+
+        return ResultUtil.success(list);
+    }
+
+    @RequestMapping("/suggestlist")
+    @ResponseBody
+    public DataVO consultList_suggest(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                              @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
         DataPageSubc list = issueQuestionsService.list(pageSize, pageNum);
 
         return ResultUtil.success(list);
