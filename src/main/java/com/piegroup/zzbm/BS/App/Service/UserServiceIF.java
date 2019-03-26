@@ -43,4 +43,6 @@ public interface UserServiceIF {
 
     //显示用户感兴趣的标签
     DataPageSubc listUserLabel(String user_id);
+
+    void setWcUserInfo(UserEntity userEntity, String userhead, String loginname);
 }

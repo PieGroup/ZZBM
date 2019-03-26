@@ -188,10 +188,9 @@ public class UserServiceImpl implements UserServiceIF {
 //                            userDao.setuserlable(user_id, i);
 //                        } else {
 
-                            userDao.setuserlable(user_id, i);
+                        userDao.setuserlable(user_id, i);
 //                        }
-                    }
-                    else
+                    } else
                         return ExceptionEnum.Label_Null_Exception;
                 }
             } else
@@ -352,8 +351,8 @@ public class UserServiceImpl implements UserServiceIF {
         CertificationEntity certificationEntity = userDao.loadUserLabel(userEntity.getUser_Id());
         if (certificationEntity != null) {
 
-                list.add(issueLableDao.findOneIssueId(certificationEntity.getUser_Labelid()).getIssue_lable_name());
-
+            list.add(issueLableDao.findOneIssueId(certificationEntity.getUser_Labelid()).getIssue_lable_name());
+            map.put("labelStatus", CertificateEnum.valueOf(String.valueOf(certificationEntity.getCertification_Statusid())));
         }
 
         userEntity.setUser_Id("");
@@ -363,7 +362,7 @@ public class UserServiceImpl implements UserServiceIF {
         map.put("user", userEntity);
         map.put("userdetail", userDetailEntity);
         map.put("label", list);
-        map.put("labelStatus", CertificateEnum.valueOf(String.valueOf(certificationEntity.getCertification_Statusid())));
+
 
         dataPageSubc.setData(map);
 
@@ -379,13 +378,32 @@ public class UserServiceImpl implements UserServiceIF {
         List list = new ArrayList();
         Map map = new HashMap();
         if (l != null) {
-            for(UserMtmIssueLableEntity u : l) {
+            for (UserMtmIssueLableEntity u : l) {
                 list.add(issueLableDao.findOneIssueId(u.getIssue_Lableid()).getIssue_lable_name());
             }
-            map.put("label",list);
+            map.put("label", list);
             dataPageSubc.setData(map);
         }
 
         return dataPageSubc;
+    }
+
+    //保存微信用户的头像和用户名
+    @Override
+    public void setWcUserInfo(UserEntity userEntity, String userhead, String loginname) {
+
+        //是否属于微信用户
+        if (userEntity.getUser_Wcid() == null || userEntity.getUser_Wcid().equals("")) {
+            throw new Exceptions(ExceptionEnum.Wc_User_Request_Exception);
+        }
+
+        //保存
+        boolean b = userDao.setWcUserInfo(userEntity.getUser_Id(), userhead, loginname);
+        if (!b) {
+            log.error("【微信保存用户】头像保存错误，userid={}", userEntity.getUser_Id());
+            throw new Exceptions(ExceptionEnum.Wc_User_Info_Error);
+        }
+
+
     }
 }

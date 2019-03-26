@@ -8,6 +8,7 @@ import com.piegroup.zzbm.BS.App.Service.Adapter.MessageAt;
 import com.piegroup.zzbm.BS.App.Service.Impl.UserServiceImpl;
 import com.piegroup.zzbm.BS.App.Service.Units.SmsCodeUnit;
 import com.piegroup.zzbm.BS.App.TokenManager.RedisTokenManager;
+import com.piegroup.zzbm.BS.Bg.Exceptions.Exceptions;
 import com.piegroup.zzbm.Configs.Constants;
 import com.piegroup.zzbm.DTO.TokenDTO;
 import com.piegroup.zzbm.Entity.UserEntity;
@@ -33,6 +34,7 @@ import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.PATCH;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,6 +206,24 @@ public class TokenController {
             return ResultUtil.success(dataPageSubc);
         }
         return ResultUtil.error(dataPageSubc,ExceptionEnum.Wc_Login_Exception);
+    }
+
+    @PostMapping("/WcUser/Set")
+    @ResponseBody
+    @ApiOperation("微信用户完善")
+    @Authorization
+    public DataVO setWcUserInfo(@CurrentUser UserEntity userEntity,
+                                @RequestParam("userhead") String userhead,
+                                @RequestParam("loginname") String loginname){
+        if (userhead == null || loginname == null || userhead.equals("")|| loginname.equals("") ){
+            throw new Exceptions(ExceptionEnum.Param_Exception);
+        }
+        if (userEntity == null){
+            throw new Exceptions(ExceptionEnum.No_Login_Exception);
+        }
+        userService.setWcUserInfo(userEntity,userhead,loginname);
+
+        return ResultUtil.success(new DataPageSubc<>());
     }
 
 

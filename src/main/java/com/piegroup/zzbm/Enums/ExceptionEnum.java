@@ -43,7 +43,8 @@ public enum ExceptionEnum  {
     Order_UP_Status_Error("100031","更新订单状态失败"),
     Order_Not_Match_User_Error("100032","该订单不属于该用户"),
     User_Paid_Not_Stand_Exception("100033","该版本不能支持支付"),
-    WC_Pay_Notify_Verify_Error("100034","微信支付异步校验金额不通过")
+    WC_Pay_Notify_Verify_Error("100034","微信支付异步校验金额不通过"),
+    Wc_User_Info_Error("100035","保存用户信息错误")
     ;
 
     private String code;

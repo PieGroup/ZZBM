@@ -83,4 +83,7 @@ public interface UserDao {
     //删除用户感兴趣标签
     @Delete("DELETE FROM user_mtm_issue_lable where userid = #{0}  ")
     boolean delUserlable(@Param("0") String user_id);
+
+    @Update("update user set user_login_name = #{0} , user_head_url = #{1}  where user_id = #{2}")
+    boolean setWcUserInfo(@Param("2") String user_id, @Param("1") String userhead, @Param("0") String loginname);
 }
