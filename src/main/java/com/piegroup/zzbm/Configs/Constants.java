@@ -43,6 +43,8 @@ public class Constants {
      */
     public static final String IconUrl = "/zzbmImg/userHead";
 
+
+
     /**
      * 问题保存路径
      */
@@ -84,6 +86,11 @@ public class Constants {
      * 服务器路径
      */
     public static final String httpUrl = "139.159.162.156:9080";
+
+    /**
+     * 默认头像图片
+     */
+    public static final String hrad = "default_head.png";
 
 
 }

@@ -289,7 +289,7 @@ public class UserServiceImpl implements UserServiceIF {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUser_Id("U" + RandomNumberUtil.createRandom(false, 16));
-        userEntity.setUser_Login_Name(Constants.user_login_name);
+        userEntity.setUser_Login_Name(phone.substring(phone.length()-4,phone.length()));
         //1男
         userEntity.setUser_Sex("男");
         String user_phone = "";
@@ -300,6 +300,7 @@ public class UserServiceImpl implements UserServiceIF {
         //1代表正常
         UserStatusEntity userStatusEntity = userStatusDao.queryById(1);
         userEntity.setUser_Statusid(userStatusEntity.getUser_Status_Id());
+        userEntity.setUser_Head_Url(Constants.httpUrl+Constants.IconUrl+"/"+Constants.hrad);
         //积分
         userEntity.setUser_Point("0");
         //睿币
