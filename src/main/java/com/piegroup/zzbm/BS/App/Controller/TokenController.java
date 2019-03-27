@@ -200,6 +200,7 @@ public class TokenController {
             response.setHeader(Constants.CURRENT_USER_ID, tokenDTO.getToken());
 
             map1.put("token", tokenDTO.getToken());
+            map1.put("userid",userEntity.getUser_Id());
 
             dataPageSubc.setData(map1);
 
