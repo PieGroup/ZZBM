@@ -26,13 +26,6 @@ public class IssueQuestionsController {
     @Autowired
     IssueQuestionsServiceImpl issueQuestionsService;
 
-    /**
-     * 需求列表
-     * @param pageSize
-     * @param pageNum
-     * @return
-     * @throws Exception
-     */
     @RequestMapping("/list")
     @ResponseBody
     public DataVO consultList(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
@@ -42,15 +35,24 @@ public class IssueQuestionsController {
         return ResultUtil.success(list);
     }
 
+    @RequestMapping("/suggestlist")
+    @ResponseBody
+    public DataVO consultList_suggest(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                              @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum) throws  Exception{
+        DataPageSubc list = issueQuestionsService.list(pageSize, pageNum);
+
+        return ResultUtil.success(list);
+    }
+
     @RequestMapping("/insert")
     @ResponseBody
-    public DataVO addConsult(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
-                             @RequestParam(value = "title",required = false,defaultValue = "")String title,
-                             @RequestParam(value = "generalize",required = false,defaultValue = "")String generalize,
+    public DataVO addConsult(@RequestParam(value = "userid",required = false,defaultValue = "defaultid")String userid,
+                             @RequestParam(value = "title",required = false,defaultValue = "未设置问题标题")String title,
+                             @RequestParam(value = "generalize",required = false,defaultValue = "问题概述未写入")String generalize,
                              @RequestParam(value = "value",required = false,defaultValue = "0")int value,
-                             @RequestParam(value = "anonymous",required = false,defaultValue = "")int anonymous,
-                             @RequestParam(value = "annexid",required = false,defaultValue = "")String annexid,
-                             @RequestParam(value = "table",required = false,defaultValue = "###")String table) throws Exception{
+                             @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
+                             @RequestParam(value = "annexid",required = false)String annexid,
+                             @RequestParam(value = "table",required = false)String table) throws Exception{
         IssueQuestionsEntity i=new IssueQuestionsEntity();
         String id= "q"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
         i.setIssue_Questions_Id(id);

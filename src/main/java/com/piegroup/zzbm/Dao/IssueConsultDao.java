@@ -17,8 +17,8 @@ public interface IssueConsultDao {
     List<IssueConsultEntity> list(@Param("index") int fromIndex, @Param("pageSize") int pageSize);
 
     @Insert("insert into issue_consult(" +
-            "issue_consult_id,issue_consult_userid,issue_consult_type,issue_consult_buserid,issue_consult_paidLookReply,issue_consult_issueStatusid,issue_consult_points,issue_consult_title,issue_consult_content,issue_consult_anonymous,issue_consult_annexid,issue_consult_paid)" +
-            " values(#{issue_consult_id},#{issue_consult_userid},#{issue_consult_type},#{issue_consult_buserid},#{issue_consult_paidLookReply},#{issue_consult_issueStatusid},#{issue_consult_points},#{issue_consult_title},#{issue_consult_content},#{issue_consult_anonymous},#{issue_consult_annexid},#{issue_consult_paid});")
+            "issue_consult_id,issue_consult_userid,issue_consult_type,issue_consult_buserid,issue_consult_paidLookReply,issue_consult_points,issue_consult_title,issue_consult_content,issue_consult_anonymous,issue_consult_annexid,issue_consult_paid)" +
+            " values(#{issue_Consult_Id},#{issue_Consult_Userid},#{issue_Consult_Type},#{issue_Consult_Buserid},#{issue_Consult_Paidlookreply},#{issue_Consult_Points},#{issue_Consult_Title},#{issue_Consult_Content},#{issue_Consult_Anonymous},#{issue_Consult_Annexid},#{issue_Consult_Paid});")
     int addProgram(IssueConsultEntity I);
 
     @Update("update issue_consult set issue_consult_issueStatusid=#{1} where issue_consult_id=#{2};")

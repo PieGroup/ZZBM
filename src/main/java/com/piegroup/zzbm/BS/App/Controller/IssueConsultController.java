@@ -42,19 +42,30 @@ public class IssueConsultController {
         return ResultUtil.success(list);
     }
 
+    @RequestMapping("/suggestlist")
+    @ResponseBody
+    public DataVO consultListSuggest(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
+                              @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                              @RequestParam(value="all",required = false,defaultValue = "1")int all) throws  Exception{
+        DataPageSubc list = issueConsultService.list(pageSize, pageNum);
+
+        return ResultUtil.success(list);
+    }
+
+
     @RequestMapping("/insert")
     @ResponseBody
     public DataVO addConsult(@RequestParam(value = "token",required = false,defaultValue = "32132132") String token,
-                             @RequestParam(value = "userid",required = false,defaultValue = "11111") String userid,
+                             @RequestParam(value = "userid",required = false,defaultValue = "defaultid") String userid,
                              @RequestParam(value = "type",required = false,defaultValue = "1")int type,
-                             @RequestParam(value = "buserid",required = false,defaultValue = "11111")String buserid,
+                             @RequestParam(value = "buserid",required = false,defaultValue = "defaultid")String buserid,
                              @RequestParam(value = "ispay",required = false,defaultValue = "1")int ispay,
                              @RequestParam(value = "status",required = false,defaultValue = "1")int status,
                              @RequestParam(value = "points",required = false,defaultValue = "10")String points,
-                             @RequestParam(value = "title",required = false,defaultValue = "未设置标题名")String title,
-                             @RequestParam(value = "content",required = false,defaultValue = "内容为空")String content,
+                             @RequestParam(value = "title",required = false,defaultValue = "未设置咨询标题名")String title,
+                             @RequestParam(value = "content",required = false,defaultValue = "咨询内容未写入")String content,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
-                             @RequestParam(value = "annexid",required = false,defaultValue = "00000")String annexid,
+                             @RequestParam(value = "annexid",required = false)String annexid,
                              @RequestParam(value = "value",required = false,defaultValue = "100")int value) throws Exception
     {
         IssueConsultEntity i=new IssueConsultEntity();

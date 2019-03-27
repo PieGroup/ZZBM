@@ -6,13 +6,13 @@ import java.io.Serializable;
 /**
  * @Description  
  * @Author DDLD 
- * @Date 2019-03-21 
+ * @Date 2019-03-26 
  */
 
 @Data
 public class IssueProgramEntity  implements Serializable {
 
-	private static final long serialVersionUID =  3002064377595539456L;
+	private static final long serialVersionUID =  5074413015682615633L;
 
 	 // 方案id
 	private String issue_Program_Id;
