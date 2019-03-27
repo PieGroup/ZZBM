@@ -51,12 +51,12 @@ public class IssueDemandController {
 
     @RequestMapping("/insert")
     @ResponseBody
-    public DataVO addConsult(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
-                             @RequestParam(value = "title",required = false,defaultValue = "0000")String title,
-                             @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
+    public DataVO addConsult(@RequestParam(value = "userid",required = false,defaultValue = "defaultid")String userid,
+                             @RequestParam(value = "title",required = false,defaultValue = "未定义需求标题")String title,
+                             @RequestParam(value = "content",required = false,defaultValue = "没有写入需求内容")String content,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
-                             @RequestParam(value = "table",required = false,defaultValue = "###")String table,
-                             @RequestParam(value = "annexid",required = false,defaultValue = "0000")String annexid) throws Exception{
+                             @RequestParam(value = "table",required = false)String table,
+                             @RequestParam(value = "annexid",required = false)String annexid) throws Exception{
         IssueDemandEntity i=new IssueDemandEntity();
         String id= "d"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
 

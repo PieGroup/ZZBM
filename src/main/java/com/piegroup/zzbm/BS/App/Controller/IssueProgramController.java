@@ -51,13 +51,13 @@ public class IssueProgramController {
 
     @RequestMapping("/insert")
     @ResponseBody
-    public DataVO addProgram(@RequestParam(value = "userid",required = false,defaultValue = "0000")String userid,
-                             @RequestParam(value = "title",required = false,defaultValue = "0000")String title,
-                             @RequestParam(value = "content",required = false,defaultValue = "0000")String content,
+    public DataVO addProgram(@RequestParam(value = "userid",required = false,defaultValue = "defaultid")String userid,
+                             @RequestParam(value = "title",required = false,defaultValue = "未设置方案标题")String title,
+                             @RequestParam(value = "content",required = false,defaultValue = "方案内容未写入")String content,
                              @RequestParam(value = "anonymous",required = false,defaultValue = "0")int anonymous,
-                             @RequestParam(value = "table",required = false,defaultValue = "###")String table,
+                             @RequestParam(value = "table",required = false)String table,
                              @RequestParam(value = "reward",required = false,defaultValue = "0")int reward,
-                             @RequestParam(value = "pic",required = false,defaultValue = "0000")String pic) throws Exception{
+                             @RequestParam(value = "pic",required = false)String pic) throws Exception{
         IssueProgramEntity i=new IssueProgramEntity();
         String id= "p"+TimeUtil2.TimestampNow()+ RandomNumberUtil.createRandom(true,5);
         i.setIssue_Program_Id(id);
