@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
@@ -14,9 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan("com.peigroup.zzbm.Dao")
 @Import(SpringUtil.class)   //因为普通类要使用Dao层 和service层所添加这个工具类，该工具类在项目启动类进行引入，否则会报空指针异常。
 /*******************驱动缓存机制生效********************************/
-//@EnableCaching
+@EnableCaching
 /*session共享缓存*/
-//@EnableRedisHttpSession
+@EnableRedisHttpSession
 @ServletComponentScan
 @EnableSwagger2
 public class ZzbmApplication {

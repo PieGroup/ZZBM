@@ -156,6 +156,7 @@ public class UserServiceImpl implements UserServiceIF {
 
     //编辑用户信息
     public DataPageSubc editUser(UserEntity userEntity, UserEntity editUser) {
+
         DataPageSubc dataPageSubc = new DataPageSubc();
 
         if (editUser.getUser_Sex() == null || editUser.getUser_Sex().equals(""))

@@ -9,6 +9,8 @@ import com.piegroup.zzbm.VO.DataVO;
 import com.piegroup.zzbm.VO.SubC.DataPageSubc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/IssueConsult")
 @CrossOrigin
 @Slf4j
+@CacheConfig(cacheNames = "IssueConsul")
 public class IssueConsultController {
     @Autowired
     IssueConsultServiceImpl issueConsultService;
@@ -34,6 +37,7 @@ public class IssueConsultController {
      */
     @RequestMapping("/list")
     @ResponseBody
+    @Cacheable(key = "'consultList_'+#pageNum",unless = "#result.getCode() != '0'")
     public DataVO consultList(@RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize,
                                     @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
                               @RequestParam(value="all",required = false,defaultValue = "1")int all) throws  Exception{
